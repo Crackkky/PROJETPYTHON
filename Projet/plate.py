@@ -1,3 +1,6 @@
+from Projet.operation import *
+
+
 def printPlateArray(array):
     tabString = []
     for i in range(0, len(array)):
@@ -5,11 +8,11 @@ def printPlateArray(array):
     print(tabString)
 
 
-def operationArray(plateArray, index1, index2, operator):
+def operationFromArray(history, plateArray, index1, index2, operator):
     # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
     # + str(plateArray[index2].getNumber()))
     try:
-        plateArray.append(plateArray[index1].operation(plateArray[index2], operator))
+        plateArray.append(plateArray[index1].operation(history, plateArray[index2], operator))
     except Exception as e:
         raise e
 
@@ -29,15 +32,11 @@ class Plate:
         return self.number
 
     # Do : "first plate <operator> second plate."
-    def operation(self, plate2, operator):
-        if operator == '/' and (self.getNumber() % plate2.getNumber() != 0):
-            # print('Reste = ' + str(plate2.getNumber() % self.getNumber()))
-            raise Exception('Erreur le reste de le division n\'est pas nul!')
-
-        if operator == '-' and (self.getNumber() - plate2.getNumber() < 0):
-            print('<0 !!!!!!')
-            print(plate2.getNumber() - self.getNumber())
-            return Plate(plate2.getNumber() - self.getNumber())
-        else:
-            print(int(eval(str(self.getNumber()) + operator + str(plate2.getNumber()))))
-            return Plate(int(eval(str(self.getNumber()) + operator + str(plate2.getNumber()))))
+    def operation(self, history, plate2, operator):
+        try:
+            operation = Operation(self.getNumber(), operator, plate2.getNumber())
+        except Exception as e:
+            raise e
+        history.append(operation)
+        # operation.printOperation()
+        return Plate(operation.Do())

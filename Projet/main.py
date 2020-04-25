@@ -1,31 +1,45 @@
 from random import *
 from Projet.plate import *
+from Projet.operation import *
 
 
 # FUNCTION DEF
 
 
-def chooseIndex():
+def chooseIndex(lenArray):
     while True:
         index = int(input('Choose a plate number : '))
-        if index > 6 or index <= 0:
-            print('Erreur index ! \n')
+        if index > lenArray or index <= 0:
+            print('Erreur index !')
         else:
             print('You\'ve chosen : ' + str(selectedPlates[index - 1].getNumber()))
             return index - 1
+
+
+def chooseMenu():
+    while True:
+        print('Choose an option:')
+        print('1. Do an operation')
+        print('2. See operation history')
+        index = int(input('(Enter the number) => '))
+        if index > 2 or index <= 0:  # TODO 2 en durud
+            print('Erreur Menu !')
+        else:
+            return index
 
 
 def chooseOperator():
     while True:
         operator = input('Choose an operator in [+ \\ - \\ * \\ /] : ')
         if operator != '+' and operator != '-' and operator != '*' and operator != '/':  # TODO Dur dur
-            print('Erreur operator ! \n')
+            print('Erreur operator !')
         else:
             print('You\'ve chosen : ' + operator)
             return operator
 
 
 # FUNCTION DEF
+
 
 print('Welcome in the training mode !')
 
@@ -40,22 +54,48 @@ for i in range(1, 7):
     selectedPlates.append(Plate(possiblePlates[plateNumber]))
 
 selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
+history = []
+lenSelectedPlate = len(selectedPlates)
 
-while True:
-    # Choose a plate
-    printPlateArray(selectedPlates)
+# Start training mode
+while lenSelectedPlate != 1:
+    while True:
+        # Choose a plate
+        print('You have : ')
+        printPlateArray(selectedPlates)
+        print('You must find : ' + str(goal) + '\n')
 
-    userSelection1 = chooseIndex()
-    userSelectionOp = chooseOperator()
-    userSelection2 = chooseIndex()
+        #  Menu time!
+        menuSelection = chooseMenu()
+        if menuSelection == 1:  # TODO dur?
 
-    # Add 2 plates
-    try:
-        operationArray(selectedPlates, userSelection1, userSelection2, userSelectionOp)
-        break
-    except Exception as e:
-        print(e)
+            print('')
+            printPlateArray(selectedPlates)
+            userSelection1 = chooseIndex(lenSelectedPlate)
+
+            userSelectionOp = chooseOperator()
+
+            print('')
+            printPlateArray(selectedPlates)
+            userSelection2 = chooseIndex(lenSelectedPlate)
+
+            # Do stuff with your plates
+            try:
+                operationFromArray(history, selectedPlates, userSelection1, userSelection2, userSelectionOp)
+                break
+            except Exception as e:
+                print(e)
+                printPlateArray(selectedPlates)
+            print('')
+        elif menuSelection == 2:
+            print('\nYou\'ve previously done : ')
+            printOperationArray(history)
+            print('')
+    lenSelectedPlate = len(selectedPlates)
+    print('//////////////////////////')
     print('')
 
-print('')
+print('Your last plate is : ')
 printPlateArray(selectedPlates)
+print('The goal was : ')
+print(goal)
