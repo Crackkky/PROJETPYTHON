@@ -8,9 +8,10 @@ def printPlateArray(array):
     print(tabString)
 
 
-def operationFromArray(history, plateArray, index1, index2, operator):
+def operationFromArray(history, plateArray, index1, operator, index2):
     # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
     # + str(plateArray[index2].getNumber()))
+
     try:
         plateArray.append(plateArray[index1].operation(history, plateArray[index2], operator))
     except Exception as e:
@@ -39,4 +40,4 @@ class Plate:
             raise e
         history.append(operation)
         # operation.printOperation()
-        return Plate(operation.Do())
+        return Plate(operation.do())

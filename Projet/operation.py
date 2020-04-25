@@ -31,6 +31,6 @@ class Operation:
         return str(str(self.getG()) + self.getOp() + str(self.getD()))
 
     # Do : "first plate <operator> second plate."
-    def Do(self):
+    def do(self):
         # print(int(eval(str(self.getG()) + str(self.getOp()) + str(self.getD()))))
         return int(eval(str(self.getG()) + self.getOp() + str(self.getD())))

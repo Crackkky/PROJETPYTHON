@@ -1,3 +1,4 @@
+import sys
 from random import *
 from Projet.plate import *
 from Projet.operation import *
@@ -19,10 +20,11 @@ def chooseIndex(lenArray):
 def chooseMenu():
     while True:
         print('Choose an option:')
+        print('0. Quit')
         print('1. Do an operation')
         print('2. See operation history')
         index = int(input('(Enter the number) => '))
-        if index > 2 or index <= 0:  # TODO 2 en durud
+        if index > 2 or index < 0:  # TODO 2 en durud
             print('Erreur Menu !')
         else:
             return index
@@ -36,6 +38,24 @@ def chooseOperator():
         else:
             print('You\'ve chosen : ' + operator)
             return operator
+
+
+def chooseOperation():
+    print('')
+    printPlateArray(selectedPlates)
+    userSelection1 = chooseIndex(lenSelectedPlate)
+
+    print('')
+    userSelectionOp = chooseOperator()
+
+    print('')
+    printPlateArray(selectedPlates)
+    userSelection2 = chooseIndex(lenSelectedPlate)
+    while userSelection1 == userSelection2:
+        print('Please choose the same plate twice!')
+        userSelection2 = chooseIndex(lenSelectedPlate)
+
+    return [userSelection1, userSelectionOp, userSelection2]
 
 
 # FUNCTION DEF
@@ -61,6 +81,7 @@ lenSelectedPlate = len(selectedPlates)
 while lenSelectedPlate != 1:
     while True:
         # Choose a plate
+        print('________________________')
         print('You have : ')
         printPlateArray(selectedPlates)
         print('You must find : ' + str(goal) + '\n')
@@ -69,29 +90,24 @@ while lenSelectedPlate != 1:
         menuSelection = chooseMenu()
         if menuSelection == 1:  # TODO dur?
 
-            print('')
-            printPlateArray(selectedPlates)
-            userSelection1 = chooseIndex(lenSelectedPlate)
-
-            userSelectionOp = chooseOperator()
-
-            print('')
-            printPlateArray(selectedPlates)
-            userSelection2 = chooseIndex(lenSelectedPlate)
+            userSelections = chooseOperation()
 
             # Do stuff with your plates
             try:
-                operationFromArray(history, selectedPlates, userSelection1, userSelection2, userSelectionOp)
+                operationFromArray(history, selectedPlates, userSelections[0], userSelections[1], userSelections[2])
+                lenSelectedPlate = len(selectedPlates)
                 break
             except Exception as e:
                 print(e)
                 printPlateArray(selectedPlates)
             print('')
-        elif menuSelection == 2:
+        elif menuSelection == 2:  # TODO Durdur
             print('\nYou\'ve previously done : ')
             printOperationArray(history)
             print('')
-    lenSelectedPlate = len(selectedPlates)
+        elif menuSelection == 0:  # TODO Durdur
+            print('\nYou\'ve chosen to quit, bye-bye ! ')
+            sys.exit()
     print('//////////////////////////')
     print('')
 
