@@ -1,10 +1,3 @@
-def printOperationArray(operations):
-    tabString = []
-    for i in range(0, len(operations)):
-        tabString.append(operations[i].toString())
-    print(tabString)
-
-
 class Operation:
     def __init__(self, G, op, D):
         if op == '-' and (G - D < 0):

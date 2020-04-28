@@ -2,18 +2,71 @@ import sys
 from random import *
 from Projet.plate import *
 from Projet.operation import *
+from Projet.step import *
 
 
 # FUNCTION DEF
 
 
+def printArray(array):
+    tabString = []
+    for i in range(0, len(array)):
+        tabString.append(array[i].toString())
+    print(tabString)
+
+
+def removeHistory(array, index):
+    print('remove')
+    printArray(array)
+    print(index)
+    del array[index:len(array)]
+    printArray(array)
+    return array
+
+
+def operationFromArray(history, plateArray, index1, operator, index2):
+    # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
+    # + str(plateArray[index2].getNumber()))
+
+    try:
+        operation = Operation(plateArray[index1].getNumber(), operator, plateArray[index2].getNumber())
+        history.append(Step(operation, plateArray))
+        printArray(history)
+        plateArray.append(Plate(operation.do()))
+
+    except Exception as e:
+        raise e
+
+    if index1 < index2:
+        plateArray.remove(plateArray[index2])
+        plateArray.remove(plateArray[index1])
+    else:
+        plateArray.remove(plateArray[index1])
+        plateArray.remove(plateArray[index2])
+
+
 def chooseIndex(lenArray):
     while True:
-        index = int(input('Choose a plate number : '))
+        while True:
+            try:
+                index = int(input('Choose a plate number : '))
+                break
+            except Exception as e:
+                print(e)
         if index > lenArray or index <= 0:
             print('Erreur index !')
         else:
             print('You\'ve chosen : ' + str(selectedPlates[index - 1].getNumber()))
+            return index - 1
+
+
+def choosePreviousStep(lenArray):
+    while True:
+        index = int(input('Choose a step to come back to : '))
+        if index > lenArray or index <= 0:
+            print('Erreur index !')
+        else:
+            print('Let\'s get back in time !')
             return index - 1
 
 
@@ -23,8 +76,10 @@ def chooseMenu():
         print('0. Quit')
         print('1. Do an operation')
         print('2. See operation history')
+        print('3. Return to a previous step')
+        print('4. Get the solution from the wonderful DaisyBot!')
         index = int(input('(Enter the number) => '))
-        if index > 2 or index < 0:  # TODO 2 en durud
+        if index > 4 or index < 0:  # TODO 2 en durud
             print('Erreur Menu !')
         else:
             return index
@@ -42,14 +97,14 @@ def chooseOperator():
 
 def chooseOperation():
     print('')
-    printPlateArray(selectedPlates)
+    printArray(selectedPlates)
     userSelection1 = chooseIndex(lenSelectedPlate)
 
     print('')
     userSelectionOp = chooseOperator()
 
     print('')
-    printPlateArray(selectedPlates)
+    printArray(selectedPlates)
     userSelection2 = chooseIndex(lenSelectedPlate)
     while userSelection1 == userSelection2:
         print('Please choose the same plate twice!')
@@ -83,13 +138,12 @@ while lenSelectedPlate != 1:
         # Choose a plate
         print('________________________')
         print('You have : ')
-        printPlateArray(selectedPlates)
+        printArray(selectedPlates)
         print('You must find : ' + str(goal) + '\n')
 
         #  Menu time!
         menuSelection = chooseMenu()
         if menuSelection == 1:  # TODO dur?
-
             userSelections = chooseOperation()
 
             # Do stuff with your plates
@@ -99,12 +153,22 @@ while lenSelectedPlate != 1:
                 break
             except Exception as e:
                 print(e)
-                printPlateArray(selectedPlates)
+                printArray(selectedPlates)
             print('')
         elif menuSelection == 2:  # TODO Durdur
             print('\nYou\'ve previously done : ')
-            printOperationArray(history)
+            printArray(history)
             print('')
+        elif menuSelection == 3:  # TODO Durdur
+            print('\nYou\'ve previously done : ')
+            printArray(history)
+            previousStepIndex = choosePreviousStep(len(history))
+            selectedPlates = history[previousStepIndex].plateArray
+            history = removeHistory(history, previousStepIndex)
+            printArray(selectedPlates)
+            print('')
+        elif menuSelection == 4:  # TODO Durdur
+            print('WIP')
         elif menuSelection == 0:  # TODO Durdur
             print('\nYou\'ve chosen to quit, bye-bye ! ')
             sys.exit()
@@ -112,6 +176,6 @@ while lenSelectedPlate != 1:
     print('')
 
 print('Your last plate is : ')
-printPlateArray(selectedPlates)
+printArray(selectedPlates)
 print('The goal was : ')
 print(goal)
