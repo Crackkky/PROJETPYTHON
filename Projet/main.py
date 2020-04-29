@@ -3,7 +3,7 @@ from random import *
 from Projet.plate import *
 from Projet.operation import *
 from Projet.step import *
-from Projet.DaisyBot import *
+import itertools
 
 
 # FUNCTION DEF
@@ -109,42 +109,36 @@ def chooseOperation(selectedPlates):
     return [userSelection1, userSelectionOp, userSelection2]
 
 
-def findSolution(history, plateArray):
-    print('lennnnnnnnnnnnnnnnnnn')
+def findSolution(history, plateArray, objective):
+    print("\nPatientez, Daisy a FORCEMENT entendu votre demande...\nLaissez lui le temps d'y réfléchir...")
+    operators = '*+/-'
+    operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(plateArray)-1))
+    platePermutation = list(itertools.permutations(range(0,len(plateArray))))
+    best = None
+    #Pour chaque plaque
+    for i in platePermutation :
+        #Pour chaque operateur
+        for j in operatorsCartesian :
+            stringOperation = ""
+            for k in range(0, len(plateArray)-1) :
+                stringOperation +='('
+            stringOperation += plateArray[i[0]].toString()
+            #Nous generons l'operation en string
+            for k in range(1, len(plateArray)) :
+                stringOperation += operators[j[k-1]] + plateArray[i[k]].toString() + ')'
+            value = eval(stringOperation)
+            actualDifference = abs(objective-value)
+            if best == None or actualDifference < difference :
+                difference = actualDifference
+                best = stringOperation
+                if difference == 0 :
+                    break
+    bestLisible = best.replace('(', '').replace(')','')
+    print("La meilleur :", bestLisible, " avec ", eval(best),', donc ', difference," de différence de gauche à droite sans prendre en compte les priorités.\nMerci Daisy <3" )
+    return best
 
-    print(len(plateArray) - 1)
-    print('Start')
-    printArray(plateArray)
-    printArray(history)
-    print('Start')
-    print('')
 
-    for i in range(0, len(plateArray) - 1):
-        for j in range(i + 1, len(plateArray)):
-            for op in "+-*/":  # TODO Dur
-                print('I : ' + str(i) + ', J : ' + str(j) + ', OP : ' + op)
-                # try:
-                print('History avant')
-                printArray(history)
-                print('PlateArray avant')
-                printArray(plateArray)
-                print('')
 
-                operationFromArray(history, plateArray, i, op, j)
-
-                print('History apres')
-                printArray(history)
-                print('PlateArray apres')
-                printArray(plateArray)
-                print('')
-                print('___________________________________________________________________________________')
-
-                if len(plateArray) == 1:
-                    return plateArray
-
-                return findSolution(history, plateArray)
-                # except Exception as e:
-                # pass
 
 
 # FUNCTION DEF
@@ -205,7 +199,7 @@ while lenSelectedPlate != 1:
             print('')
         elif menuSelection == 4:  # TODO Durdur
             try:
-                findSolution(history, selectedPlates)
+                findSolution(history, selectedPlates, goal)
                 lenSelectedPlate = len(selectedPlates)
                 print('Daisy found : ')
                 printArray(selectedPlates)
