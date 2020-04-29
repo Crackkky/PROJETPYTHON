@@ -23,8 +23,6 @@ def operationFromArray(history, plateArray, index1, operator, index2):
     # + str(plateArray[index2].getNumber()))
 
     try:
-        print(index1)
-        print(index2)
         operation = Operation(plateArray[index1].getNumber(), operator, plateArray[index2].getNumber())
         history.append(Step(operation, plateArray))
         plateArray.append(Plate(operation.do()))
@@ -109,36 +107,31 @@ def chooseOperation(selectedPlates):
     return [userSelection1, userSelectionOp, userSelection2]
 
 
-def findSolution(history, plateArray, objective):
+def findSolution(plateArray, objective):
     print("\nPatientez, Daisy a FORCEMENT entendu votre demande...\nLaissez lui le temps d'y réfléchir...")
     operators = '*+/-'
-    operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(plateArray)-1))
-    platePermutation = list(itertools.permutations(range(0,len(plateArray))))
+    operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(plateArray) - 1))
+    platePermutation = list(itertools.permutations(range(0, len(plateArray))))
     best = None
-    #Pour chaque plaque
-    for i in platePermutation :
-        #Pour chaque operateur
-        for j in operatorsCartesian :
+    # Pour chaque plaque
+    for i in platePermutation:
+        # Pour chaque operateur
+        for j in operatorsCartesian:
             stringOperation = ""
-            for k in range(0, len(plateArray)-1) :
-                stringOperation +='('
+            for k in range(0, len(plateArray) - 1):
+                stringOperation += '('
             stringOperation += plateArray[i[0]].toString()
-            #Nous generons l'operation en string
-            for k in range(1, len(plateArray)) :
-                stringOperation += operators[j[k-1]] + plateArray[i[k]].toString() + ')'
+            # Nous generons l'operation en string
+            for k in range(1, len(plateArray)):
+                stringOperation += operators[j[k - 1]] + plateArray[i[k]].toString() + ')'
             value = eval(stringOperation)
-            actualDifference = abs(objective-value)
-            if best == None or actualDifference < difference :
+            actualDifference = abs(objective - value)
+            if best is None or actualDifference < difference:
                 difference = actualDifference
                 best = stringOperation
-                if difference == 0 :
+                if difference == 0:
                     break
-    bestLisible = best.replace('(', '').replace(')','')
-    print("La meilleur :", bestLisible, " avec ", eval(best),', donc ', difference," de différence de gauche à droite sans prendre en compte les priorités.\nMerci Daisy <3" )
-    return best
-
-
-
+    return best, int(difference)
 
 
 # FUNCTION DEF
@@ -156,17 +149,14 @@ for i in range(1, 7):
     plateNumber = randint(0, 27)  # TODO 27 durrrrrrrrrr
     selectedPlates.append(Plate(possiblePlates[plateNumber]))
 
-selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
+# selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
 history = []
 lenSelectedPlate = len(selectedPlates)
 
 # Start training mode
 while lenSelectedPlate != 1:
-    print("LENNNNNNNNNNNNNN")
-    print(lenSelectedPlate)
     while True:
         # Choose a plate
-        print('________________________')
         print('You have : ')
         printArray(selectedPlates)
         print('You must find : ' + str(goal) + '\n')
@@ -199,18 +189,19 @@ while lenSelectedPlate != 1:
             print('')
         elif menuSelection == 4:  # TODO Durdur
             try:
-                findSolution(history, selectedPlates, goal)
+                best = findSolution(selectedPlates, goal)
+                selectedPlates = [Plate(int(eval(best[0])))]
                 lenSelectedPlate = len(selectedPlates)
-                print('Daisy found : ')
-                printArray(selectedPlates)
-                printArray(history)
+                bestLisible = best[0].replace('(', '').replace(')', '')
+                print("Meilleur solution :", bestLisible, " = ", selectedPlates[0].getNumber(), ', avec ', best[1],
+                      " de différence de gauche à droite sans prendre en compte les priorités.\nMerci Daisy <3")
                 break
             except Exception as e:
                 print(e)
         elif menuSelection == 0:  # TODO Durdur
             print('\nYou\'ve chosen to quit, bye-bye ! ')
             sys.exit()
-    print('//////////////////////////')
+    print('______________________________________________________')
     print('')
 
 print('Your last plate is : ')
