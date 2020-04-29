@@ -3,16 +3,10 @@ from random import *
 from Projet.plate import *
 from Projet.operation import *
 from Projet.step import *
+from Projet.DaisyBot import *
 
 
 # FUNCTION DEF
-
-
-def printArray(array):
-    tabString = []
-    for i in range(0, len(array)):
-        tabString.append(array[i].toString())
-    print(tabString)
 
 
 def removeHistory(array, index):
@@ -29,9 +23,10 @@ def operationFromArray(history, plateArray, index1, operator, index2):
     # + str(plateArray[index2].getNumber()))
 
     try:
+        print(index1)
+        print(index2)
         operation = Operation(plateArray[index1].getNumber(), operator, plateArray[index2].getNumber())
         history.append(Step(operation, plateArray))
-        printArray(history)
         plateArray.append(Plate(operation.do()))
 
     except Exception as e:
@@ -95,7 +90,8 @@ def chooseOperator():
             return operator
 
 
-def chooseOperation():
+def chooseOperation(selectedPlates):
+    lenSelectedPlate = len(selectedPlates)
     print('')
     printArray(selectedPlates)
     userSelection1 = chooseIndex(lenSelectedPlate)
@@ -111,6 +107,44 @@ def chooseOperation():
         userSelection2 = chooseIndex(lenSelectedPlate)
 
     return [userSelection1, userSelectionOp, userSelection2]
+
+
+def findSolution(history, plateArray):
+    print('lennnnnnnnnnnnnnnnnnn')
+
+    print(len(plateArray) - 1)
+    print('Start')
+    printArray(plateArray)
+    printArray(history)
+    print('Start')
+    print('')
+
+    for i in range(0, len(plateArray) - 1):
+        for j in range(i + 1, len(plateArray)):
+            for op in "+-*/":  # TODO Dur
+                print('I : ' + str(i) + ', J : ' + str(j) + ', OP : ' + op)
+                # try:
+                print('History avant')
+                printArray(history)
+                print('PlateArray avant')
+                printArray(plateArray)
+                print('')
+
+                operationFromArray(history, plateArray, i, op, j)
+
+                print('History apres')
+                printArray(history)
+                print('PlateArray apres')
+                printArray(plateArray)
+                print('')
+                print('___________________________________________________________________________________')
+
+                if len(plateArray) == 1:
+                    return plateArray
+
+                return findSolution(history, plateArray)
+                # except Exception as e:
+                # pass
 
 
 # FUNCTION DEF
@@ -134,6 +168,8 @@ lenSelectedPlate = len(selectedPlates)
 
 # Start training mode
 while lenSelectedPlate != 1:
+    print("LENNNNNNNNNNNNNN")
+    print(lenSelectedPlate)
     while True:
         # Choose a plate
         print('________________________')
@@ -144,7 +180,7 @@ while lenSelectedPlate != 1:
         #  Menu time!
         menuSelection = chooseMenu()
         if menuSelection == 1:  # TODO dur?
-            userSelections = chooseOperation()
+            userSelections = chooseOperation(selectedPlates)
 
             # Do stuff with your plates
             try:
@@ -168,7 +204,15 @@ while lenSelectedPlate != 1:
             printArray(selectedPlates)
             print('')
         elif menuSelection == 4:  # TODO Durdur
-            print('WIP')
+            try:
+                findSolution(history, selectedPlates)
+                lenSelectedPlate = len(selectedPlates)
+                print('Daisy found : ')
+                printArray(selectedPlates)
+                printArray(history)
+                break
+            except Exception as e:
+                print(e)
         elif menuSelection == 0:  # TODO Durdur
             print('\nYou\'ve chosen to quit, bye-bye ! ')
             sys.exit()
