@@ -1,7 +1,7 @@
 import time
 
-from Projet.IvyProject import *
-from Projet.training import *
+from Projet.Model.IvyProject import *
+from Projet.Model.training import *
 
 
 def suggestSolution(history, goal, selectedPlates):

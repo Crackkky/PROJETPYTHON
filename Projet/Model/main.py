@@ -1,6 +1,6 @@
-from Projet.jisoo import *
-from Projet.lisa import *
-from Projet.training import *
+from Projet.Model.jisoo import *
+from Projet.Model.lisa import *
+from Projet.Model.training import *
 
 
 # FUNCTION DEF

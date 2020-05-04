@@ -2,9 +2,9 @@ import itertools
 import sys
 from random import *
 
-from Projet.operation import *
-from Projet.plate import *
-from Projet.step import *
+from Projet.Model.operation import *
+from Projet.Model.plate import *
+from Projet.Model.step import *
 
 
 # FUNCTION DEF
