@@ -4,10 +4,10 @@ Created on 1 Feb 2020
 @author: crack
 '''
 
-from tkinter import *
+import re
 import tkinter as tk
 from itertools import product
-import re
+from tkinter import *
 
 
 class Application(tk.Frame):

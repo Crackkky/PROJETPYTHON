@@ -1,4 +1,6 @@
+from Projet.jisoo import *
 from Projet.lisa import *
+from Projet.training import *
 
 
 # FUNCTION DEF
@@ -30,6 +32,8 @@ while menuSelection != 0:
         trainingMode()
     if menuSelection == 2:  # TODO dur?
         serverMode()
+    if menuSelection == 3:  # TODO dur?
+        playerMode()
     elif menuSelection == 0:  # TODO Durdur
         print('\nYou\'ve chosen to quit, bye-bye ! ')
         sys.exit()

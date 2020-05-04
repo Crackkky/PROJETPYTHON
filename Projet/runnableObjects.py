@@ -7,13 +7,13 @@ from abc import ABC, abstractmethod
 from tkinter import StringVar
 
 
-class stuff(ABC):
+class RunnableObject(ABC):
     @abstractmethod
     def run(self, obj):
         pass
 
 
-class stuffStringVar(stuff):
+class RunnableStringVar(RunnableObject):
     def __init__(self):
         self.strVar = StringVar()
 

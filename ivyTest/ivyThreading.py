@@ -5,8 +5,8 @@ Created on 3 Feb 2020
 '''
 
 import queue as Queue
-from tkinter import *
 import tkinter as tk
+
 from ivyTest.coursIvy import *
 from ivyTest.stuff import *
 

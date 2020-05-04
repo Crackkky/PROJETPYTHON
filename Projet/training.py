@@ -1,9 +1,10 @@
+import itertools
 import sys
 from random import *
-from Projet.plate import *
+
 from Projet.operation import *
+from Projet.plate import *
 from Projet.step import *
-import itertools
 
 
 # FUNCTION DEF

@@ -1,3 +1,6 @@
+import time
+
+from Projet.IvyProject import *
 from Projet.training import *
 
 
@@ -31,19 +34,42 @@ def suggestSolution(history, goal, selectedPlates):
     print(goal)
 
 
+def sendLisaMessage(msg):
+    msg = 'Lisa says: ' + msg
+    print('Sent :', msg)
+    send_message(msg)
+
+
 def serverMode():
     print('Welcome mister server !')
 
     # connexion au bus
+    ivyServer = IvyModel('127.0.0.1:2010')
+    ivyServer.bindIvyServer('(Jisoo says: .*)')
+    time.sleep(1)
     goal, selectedPlates = generateGoalPlates(100, 999, 27)
-    # envoyer les info a Jisoo
+
+    sendLisaMessage('Goal is ' + str(goal))
+
+    if len(selectedPlates) > 0:
+        for i in range(0, len(selectedPlates)):
+            sendLisaMessage('Plate is ' + str(selectedPlates[i].getNumber()))
+        printArray(selectedPlates)
+    else:
+        print('Empty array!')
+
+    while True:
+        # envoyer les info a Jisoo
+        msg = input('Message a envoyer : ')
+        sendLisaMessage(msg)
+
     # lancer le chrono + attendre un signal de la part du joueur
     # lancer la fonction "proposer solution"
 
     # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
-    history = []
+    # history = []
 
-    suggestSolution(history, goal, selectedPlates)
+    # suggestSolution(history, goal, selectedPlates)
 
-    print('Play again?')
-    yes = chooseYesNo()
+    #  print('Play again?')
+    #  yes = chooseYesNo()
