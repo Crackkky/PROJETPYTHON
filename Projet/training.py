@@ -168,7 +168,8 @@ def trainingMode():
 
     while yes:
 
-        goal, selectedPlates = generateGoalPlates(100, 999, 27)
+        goal, originalPlates = generateGoalPlates(100, 999, 27)
+        selectedPlates = originalPlates.copy()
 
         # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
         history = []
@@ -211,7 +212,7 @@ def trainingMode():
                     print('')
                 elif menuSelection == 4:  # TODO Durdur
                     try:
-                        best = findSolution(selectedPlates, goal)
+                        best = findSolution(originalPlates, goal)
                         selectedPlates = [Plate(int(eval(best[0])))]
                         lenSelectedPlate = len(selectedPlates)
                         bestLisible = best[0].replace('(', '').replace(')', '')
