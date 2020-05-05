@@ -108,12 +108,14 @@ def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
     x.start()
 
     stopFromOther = False
+    stop = False
 
     while time.time() < timeEnd and not stop:
         message = ""
         # Wait for a signal from the server or the user
         if ivyProject.messages:
             message = ivyProject.messages.pop()[0]
+            print('MESSAGE STOP :', message)
             if parseMessages(message, opponentName + ' says: stop(.*)'):
                 # print('MESSAGE :', message)
                 stop = True
@@ -135,15 +137,15 @@ def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
             message = ""
             if ivyProject.messages:
                 message = ivyProject.messages.pop()[0]
-            answer = parseMessages(message, opponentName+' says: answer = (.*)')
+            answer = parseMessages(message, opponentName + ' says: answer = (.*)')
             if answer:
                 print('ANSWER :', answer)
+                break
     else:
         history = []
         answer = suggestSolution(history, goal, selectedPlates)
         print('ANSWER :', answer)
-        print('SENT :', playerName+' says: answer = ' + str(answer))
-        sendMessage(playerName+' says: ', 'answer = ' + str(answer))
+        sendMessage(playerName + ' says: ', 'answer = ' + str(answer))
 
 
 def parseMessages(msg, regex):
@@ -156,8 +158,6 @@ def parseMessages(msg, regex):
         # print('PARSED : \"' + res + '\"')
 
     return res
-
-
 
 
 def operationFromArray(history, plateArray, index1, operator, index2):
@@ -188,6 +188,19 @@ def printArray(array):
         print(tabString)
     else:
         print('Empty array!')
+
+
+def receivePlayAgain(name, ivyObject):
+    while True:
+        message = ""
+        if ivyObject.messages:
+            message = ivyObject.messages.pop()[0]
+            playAgain = parseMessages(message, name+' says: again (.*)')
+            if playAgain == 'not':
+                return False
+            elif playAgain == '!':
+                return True
+        time.sleep(0.1)
 
 
 def suggestSolution(history, goal, selectedPlates):
