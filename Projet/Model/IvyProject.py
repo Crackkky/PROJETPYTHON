@@ -14,8 +14,8 @@ def on_connection_change(agent, event):
     print('Ivy applications currntly on the bus : %s', ','.join(IvyGetApplicationList()))
 
 
-def send_message(msg):
-    IvySendMsg(msg)
+def sendMessage(string, msg):
+    IvySendMsg(string + msg)
 
 
 class IvyModel:

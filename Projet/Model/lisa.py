@@ -1,73 +1,34 @@
-import time
-
 from Projet.Model.IvyProject import *
 from Projet.Model.training import *
-
-
-def suggestSolution(history, goal, selectedPlates):
-    lenSelectedPlate = len(selectedPlates)
-    while lenSelectedPlate != 1:
-        while True:
-            # Choose a plate
-            print('You have : ')
-            printArray(selectedPlates)
-            print('You must find : ' + str(goal) + '\n')
-            userSelections = chooseOperation(selectedPlates)
-
-            # Do stuff with your plates
-            try:
-                operationFromArray(history, selectedPlates, userSelections[0], userSelections[1],
-                                   userSelections[2])
-                lenSelectedPlate = len(selectedPlates)
-                break
-            except Exception as e:
-                print(e)
-                printArray(selectedPlates)
-            print('')
-
-        print('______________________________________________________')
-        print('')
-
-    print('Your last plate is : ')
-    printArray(selectedPlates)
-    print('The goal was : ')
-    print(goal)
-
-
-def sendLisaMessage(msg):
-    msg = 'Lisa says: ' + msg
-    print('Sent :', msg)
-    send_message(msg)
+import Projet.Model.util as util
 
 
 def serverMode():
     print('Welcome mister server !')
 
-    # connexion au bus
-    ivyServer = IvyModel('127.0.0.1:2010')
-    ivyServer.bindIvyServer('(Jisoo says: .*)')
-    time.sleep(1)
-    goal, selectedPlates = generateGoalPlates(100, 999, 27)
+    # Connexion
+    ivyServer = connexionIvy('Jisoo')
 
-    sendLisaMessage('Goal is ' + str(goal))
+    # Send informations to Jisoo
+    goal, selectedPlates = generateGoalPlates(100, 999, 27)
+    sendMessage('Lisa says: ', 'Goal is ' + str(goal))
 
     if len(selectedPlates) > 0:
         for i in range(0, len(selectedPlates)):
-            sendLisaMessage('Plate is ' + str(selectedPlates[i].getNumber()))
+            sendMessage('Lisa says: ', 'Plate is ' + str(selectedPlates[i].getNumber()))
         printArray(selectedPlates)
     else:
         print('Empty array!')
 
-    while True:
-        # envoyer les info a Jisoo
-        msg = input('Message a envoyer : ')
-        sendLisaMessage(msg)
+    # Start the game
 
-    # lancer le chrono + attendre un signal de la part du joueur
-    # lancer la fonction "proposer solution"
+    time.sleep(0.1)
+    sendMessage('Lisa says: ', 'start!')
 
-    # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
-    # history = []
+    util.gameStart(ivyServer, goal, selectedPlates, 'Lisa', 'Jisoo')
+
+
+    # Suggest a solution
 
     # suggestSolution(history, goal, selectedPlates)
 

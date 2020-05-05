@@ -5,10 +5,10 @@ from random import *
 from Projet.Model.operation import *
 from Projet.Model.plate import *
 from Projet.Model.step import *
+from Projet.Model.util import *
 
 
 # FUNCTION DEF
-
 
 def removeHistory(array, index):
     print('remove')
@@ -17,106 +17,6 @@ def removeHistory(array, index):
     del array[index:len(array)]
     printArray(array)
     return array
-
-
-def operationFromArray(history, plateArray, index1, operator, index2):
-    # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
-    # + str(plateArray[index2].getNumber()))
-
-    try:
-        operation = Operation(plateArray[index1].getNumber(), operator, plateArray[index2].getNumber())
-        history.append(Step(operation, plateArray))
-        plateArray.append(Plate(operation.do()))
-
-    except Exception as e:
-        raise e
-
-    if index1 < index2:
-        plateArray.remove(plateArray[index2])
-        plateArray.remove(plateArray[index1])
-    else:
-        plateArray.remove(plateArray[index1])
-        plateArray.remove(plateArray[index2])
-
-
-def chooseIndex(selectedPlates, lenArray):
-    while True:
-        while True:
-            try:
-                index = int(input('Choose a plate number : '))
-                break
-            except Exception as e:
-                print(e)
-        if index > lenArray or index <= 0:
-            print('Erreur index !')
-        else:
-            print('You\'ve chosen : ' + str(selectedPlates[index - 1].getNumber()))
-            return index - 1
-
-
-def choosePreviousStep(lenArray):
-    while True:
-        index = int(input('Choose a step to come back to : '))
-        if index > lenArray or index <= 0:
-            print('Erreur index !')
-        else:
-            print('Let\'s get back in time !')
-            return index - 1
-
-
-def chooseMenu():
-    while True:
-        print('Choose an option:')
-        print('0. Quit')
-        print('1. Do an operation')
-        print('2. See operation history')
-        print('3. Return to a previous step')
-        print('4. Get the solution from the wonderful DaisyBot!')
-        index = int(input('(Enter the number) => '))
-        if index > 4 or index < 0:  # TODO 2 en durud
-            print('Erreur Menu !')
-        else:
-            return index
-
-
-def chooseOperator():
-    while True:
-        operator = input('Choose an operator in [+ \\ - \\ * \\ /] : ')
-        if operator != '+' and operator != '-' and operator != '*' and operator != '/':  # TODO Dur dur
-            print('Erreur operator !')
-        else:
-            print('You\'ve chosen : ' + operator)
-            return operator
-
-
-def chooseYesNo():
-    while True:
-        yesNo = input('Please enter "Y" or "N" : ')
-        if yesNo == 'Y':  # TODO DUR
-            return True
-        elif yesNo == 'N':  # TODO DUR
-            return False
-        else:
-            print('Erreur operator !')
-
-
-def chooseOperation(selectedPlates):
-    lenSelectedPlate = len(selectedPlates)
-    print('')
-    printArray(selectedPlates)
-    userSelection1 = chooseIndex(selectedPlates, lenSelectedPlate)
-
-    print('')
-    userSelectionOp = chooseOperator()
-
-    print('')
-    printArray(selectedPlates)
-    userSelection2 = chooseIndex(selectedPlates, lenSelectedPlate)
-    while userSelection1 == userSelection2:
-        print('Please don\'t choose the same plate twice!')
-        userSelection2 = chooseIndex(selectedPlates, lenSelectedPlate)
-
-    return [userSelection1, userSelectionOp, userSelection2]
 
 
 def findSolution(plateArray, objective):

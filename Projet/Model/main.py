@@ -28,13 +28,13 @@ menuSelection = chooseMainMenu()
 
 while menuSelection != 0:
 
-    if menuSelection == 1:  # TODO dur?
+    if menuSelection == 1:
         trainingMode()
-    if menuSelection == 2:  # TODO dur?
+    if menuSelection == 2:
         serverMode()
-    if menuSelection == 3:  # TODO dur?
+    if menuSelection == 3:
         playerMode()
-    elif menuSelection == 0:  # TODO Durdur
+    elif menuSelection == 0:
         print('\nYou\'ve chosen to quit, bye-bye ! ')
         sys.exit()
 

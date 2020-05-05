@@ -1,13 +1,3 @@
-def printArray(array):
-    tabString = []
-    if len(array) > 0:
-        for i in range(0, len(array)):
-            tabString.append(array[i].toString())
-        print(tabString)
-    else:
-        print('Empty array!')
-
-
 def arrayToString(array):
     stringRes = '['
     if len(array) > 0:
