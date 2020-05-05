@@ -10,9 +10,11 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
     possiblePlates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100]
     message = ""
     while goal == 0 or len(selectedPlates) < 6:  # TODO 6 durs
-        time.sleep(0.005)
+        time.sleep(0.01)
+        print('YYYYYYYYYYYY')
         if ivyPlayer.messages:
             message = ivyPlayer.messages.pop()[0]
+            print('MESSAGE : ', message)
 
         goalTemp = parseMessages(message, 'Lisa says: Goal is (.*)')
         if goalTemp and 100 <= int(goalTemp) <= 999:
@@ -39,28 +41,36 @@ def playerMode():
     # connexion au bus
     ivyPlayer = connexionIvy('Lisa')
 
-    # recevoir les infos de Lisa
-    goal, selectedPlates = receiveInfos(ivyPlayer)
-    print('GOAL :')
-    print(goal)
-    print('PLATES :')
-    printArray(selectedPlates)
+    play = True
 
-    # attendre signal serveur (Ou envoyer)
-    while True:
-        message = ""
-        if ivyPlayer.messages:
-            message = ivyPlayer.messages.pop()[0]
-        if parseMessages(message, 'Lisa says: start(.*)'):
-            print('MESSAGE :', message)
+    while play:
+        # Wait for new game information
+        goal, selectedPlates = receiveInfos(ivyPlayer)
+        print('GOAL :')
+        print(goal)
+        print('PLATES :')
+        printArray(selectedPlates)
 
-            # Start the game
-            util.gameStart(ivyPlayer, goal, selectedPlates, 'Jisoo', 'Lisa')
+        # Wait for the beginning of the game
+        endOfTheGame = False
+        while not endOfTheGame:
+            message = ""
+            if ivyPlayer.messages:
+                message = ivyPlayer.messages.pop()[0]
+            if parseMessages(message, 'Lisa says: start(.*)'):
+                print('MESSAGE :', message)
 
-    # Suggest a solution
+                # Start the game
+                util.gameStart(ivyPlayer, goal, selectedPlates, 'Jisoo', 'Lisa')
+                endOfTheGame = True
+            time.sleep(0.1)
 
-    # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
-    # history = []
+        print('Play again?')
+        play = chooseYesNo()
+        if not play:
+            sendMessage('Jisoo says: ', 'again not')
+        else:
+            sendMessage('Jisoo says: ', 'again !')
+            play = receivePlayAgain('Lisa', ivyPlayer)
+            print('OK let\'s play again')
 
-    # print('Play again?')
-    # yes = chooseYesNo()
