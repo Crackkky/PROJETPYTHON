@@ -1,5 +1,6 @@
 import threading
 import time
+from random import randint
 
 from Projet.Model.IvyProject import *
 from Projet.Model.operation import Operation
@@ -7,7 +8,24 @@ from Projet.Model.plate import Plate
 from Projet.Model.step import Step
 
 stop = False
+PLATE_NUMBER = 6
+OPERATORS ='*+/-'
+OPERATOR_NUMBER = len(OPERATORS)
+POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
 
+
+def generateGoalPlates(goalMin, goalMax, nbPlate):
+    goal = randint(goalMin, goalMax)
+    possiblePlates = POSSIBLE_PLATES
+    # TODO durian
+    selectedPlates = []
+
+    # Generate plates
+    for i in range(0, PLATE_NUMBER):
+        plateNumber = randint(0, nbPlate)  # TODO 27 durrrrrrrrrr
+        selectedPlates.append(Plate(possiblePlates[plateNumber]))
+
+    return goal, selectedPlates
 
 def chooseMenu():
     while True:
