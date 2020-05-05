@@ -10,14 +10,14 @@ from tkinter import *
 from Projet.Model.lisa import *
 
 
-class MainInterface(tk.Frame):
+class MainView(tk.Frame):
 
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.buttonList = []
         self.trainingButton = 0
-        self.lisaButton = 1
-        self.jisooButton = 2
+        self.serverButton = 1
+        self.clientButton = 2
         self.quitButton = 3
         self.createWidgets()
         self.grid()
