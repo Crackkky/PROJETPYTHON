@@ -9,23 +9,24 @@ from Projet.Model.step import Step
 
 stop = False
 PLATE_NUMBER = 6
-OPERATORS ='*+/-'
+OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
 POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
 
 
+# Generate the usable plates and goal
 def generateGoalPlates(goalMin, goalMax, nbPlate):
     goal = randint(goalMin, goalMax)
     possiblePlates = POSSIBLE_PLATES
-    # TODO durian
     selectedPlates = []
 
     # Generate plates
     for i in range(0, PLATE_NUMBER):
-        plateNumber = randint(0, nbPlate)  # TODO 27 durrrrrrrrrr
+        plateNumber = randint(0, nbPlate)
         selectedPlates.append(Plate(possiblePlates[plateNumber]))
 
     return goal, selectedPlates
+
 
 def chooseMenu():
     while True:
@@ -36,7 +37,7 @@ def chooseMenu():
         print('3. Return to a previous step')
         print('4. Get the solution from the wonderful DaisyBot!')
         index = int(input('(Enter the number) => '))
-        if index > 4 or index < 0:  # TODO 2 en durud
+        if index > 4 or index < 0:  # TODO 4 en durud
             print('Erreur Menu !')
         else:
             return index
@@ -107,6 +108,7 @@ def choosePreviousStep(lenArray):
             return index - 1
 
 
+# Create Ivy object and initialise a connexion
 def connexionIvy(opponentName):
     ivyObject = IvyModel('127.0.0.1:2010')
     ivyObject.bindIvyServer('(' + opponentName + ' says: .*)')
@@ -114,7 +116,8 @@ def connexionIvy(opponentName):
     return ivyObject
 
 
-def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
+# Start an online game
+def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     global stop
     print('')
     print('The game will now start !')
@@ -129,15 +132,9 @@ def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
     stop = False
 
     while time.time() < timeEnd and not stop:
-        message = ""
-        # Wait for a signal from the server or the user
-        if ivyProject.messages:
-            message = ivyProject.messages.pop()[0]
-            print('MESSAGE STOP :', message)
-            if parseMessages(message, opponentName + ' says: stop(.*)'):
-                # print('MESSAGE :', message)
-                stop = True
-                stopFromOther = True
+        if waitMessage(ivyObject, opponentName + ' says: stop(.*)'):
+            stop = True
+            stopFromOther = True
         time.sleep(0.1)
         # print('1')
 
@@ -152,10 +149,7 @@ def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
     if stopFromOther:
         print('Wait till the other player finish !')
         while True:
-            message = ""
-            if ivyProject.messages:
-                message = ivyProject.messages.pop()[0]
-            answer = parseMessages(message, opponentName + ' says: answer = (.*)')
+            answer = waitMessage(ivyObject, opponentName + ' says: answer = (.*)')
             if answer:
                 print('ANSWER :', answer)
                 break
@@ -166,6 +160,7 @@ def gameStart(ivyProject, goal, selectedPlates, playerName, opponentName):
         sendMessage(playerName + ' says: ', 'answer = ' + str(answer))
 
 
+# Return the message or "" else
 def parseMessages(msg, regex):
     import re
     res = ""
@@ -178,6 +173,8 @@ def parseMessages(msg, regex):
     return res
 
 
+# Do the operation from the array between index1 and index2
+# Append the result and remove the used plates
 def operationFromArray(history, plateArray, index1, operator, index2):
     # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
     # + str(plateArray[index2].getNumber()))
@@ -213,7 +210,7 @@ def receivePlayAgain(name, ivyObject):
         message = ""
         if ivyObject.messages:
             message = ivyObject.messages.pop()[0]
-            playAgain = parseMessages(message, name+' says: again (.*)')
+            playAgain = parseMessages(message, name + ' says: again (.*)')
             if playAgain == 'not':
                 return False
             elif playAgain == '!':
@@ -221,6 +218,7 @@ def receivePlayAgain(name, ivyObject):
         time.sleep(0.1)
 
 
+# Suggest a solution
 def suggestSolution(history, goal, selectedPlates):
     lenSelectedPlate = len(selectedPlates)
     while lenSelectedPlate != 1:
@@ -253,7 +251,16 @@ def suggestSolution(history, goal, selectedPlates):
     return selectedPlates[0].getNumber()
 
 
+# Ask in another thread for an input
 def thread_function():
     global stop
     input('Stop? ==> ')
     stop = True
+
+
+# Parse a message if there is one, else return ""
+def waitMessage(ivyObject, regex):
+    message = ""
+    if ivyObject.messages:
+        message = ivyObject.messages.pop()[0]
+    return parseMessages(message, regex)

@@ -1,4 +1,3 @@
-from Projet.Model.IvyProject import *
 from Projet.Model.training import *
 import Projet.Model.util as util
 import time
@@ -9,12 +8,9 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
     selectedPlates = []
     possiblePlates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100]
     message = ""
-    while goal == 0 or len(selectedPlates) < 6:  # TODO 6 durs
-        time.sleep(0.01)
-        print('YYYYYYYYYYYY')
+    while goal == 0 or len(selectedPlates) < PLATE_NUMBER:
         if ivyPlayer.messages:
             message = ivyPlayer.messages.pop()[0]
-            print('MESSAGE : ', message)
 
         goalTemp = parseMessages(message, 'Lisa says: Goal is (.*)')
         if goalTemp and 100 <= int(goalTemp) <= 999:
@@ -31,6 +27,8 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
         m = parseMessages(message, 'Lisa says: (.*)')
         if m:
             message = ""
+
+        time.sleep(0.01)
 
     return goal, selectedPlates
 
@@ -54,10 +52,8 @@ def playerMode():
         # Wait for the beginning of the game
         endOfTheGame = False
         while not endOfTheGame:
-            message = ""
-            if ivyPlayer.messages:
-                message = ivyPlayer.messages.pop()[0]
-            if parseMessages(message, 'Lisa says: start(.*)'):
+            message = waitMessage(ivyPlayer, 'Lisa says: start(.*)')
+            if message:
                 print('MESSAGE :', message)
 
                 # Start the game

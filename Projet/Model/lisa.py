@@ -25,7 +25,6 @@ def serverMode():
             print('Empty array!')
 
         # Start the game
-
         time.sleep(0.1)
         sendMessage('Lisa says: ', 'start!')
 
