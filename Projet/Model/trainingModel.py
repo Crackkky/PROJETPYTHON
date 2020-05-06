@@ -10,6 +10,10 @@ class TrainingModel():
         self.selectedPlates = self.originalPlates.copy()
         self.history = []
         self.lenSelectedPlate = len(self.selectedPlates)
+
+    def doPlay(self, indice1, operator, indice2):
+        operationFromArray(self.history, self.selectedPlates, indice1, operator, indice2)
+        self.lenSelectedPlate = len(self.selectedPlates)
         # yes = True
         #
         # while yes:
