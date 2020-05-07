@@ -11,13 +11,29 @@ def chooseMainMenu():
         print('Choose an option:')
         print('0. Quit')
         print('1. Play in training')
-        print('2. Play as Lisa (Server)')
-        print('3. Play as Jisoo (Player)')
+        print('2. Play online!')
         index = int(input('(Enter the number) => '))
-        if index > 3 or index < 0:  # TODO 2 en durud
+        if index > 2 or index < 0:
             print('Erreur Menu !')
         else:
             return index
+
+
+def play():
+    ivyObject = connexionIvy('nbPlayer')
+    time.sleep(1)
+    message = getMessage(ivyObject, 'nbPlayer says: (.*)')
+    if not message:
+        ivyObject.clearMessages()
+        ivyObject.bindIvy('(Jisoo says: .*)')
+        serverMode(ivyObject)
+    else:
+        ivyObject.clearMessages()
+        ivyObject.bindIvy('(Lisa says: .*)')
+        playerMode(ivyObject)
+
+    nbPlayer = 0
+    IvyStop()
 
 
 # FUNCTION DEF
@@ -26,27 +42,14 @@ print('Welcome to : \" <Name of the game>\"!')
 
 menuSelection = chooseMainMenu()
 
-while menuSelection != 0:
+while True:
 
     if menuSelection == 1:
         trainingMode()
     if menuSelection == 2:
-        serverMode()
-    if menuSelection == 3:
-        playerMode()
+        play()
     elif menuSelection == 0:
         print('\nYou\'ve chosen to quit, bye-bye ! ')
         sys.exit()
 
     menuSelection = chooseMainMenu()
-
-
-
-
-
-
-
-
-
-
-

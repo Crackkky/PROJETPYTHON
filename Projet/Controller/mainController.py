@@ -12,7 +12,7 @@ class MainController :
     def __init__(self):
         root = tk.Tk()
         self.mainView = MainView(root)
-        self.mainView.label['text'] = 'Welcome to 블랙핑크 하우스!'
+        self.mainView.label['text'] = '블랙핑크 하우스 환영합니!'
         texts_button = ["Play in Training", "Play as Lisa (Server)", "Play as Jisoo (Client)", "Quit"]
         buttonsPosition = [self.mainView.trainingButton, self.mainView.serverButton, self.mainView.clientButton, self.mainView.quitButton]
         fcts = [lambda : self.training(root), lambda :serverMode(), lambda :playerMode(), lambda :sys.exit()]

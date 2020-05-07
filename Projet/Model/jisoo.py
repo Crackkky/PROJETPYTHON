@@ -33,16 +33,23 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
     return goal, selectedPlates
 
 
-def playerMode():
+def playerMode(ivyPlayer):
     print('Welcome player !')
 
-    # connexion au bus
-    ivyPlayer = connexionIvy('Lisa')
+    # Connexion
+    # ivyPlayer = connexionIvy('Lisa')
+    # print('Connected!')
 
+    print('Waiting for an opponent...')
+
+    sendMessage('Jisoo says: ', 'ready!')
+    print('SENT')
+
+    ivyPlayer.clearMessages()
     play = True
-
     while play:
         # Wait for new game information
+        print('Now waiting for game information...')
         goal, selectedPlates = receiveInfos(ivyPlayer)
         print('GOAL :')
         print(goal)
@@ -51,22 +58,18 @@ def playerMode():
 
         # Wait for the beginning of the game
         endOfTheGame = False
+        oneFound = True
         while not endOfTheGame:
-            message = waitMessage(ivyPlayer, 'Lisa says: start(.*)')
+            message = getMessage(ivyPlayer, 'Lisa says: start(.*)')
             if message:
-                print('MESSAGE :', message)
-
                 # Start the game
-                util.gameStart(ivyPlayer, goal, selectedPlates, 'Jisoo', 'Lisa')
+                oneFound = util.gameStart(ivyPlayer, goal, selectedPlates, 'Jisoo', 'Lisa')
                 endOfTheGame = True
             time.sleep(0.1)
 
-        print('Play again?')
-        play = chooseYesNo()
-        if not play:
-            sendMessage('Jisoo says: ', 'again not')
-        else:
-            sendMessage('Jisoo says: ', 'again !')
-            play = receivePlayAgain('Lisa', ivyPlayer)
-            print('OK let\'s play again')
+        if not oneFound:
+            print('YYYYYYYYY')
+
+        # TODO /!\ input!!
+        play = replayPlayer('Jisoo', 'Lisa', ivyPlayer)
 

@@ -3,15 +3,26 @@ from Projet.Model.training import *
 import Projet.Model.util as util
 
 
-def serverMode():
+def serverMode(ivyServer):
     print('Welcome mister server !')
 
     # Connexion
-    ivyServer = connexionIvy('Jisoo')
+    # ivyServer = connexionIvy('Jisoo')
 
+    print('Waiting for an opponent...')
+    ready = ""
+    while not ready:
+        sendMessage('nbPlayer says:', ' 1')
+        ready = getMessage(ivyServer, 'Jisoo says: ready(.*)')
+        # print(ready)
+        time.sleep(0.1)
+
+    print('Opponent found!')
+    print('Now loading...')
+    print('')
+
+    ivyServer.clearMessages()
     play = True
-    endOfTheGame = False
-
     while play:
         # Send informations to Jisoo
         goal, selectedPlates = generateGoalPlates(100, 999, 27)
@@ -20,22 +31,26 @@ def serverMode():
         if len(selectedPlates) > 0:
             for i in range(0, len(selectedPlates)):
                 sendMessage('Lisa says: ', 'Plate is ' + str(selectedPlates[i].getNumber()))
-            printArray(selectedPlates)
         else:
             print('Empty array!')
+
+        print('GOAL :')
+        print(goal)
+        print('PLATES :')
+        printArray(selectedPlates)
 
         # Start the game
         time.sleep(0.1)
         sendMessage('Lisa says: ', 'start!')
 
-        util.gameStart(ivyServer, goal, selectedPlates, 'Lisa', 'Jisoo')
+        if not util.gameStart(ivyServer,
+                              goal,
+                              selectedPlates,
+                              'Lisa',
+                              'Jisoo'):
+            print('YYYYYYYYYYY')
 
-        print('Play again?')
-        play = chooseYesNo()
-        if not play:
-            sendMessage('Lisa says: ', 'again not')
-        else:
-            sendMessage('Lisa says: ', 'again !')
-            play = receivePlayAgain('Jisoo', ivyServer)
-        print('OK let\'s play again')
+        # TODO /!\ input!!
+        play = replayServer('Lisa', 'Jisoo', ivyServer)
+
         time.sleep(1)

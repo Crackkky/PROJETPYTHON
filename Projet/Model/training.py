@@ -46,20 +46,6 @@ def findSolution(plateArray, objective):
     return best, int(difference)
 
 
-def generateGoalPlates(goalMin, goalMax, nbPlate):
-    goal = randint(goalMin, goalMax)
-    possiblePlates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
-    # TODO durian
-    selectedPlates = []
-
-    # Generate plates
-    for i in range(1, 7):
-        plateNumber = randint(0, nbPlate)  # TODO 27 durrrrrrrrrr
-        selectedPlates.append(Plate(possiblePlates[plateNumber]))
-
-    return goal, selectedPlates
-
-
 # FUNCTION DEF
 
 

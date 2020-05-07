@@ -1,5 +1,7 @@
 from ivy.std_api import *
 
+IvyServer = None
+
 
 def on_die(agent, id):
     print('Received the order to die from %r with id = %d', agent, id)
@@ -8,55 +10,42 @@ def on_die(agent, id):
 
 def on_connection_change(agent, event):
     if event == IvyApplicationDisconnected:
-        print('Ivy application %r has disconnected', agent)
+        print('Someone\'s disconnected !')
+        # print('Ivy application %r has disconnected', agent)
     else:
-        print('Ivy application %r has connected', agent)
-    print('Ivy applications currntly on the bus : %s', ','.join(IvyGetApplicationList()))
+        print('New user connected !')
+        # print('Ivy application %r has connected', agent)
+    # print('Ivy applications currently on the bus : %s', ','.join(IvyGetApplicationList()))
 
 
-def sendMessage(string, msg):
-    IvySendMsg(string + msg)
+def sendMessage(nameSays, msg):
+    IvySendMsg(nameSays + msg)
+
+
+def initIvy(ip):
+    global IvyServer
+    if IvyServer is None:
+        IvyInit('IvyThread', 'Started!', 0, on_connection_change, on_die)
+        IvyServer = True
+
+    IvyStart(ip)
+    # '127.0.0.1:2010'
 
 
 class IvyModel:
-
     def __init__(self, ip):
-        self.initIvyGeneral(ip)
+        initIvy(ip)
         self.messages = []
 
-    def on_msgServer(self, agent, *arg):
+    def on_msg(self, agent, *arg):
         # print('Received from %r: %s', agent, arg and str(arg) or '<no args>')
         # print('')
         # print(str(arg) or '<no args>')
         # print('')
         self.messages.append(arg)
 
-    def on_msgPlayer(self, agent, *arg):
-        # print('Received from %r: %s', agent, arg and str(arg) or '<no args>')
-        # print('')
-        # print(str(arg) or '<no args>')
-        # print('')
-        self.messages.append(arg)
+    def bindIvy(self, bind):
+        IvyBindMsg(self.on_msg, bind)
 
-    def initIvyGeneral(self, ip):
-        IvyInit('IvyThread',
-                'Started!',
-                0,
-                on_connection_change,
-                on_die)
-
-        '''TUTUT'''
-        IvyStart(ip)
-        # '127.0.0.1:2010'
-
-    def bindIvyServer(self, bind):
-        IvyBindMsg(self.on_msgServer, bind)
-        # '(.*)'
-
-        # print('Binded and ready!')
-
-    def bindIvyPlayer(self, bind):
-        IvyBindMsg(self.on_msgPlayer, bind)
-        # '(.*)'
-
-        # print('Binded and ready!')
+    def clearMessages(self):
+        self.messages.clear()

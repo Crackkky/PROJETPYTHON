@@ -14,20 +14,6 @@ OPERATOR_NUMBER = len(OPERATORS)
 POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
 
 
-# Generate the usable plates and goal
-def generateGoalPlates(goalMin, goalMax, nbPlate):
-    goal = randint(goalMin, goalMax)
-    possiblePlates = POSSIBLE_PLATES
-    selectedPlates = []
-
-    # Generate plates
-    for i in range(0, PLATE_NUMBER):
-        plateNumber = randint(0, nbPlate)
-        selectedPlates.append(Plate(possiblePlates[plateNumber]))
-
-    return goal, selectedPlates
-
-
 def chooseMenu():
     while True:
         print('Choose an option:')
@@ -111,8 +97,8 @@ def choosePreviousStep(lenArray):
 # Create Ivy object and initialise a connexion
 def connexionIvy(opponentName):
     ivyObject = IvyModel('127.0.0.1:2010')
-    ivyObject.bindIvyServer('(' + opponentName + ' says: .*)')
-    time.sleep(1)
+    ivyObject.bindIvy('(' + opponentName + ' says: .*)')
+    time.sleep(0.1)
     return ivyObject
 
 
@@ -132,13 +118,14 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     stop = False
 
     while time.time() < timeEnd and not stop:
-        if waitMessage(ivyObject, opponentName + ' says: stop(.*)'):
+        if getMessage(ivyObject, opponentName + ' says: stop(.*)'):
             stop = True
             stopFromOther = True
         time.sleep(0.1)
-        # print('1')
 
-    if not stopFromOther:
+    if not stop and not stopFromOther:
+        return False
+    elif stop and not stopFromOther:
         sendMessage(playerName + ' says: ', 'stop!')
     else:
         print('Too late! Enter anything to continue : ')
@@ -149,15 +136,36 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     if stopFromOther:
         print('Wait till the other player finish !')
         while True:
-            answer = waitMessage(ivyObject, opponentName + ' says: answer = (.*)')
+            answer = getMessage(ivyObject, opponentName + ' says: answer = (.*)')
             if answer:
                 print('ANSWER :', answer)
                 break
     else:
-        history = []
-        answer = suggestSolution(history, goal, selectedPlates)
+        answer = suggestSolution([], goal, selectedPlates)
         print('ANSWER :', answer)
         sendMessage(playerName + ' says: ', 'answer = ' + str(answer))
+
+    return True
+
+
+def getNumberOfPlayer():
+    listPlayer = IvyGetApplicationList()
+    return len(listPlayer)
+
+
+# Generate the usable plates and goal
+def generateGoalPlates(goalMin, goalMax, nbPlate):
+    goal = randint(goalMin, goalMax)
+    possiblePlates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
+    # TODO durian
+    selectedPlates = []
+
+    # Generate plates
+    for i in range(1, 7):
+        plateNumber = randint(0, nbPlate)  # TODO 27 durrrrrrrrrr
+        selectedPlates.append(Plate(possiblePlates[plateNumber]))
+
+    return goal, selectedPlates
 
 
 # Return the message or "" else
@@ -207,15 +215,44 @@ def printArray(array):
 
 def receivePlayAgain(name, ivyObject):
     while True:
-        message = ""
-        if ivyObject.messages:
-            message = ivyObject.messages.pop()[0]
-            playAgain = parseMessages(message, name + ' says: again (.*)')
-            if playAgain == 'not':
-                return False
-            elif playAgain == '!':
-                return True
+        playAgain = getMessage(ivyObject, name + ' says: again (.*)')
+        if playAgain == 'not':
+            return False
+        elif playAgain == '!':
+            return True
         time.sleep(0.1)
+
+
+def replayPlayer(name, nameOpponent, ivyObject):
+    print('Play again?')
+    if chooseYesNo():
+        sendMessage(name + ' says: ', 'again !')
+        print('Waiting for the other player\'s reply...')
+        if receivePlayAgain(nameOpponent, ivyObject):
+            print('OK let\'s play again')
+            return True
+        else:
+            print('The player don\'t want to play again')
+            return False
+    else:
+        sendMessage(name + ' says: ', 'again not')
+        return False
+
+
+def replayServer(name, nameOpponent, ivyObject):
+    print('Waiting if the other play want to play again...')
+    if receivePlayAgain(nameOpponent, ivyObject):
+        print('Play again?')
+        if chooseYesNo():
+            sendMessage(name + ' says: ', 'again !')
+            print('OK let\'s play again')
+            return True
+        else:
+            sendMessage(name + ' says: ', 'again not')
+            return False
+    else:
+        print('The player don\'t want to play again')
+        return False
 
 
 # Suggest a solution
@@ -259,7 +296,7 @@ def thread_function():
 
 
 # Parse a message if there is one, else return ""
-def waitMessage(ivyObject, regex):
+def getMessage(ivyObject, regex):
     message = ""
     if ivyObject.messages:
         message = ivyObject.messages.pop()[0]
