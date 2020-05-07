@@ -9,10 +9,16 @@ def buttonStyle(button) :
     values = ['black', 'pink', 'black', 'pink', 3]
     apply(types, values, button)
 
+def checkButtonStyle(checkButton) :
+    buttonStyle(checkButton)
+    types = ['selectcolor']
+    values = ['gray']
+    apply(types, values, checkButton)
 
-def buttonStyleOnArray(buttons) :
-    for i in buttons :
-        buttonStyle(i)
+def labelStyle(label) :
+    types = ['bg', 'fg', 'borderwidth', 'relief']
+    values = ['black', 'pink', 2, 'sunken']
+    apply(types, values, label)
 
 def frameStyle(frame) :
     types = ['borderwidth', 'bg']

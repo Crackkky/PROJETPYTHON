@@ -11,58 +11,18 @@ class TrainingModel():
         self.history = []
         self.lenSelectedPlate = len(self.selectedPlates)
 
-    def doPlay(self, indice1, operator, indice2):
+    def doPlay(self, indice1, operator, indice2) :
         operationFromArray(self.history, self.selectedPlates, indice1, operator, indice2)
         self.lenSelectedPlate = len(self.selectedPlates)
-        # yes = True
-        #
-        # while yes:
-        #
-        #     goal, originalPlates = self.generateGoalPlates(100, 999, 27)
-        #     selectedPlates = originalPlates.copy()
-        #
-        #     # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
-        #     history = []
-        #     lenSelectedPlate = len(selectedPlates)
-        #
-        #     # Start training mode
-        #     while lenSelectedPlate != 1:
-        #         while True:
-        #             #  Menu time!
-        #             menuSelection = chooseMenu()
-        #             if menuSelection == 1:  # TODO dur?
-        #                 userSelections = chooseOperation(selectedPlates)
-        #
-        #                 # Do stuff with your plates
-        #                 try:
-        #                     operationFromArray(history, selectedPlates, userSelections[0], userSelections[1],userSelections[2])
-        #                     lenSelectedPlate = len(selectedPlates)
-        #                     break
-        #                 except Exception as e:
-        #                     print(e)
-        #                     printArray(selectedPlates)
-        #             elif menuSelection == 2:  # TODO Durdur
-        #                 printArray(history)
-        #             elif menuSelection == 3:  # TODO Durdur
-        #                 previousStepIndex = choosePreviousStep(len(history))
-        #                 selectedPlates = history[previousStepIndex].plateArray
-        #                 history = self.removeHistory(history, previousStepIndex)
-        #             elif menuSelection == 4:  # TODO Durdur
-        #                 try:
-        #                     best = self.findSolution(originalPlates, goal)
-        #                     selectedPlates = [Plate(int(eval(best[0])))]
-        #                     lenSelectedPlate = len(selectedPlates)
-        #                     bestLisible = best[0].replace('(', '').replace(')', '')
-        #                     break
-        #                 except Exception as e:
-        #                     print(e)
-        #             elif menuSelection == 0:  # TODO Durdur
-        #                 sys.exit()
-        #
-        #     yes = chooseYesNo()
 
+    def previousHistory(self) :
+        previousStepIndex = len(self.history)
+        if (previousStepIndex > 0) :
+            self.selectedPlates = self.history[previousStepIndex-1].plateArray
+            self.history = self.removeHistory(self.history, previousStepIndex-1)
+            self.lenSelectedPlate = len(self.selectedPlates)
 
-    def removeHistory(array, index):
+    def removeHistory(self, array, index):
         del array[index:len(array)]
         return array
 

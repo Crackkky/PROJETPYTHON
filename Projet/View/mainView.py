@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import *
 
 from Projet.Model.lisa import *
-from Projet.View.StyleInterface import buttonStyle
+from Projet.View.StyleInterface import buttonStyle, labelStyle
 
 
 class MainView(tk.Frame):
@@ -29,6 +29,7 @@ class MainView(tk.Frame):
         positions = [(1, 1, 1), (1, 2, 1), (1, 3, 1), (2, 1, 3)]
         self.label = tk.Label(self, borderwidth=2, relief="sunken")
         self.label.grid(row=0, column=1, columnspan=3)
+        labelStyle(self.label)
         for pos in  positions:
             button = tk.Button(self)
             button.grid(row=pos[0], column=pos[1], columnspan=pos[2])

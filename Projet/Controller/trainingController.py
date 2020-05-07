@@ -8,13 +8,19 @@ from Projet.View.trainingView import TrainingView
 class TrainingController :
     def __init__(self):
         root = tk.Tk()
+
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
         self.maxPlateNumber = PLATE_NUMBER
         self.trainingModel = TrainingModel()
         self.trainingView = TrainingView(self.maxPlateNumber, OPERATOR_NUMBER, root)
+
         self.trainingView.validateButton["text"] = "Validate"
         self.trainingView.validateButton["command"] = lambda : self.validate()
+
+        self.trainingView.backButton["text"] = "Back Step"
+        self.trainingView.backButton["command"] = lambda: self.backStep()
+
         self.update()
         root.mainloop()
 
@@ -25,10 +31,17 @@ class TrainingController :
             self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack_forget()
             self.update()
 
+    def backStep(self):
+        if (len(self.trainingModel.history) > 0):
+            self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack(side='left')
+            self.trainingModel.previousHistory()
+            self.update()
+
     def update(self):
         self.firstPlate = None  # Position de la 1ère plaque
         self.secondPlate = None  # Position de la 2ème plaque
         self.operator = None  # position de l'operator
+        self.trainingView.goalLabel["text"] = "Goal\n" + str(self.trainingModel.goal)
 
         # completion des checKButtons des plaques
         for i in range(0, self.trainingModel.lenSelectedPlate):
