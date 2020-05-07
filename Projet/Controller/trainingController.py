@@ -24,6 +24,11 @@ class TrainingController :
         self.trainingView.returnButton["text"] = "Back"
         self.trainingView.returnButton["command"] = lambda : self.backMenu(root)
 
+        self.trainingView.newButton["text"] = "New One"
+        self.trainingView.newButton["command"] = lambda : self.newOne()
+
+        self.trainingView.solutionButton["text"] = "Solution ?"
+
         self.update()
         root.mainloop()
 
@@ -32,13 +37,30 @@ class TrainingController :
             self.trainingModel.doPlay(self.firstPlate,self.operators[self.operator],self.secondPlate)
             #Suppresion de l'affichage de la dernière plaque
             self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack_forget()
+            if (self.trainingModel.lenSelectedPlate == 1):
+                self.trainingView.displayInfo("You got a difference of "
+                                              + str(self.trainingModel.getDifference())
+                                              + ", not Badr")
+            else:
+                self.trainingView.displayInfo()
             self.update()
+        else :
+            self.trainingView.displayInfo("Please, select 2 plates and 1 operator")
+
+    def newOne(self):
+        for i in range(self.maxPlateNumber) :
+            self.trainingView.checkPlateList[i].pack(side='left')
+        self.trainingModel = TrainingModel()
+        self.update()
 
     def backStep(self):
         if (len(self.trainingModel.history) > 0):
             self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack(side='left')
             self.trainingModel.previousHistory()
             self.update()
+            self.trainingView.displayInfo()
+        else :
+            self.trainingView.displayInfo("History empty, please play before")
 
     def backMenu(self, root):
         root.destroy()

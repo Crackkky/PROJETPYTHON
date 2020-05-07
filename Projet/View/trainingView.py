@@ -17,6 +17,13 @@ class TrainingView(tk.Frame):
 
     def createWidgets(self, checkPlateNumber, checkOperatorNumber, master):
 
+        self.frameInformation = tk.Frame(master)
+        frameStyle(self.frameInformation)
+
+        self.infoLabel = tk.Label(self.frameInformation)
+        labelStyle(self.infoLabel)
+        self.infoLabel.pack()
+
         frameButton = tk.Frame(master)
         frameStyle(frameButton)
         frameButton.pack(side=tk.BOTTOM)
@@ -32,6 +39,14 @@ class TrainingView(tk.Frame):
         self.backButton = tk.Button(frameButton)
         buttonStyle(self.backButton)
         self.backButton.pack(side='right')
+
+        self.newButton = tk.Button(master)
+        buttonStyle(self.newButton)
+        self.newButton.place(x=self.width-62, y=self.height-28)
+
+        self.solutionButton = tk.Button(master)
+        buttonStyle(self.solutionButton)
+        self.solutionButton.place(x=self.width - 62, y=self.height - 56)
 
         frameGoal = tk.Frame(master)
         frameStyle(frameGoal)
@@ -51,11 +66,10 @@ class TrainingView(tk.Frame):
 
         frameHistory = tk.Frame(master)
         frameStyle(frameHistory)
-        frameHistory.pack(side=tk.RIGHT)
-
         self.historyLabel = tk.Label(frameHistory)
         labelStyle(self.historyLabel)
         self.historyLabel.pack(fill='both', expand=5)
+        frameHistory.place(x=self.width-65, y=0)
 
         #init des checks buttons des plaques
         for i in range(0,checkPlateNumber) :
@@ -76,3 +90,11 @@ class TrainingView(tk.Frame):
             self.checkOperatorVar.append(var)
             checkButton["variable"] = var
             checkButtonStyle(checkButton)
+
+    def displayInfo(self, text=None):
+        if text == None :
+            self.frameInformation.place_forget()
+        else :
+            self.infoLabel["text"] = text
+            self.frameInformation.place(x=150, y=100)
+

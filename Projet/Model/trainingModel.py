@@ -56,3 +56,7 @@ class TrainingModel:
         for i in self.history:
             str += "\n" + i.operation.toString()
         return str
+
+    def getDifference(self):
+        if(self.lenSelectedPlate == 1) :
+            return abs(self.goal - self.selectedPlates[0].getNumber())
