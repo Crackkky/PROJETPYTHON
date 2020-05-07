@@ -28,6 +28,7 @@ class TrainingController :
         self.trainingView.newButton["command"] = lambda : self.newOne()
 
         self.trainingView.solutionButton["text"] = "Solution ?"
+        self.trainingView.solutionButton["command"] = lambda : self.getSolution(root)
 
         self.update()
         root.mainloop()
@@ -46,6 +47,17 @@ class TrainingController :
             self.update()
         else :
             self.trainingView.displayInfo("Please, select 2 plates and 1 operator")
+
+    def getSolution(self, root):
+        self.trainingView.displayInfo("Please wait, Daisy heard your request...\n"
+                                      "Just let her some time to think about it...")
+        root.update()
+        operations, difference = self.trainingModel.findSolution()
+        self.trainingView.displayInfo("The best is a difference of " +
+                                      str(difference) +
+                                      "\nwith " + str(operations).replace('(', '').replace(')','')
+                                      + " from left to right")
+
 
     def newOne(self):
         for i in range(self.maxPlateNumber) :
