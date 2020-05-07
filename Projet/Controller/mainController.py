@@ -1,4 +1,3 @@
-import sys
 import tkinter as tk
 
 from tkinter import *
@@ -24,7 +23,7 @@ class MainController :
 
     def training(self, root):
         root.destroy()
-        TrainingController()
+        TrainingController(self)
 
     def server(self, root):
         print("TODO")

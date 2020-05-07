@@ -52,4 +52,11 @@ class TrainingModel():
                         break
         return best, int(difference)
 
+    def historyToString(self):
+        str =""
+        for i in self.history :
+            str += "\n" + i.operation.toString()
+        return str
+
+
 

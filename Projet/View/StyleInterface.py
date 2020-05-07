@@ -1,7 +1,10 @@
 #Cette classe permet d'appliquer facilement un theme global a des widgets
 
+WIDTH = 500
+HEIGHT = 250
+
 def rootStyle(root) :
-    root.geometry('500x250')
+    root.geometry(str(WIDTH)+'x'+str(HEIGHT))
     root.configure(background='gray')
 
 def buttonStyle(button) :
