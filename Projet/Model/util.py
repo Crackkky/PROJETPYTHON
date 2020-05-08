@@ -94,6 +94,15 @@ def choosePreviousStep(lenArray):
             return index - 1
 
 
+def closestNumber(num1, num2, goal):
+    if abs(num1 - goal) == abs(num2 - goal):
+        return -1
+    elif abs(num1 - goal) < abs(num2 - goal):
+        return num1
+    else:
+        return num2
+
+
 # Create Ivy object and initialise a connexion
 def connexionIvy(opponentName):
     ivyObject = IvyModel('127.0.0.1:2010')
@@ -109,10 +118,10 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     print('The game will now start !')
     print('')
 
-    timeEnd = time.time() + 45
+    timeEnd = time.time() + 2
 
-    x = threading.Thread(target=thread_function)
-    x.start()
+    # x = threading.Thread(target=thread_function)
+    # x.start()
 
     stopFromOther = False
     stop = False
@@ -126,11 +135,11 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     if not stop and not stopFromOther:
         return False
     elif stop and not stopFromOther:
-        sendMessage(playerName + ' says: ', 'stop!')
+        sendMessage(playerName + ' says: stop!')
     else:
         print('Too late! Enter anything to continue : ')
 
-    x.join()
+    # x.join()
 
     print('OK')
     if stopFromOther:
@@ -143,7 +152,7 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
     else:
         answer = suggestSolution([], goal, selectedPlates)
         print('ANSWER :', answer)
-        sendMessage(playerName + ' says: ', 'answer = ' + str(answer))
+        sendMessage(playerName + ' says: answer = ' + str(answer))
 
     return True
 
@@ -157,12 +166,11 @@ def getNumberOfPlayer():
 def generateGoalPlates(goalMin, goalMax, nbPlate):
     goal = randint(goalMin, goalMax)
     possiblePlates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
-    # TODO durian
     selectedPlates = []
 
     # Generate plates
     for i in range(1, 7):
-        plateNumber = randint(0, nbPlate)  # TODO 27 durrrrrrrrrr
+        plateNumber = randint(0, nbPlate)
         selectedPlates.append(Plate(possiblePlates[plateNumber]))
 
     return goal, selectedPlates
@@ -174,6 +182,8 @@ def parseMessages(msg, regex):
     res = ""
 
     regex_search = re.search(regex, msg)
+    # print('MSG :', msg)
+    # print('RGX :', regex)
     if regex_search:
         res = regex_search.group(1)
         # print('PARSED : \"' + res + '\"')
@@ -226,7 +236,7 @@ def receivePlayAgain(name, ivyObject):
 def replayPlayer(name, nameOpponent, ivyObject):
     print('Play again?')
     if chooseYesNo():
-        sendMessage(name + ' says: ', 'again !')
+        sendMessage(name + ' says: again !')
         print('Waiting for the other player\'s reply...')
         if receivePlayAgain(nameOpponent, ivyObject):
             print('OK let\'s play again')
@@ -235,7 +245,7 @@ def replayPlayer(name, nameOpponent, ivyObject):
             print('The player don\'t want to play again')
             return False
     else:
-        sendMessage(name + ' says: ', 'again not')
+        sendMessage(name + ' says: again not')
         return False
 
 
@@ -244,11 +254,11 @@ def replayServer(name, nameOpponent, ivyObject):
     if receivePlayAgain(nameOpponent, ivyObject):
         print('Play again?')
         if chooseYesNo():
-            sendMessage(name + ' says: ', 'again !')
+            sendMessage(name + ' says: again !')
             print('OK let\'s play again')
             return True
         else:
-            sendMessage(name + ' says: ', 'again not')
+            sendMessage(name + ' says: again not')
             return False
     else:
         print('The player don\'t want to play again')
@@ -300,4 +310,5 @@ def getMessage(ivyObject, regex):
     message = ""
     if ivyObject.messages:
         message = ivyObject.messages.pop()[0]
+        # print('MESSAGE : ', message)
     return parseMessages(message, regex)
