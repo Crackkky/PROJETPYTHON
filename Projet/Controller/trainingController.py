@@ -15,20 +15,11 @@ class TrainingController :
         self.trainingModel = TrainingModel()
         self.trainingView = TrainingView(self.maxPlateNumber, OPERATOR_NUMBER, root)
 
-        self.trainingView.validateButton["text"] = "Validate"
-        self.trainingView.validateButton["command"] = lambda : self.validate()
-
-        self.trainingView.backButton["text"] = "Back Step"
-        self.trainingView.backButton["command"] = lambda : self.backStep()
-
-        self.trainingView.returnButton["text"] = "Back"
-        self.trainingView.returnButton["command"] = lambda : self.backMenu(root)
-
-        self.trainingView.newButton["text"] = "New One"
-        self.trainingView.newButton["command"] = lambda : self.newOne()
-
-        self.trainingView.solutionButton["text"] = "Solution ?"
-        self.trainingView.solutionButton["command"] = lambda : self.getSolution(root)
+        self.completeButton("Validate", lambda : self.validate(), self.trainingView.validateButton)
+        self.completeButton("Back Step", lambda : self.backStep(), self.trainingView.backButton)
+        self.completeButton("Back", lambda : self.backMenu(root), self.trainingView.returnButton)
+        self.completeButton("New One", lambda : self.newOne(), self.trainingView.newButton)
+        self.completeButton("Solution ?", lambda : self.getSolution(root), self.trainingView.solutionButton)
 
         self.update()
         root.mainloop()
@@ -87,9 +78,8 @@ class TrainingController :
         # completion des checKButtons des plaques
         for i in range(0, self.trainingModel.lenSelectedPlate):
             checkButton = self.trainingView.checkPlateList[i]
-            checkButton["text"] = self.trainingModel.selectedPlates[i].toString()
             # x=i car si i utilisé directement, il est mis en attente jusqu'à l'appel, et i fini = au dernier
-            checkButton["command"] = lambda x=i: self.checkMaxOfPlate(x)
+            self.completeButton(self.trainingModel.selectedPlates[i].toString(), lambda x=i: self.checkMaxOfPlate(x), checkButton)
             checkButton["offvalue"] = -1
             checkButton.deselect()
             checkButton["onvalue"] = i
@@ -97,9 +87,8 @@ class TrainingController :
         # completion des checKButtons des plaques
         for i in range(0, self.operatorNumber):
             checkButton = self.trainingView.checkOperatorList[i]
-            checkButton["text"] = self.operators[i]
             # x=i car si i utilisé directement, il est mis en attente jusqu'à l'appel, et i fini = au dernier
-            checkButton["command"] = lambda x=i: self.checkMaxOfOperator(x)
+            self.completeButton(self.operators[i], lambda x=i: self.checkMaxOfOperator(x), checkButton)
             checkButton["offvalue"] = -1
             checkButton.deselect()
             checkButton["onvalue"] = i
@@ -129,3 +118,7 @@ class TrainingController :
         else :
             self.trainingView.checkOperatorList[self.operator].deselect()
             self.operator = pos
+
+    def completeButton(self, text, fct, button):
+        button["text"] = text
+        button["command"] = fct
