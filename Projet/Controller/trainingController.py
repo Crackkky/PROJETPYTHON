@@ -37,7 +37,7 @@ class TrainingController :
         if(self.firstPlate != None and self.secondPlate !=None and self.operator!=None) :
             self.trainingModel.doPlay(self.firstPlate,self.operators[self.operator],self.secondPlate)
             #Suppresion de l'affichage de la dernière plaque
-            self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack_forget()
+            self.trainingView.showHidePlateButton(self.trainingModel.lenSelectedPlate, 0)
             if (self.trainingModel.lenSelectedPlate == 1):
                 self.trainingView.displayInfo("You got a difference of "
                                               + str(self.trainingModel.getDifference())
@@ -60,14 +60,13 @@ class TrainingController :
 
 
     def newOne(self):
-        for i in range(self.maxPlateNumber) :
-            self.trainingView.checkPlateList[i].pack(side='left')
+        self.trainingView.showAllPlateButtons()
         self.trainingModel = TrainingModel()
         self.update()
 
     def backStep(self):
         if (len(self.trainingModel.history) > 0):
-            self.trainingView.checkPlateList[self.trainingModel.lenSelectedPlate].pack(side='left')
+            self.trainingView.showHidePlateButton(self.trainingModel.lenSelectedPlate, 1)
             self.trainingModel.previousHistory()
             self.update()
             self.trainingView.displayInfo()

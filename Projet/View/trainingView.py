@@ -18,6 +18,7 @@ class TrainingView(tk.Frame):
     def createWidgets(self, checkPlateNumber, checkOperatorNumber, master):
 
         self.frameInformation = tk.Frame(master)
+        self.checkPlateNumber = checkPlateNumber
         frameStyle(self.frameInformation)
 
         self.infoLabel = tk.Label(self.frameInformation)
@@ -72,7 +73,7 @@ class TrainingView(tk.Frame):
         frameHistory.place(x=self.width-65, y=0)
 
         #init des checks buttons des plaques
-        for i in range(0,checkPlateNumber) :
+        for i in range(0,self.checkPlateNumber) :
             checkButton = tk.Checkbutton(framePlate, indicatoron=0, width = 5)
             checkButton.pack(side='left')
             self.checkPlateList.append(checkButton)
@@ -98,3 +99,12 @@ class TrainingView(tk.Frame):
             self.infoLabel["text"] = text
             self.frameInformation.place(x=150, y=100)
 
+    def showHidePlateButton(self, i, show):
+        if show :
+            self.checkPlateList[i].pack(side='left')
+        else :
+            self.checkPlateList[i].pack_forget()
+
+    def showAllPlateButtons(self):
+        for i in range(self.checkPlateNumber):
+            self.showHidePlateButton(i, 1)
