@@ -6,8 +6,7 @@ from Projet.View.trainingView import TrainingView
 
 
 class TrainingController :
-    def __init__(self, parent):
-        root = tk.Tk()
+    def __init__(self, parent, root):
         self.parent = parent
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
@@ -22,7 +21,6 @@ class TrainingController :
         self.completeButton("Solution ?", lambda : self.getSolution(root), self.trainingView.solutionButton)
 
         self.update()
-        root.mainloop()
 
     def validate(self) :
         if(self.firstPlate != None and self.secondPlate !=None and self.operator!=None) :
@@ -66,7 +64,9 @@ class TrainingController :
 
     def backMenu(self, root):
         root.destroy()
-        self.parent.__init__()
+        root = tk.Tk()
+        self.parent.__init__(root)
+        root.mainloop()
 
     def update(self):
         self.firstPlate = None  # Position de la 1ère plaque

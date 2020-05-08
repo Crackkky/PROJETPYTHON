@@ -9,8 +9,7 @@ from Projet.View.mainView import MainView
 
 
 class MainController :
-    def __init__(self):
-        root = tk.Tk()
+    def __init__(self, root):
         self.mainView = MainView(root)
         self.mainView.label['text'] = '블랙핑크 하우스 환영합니!'
         texts_button = ["Play in Training", "Play as Lisa (Server)", "Play as Jisoo (Client)", "Quit"]
@@ -19,11 +18,12 @@ class MainController :
         for buttonPos, fct, text_button in zip(buttonsPosition, fcts, texts_button) :
             self.mainView.buttonList[buttonPos]["command"] = fct
             self.mainView.buttonList[buttonPos]["text"] = text_button
-        root.mainloop()
 
     def training(self, root):
         root.destroy()
-        TrainingController(self)
+        root = tk.Tk()
+        TrainingController(self, root)
+        root.mainloop()
 
     def server(self, root):
         print("TODO")

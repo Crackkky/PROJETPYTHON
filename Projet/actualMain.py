@@ -2,4 +2,6 @@ import tkinter as tk
 
 from Projet.Controller.mainController import MainController
 
-app = MainController()
+root= tk.Tk()
+app = MainController(root)
+root.mainloop()
