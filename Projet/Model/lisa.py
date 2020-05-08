@@ -30,12 +30,10 @@ def serverMode(ivyServer):
         goal, selectedPlates = 6, [Plate(1), Plate(1), Plate(1), Plate(1), Plate(1), Plate(1)]
 
         sendMessage('Lisa says: Goal is ' + str(goal))
-        print('Lisa says: Goal is ' + str(goal))
 
         if len(selectedPlates) > 0:
             for i in range(0, len(selectedPlates)):
                 sendMessage('Lisa says: Plate is ' + str(selectedPlates[i].getNumber()))
-                print('Lisa says: Plate is ' + str(selectedPlates[i].getNumber()))
         else:
             print('Empty array!')
 
@@ -43,16 +41,19 @@ def serverMode(ivyServer):
         print(goal)
         print('PLATES :')
         printArray(selectedPlates)
+        x = threading.Thread(target=thread_function)
 
         # Start the game
         time.sleep(0.1)
         sendMessage('Lisa says: start!')
 
-        if not util.gameStart(ivyServer,
-                              goal,
-                              selectedPlates,
-                              'Lisa',
-                              'Jisoo'):
+        x.start()
+        oneFound = util.gameStart(ivyServer, goal, selectedPlates, 'Lisa', 'Jisoo', 0)
+        print('Enter anything to proceed : ')
+        x.join()
+
+        if not oneFound:  # Time's UP!
+            print('Time\'s up!')
             numberFound = int(input('What\'s the closest number you found?'))
             playerFound = ""
             while not playerFound:
@@ -61,57 +62,51 @@ def serverMode(ivyServer):
             playerFound = int(playerFound)
             numberKept = closestNumber(numberFound, playerFound, goal)
 
-            # DRAW
-            if numberKept == -1:
-                print('Both found')
-                print('')
-                sendMessage('Lisa says: found Both')
-                if suggestSolution([], goal, selectedPlates) == numberFound:
-                    sendMessage('Lisa says: answer = correct')
-                    while True:
-                        answerCorrect = getMessage(ivyServer, 'Jisoo says: answer = (.*)')
-                        if answerCorrect == 'correct':  # TESTED
-                            print('You both won !!!')
-                            break
-                        if answerCorrect == 'wrong':  # TESTED
-                            print('Your opponent failed, you won !')
-                            break
-                        time.sleep(0.1)
-                else:
-                    sendMessage('Lisa says: answer = wrong')
-                    while True:
-                        answerCorrect = getMessage(ivyServer, 'Jisoo says: answer = (.*)')
-                        if answerCorrect == 'correct':  # TESTED
-                            print('Your opponent won !')
-                            break
-                        if answerCorrect == 'wrong':  # TESTED
-                            print('You both failed !!!')
-                            break
-                        time.sleep(0.1)
-
-            elif numberKept == numberFound:
+            # Lisa found!
+            if numberKept == numberFound:
                 print('I found!')
                 sendMessage('Lisa says: found I')
-                answer = suggestSolution([], goal, selectedPlates)
-                print('ANSWER :', answer)
-                if answer == numberFound:  # TESTED
-                    print('Correct !')
+
+                if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                    print('Correct !')  # TESTED
                     sendMessage('Lisa says: answer = correct')
                 else:
                     print('Wrong !')  # TESTED
                     sendMessage('Lisa says: answer = wrong')
 
+            # Jisoo found!
             elif numberKept == playerFound:
                 sendMessage('Lisa says: found You')
-                while True:
-                    answer = getMessage(ivyServer, 'Jisoo says: answer = (.*)')
-                    if answer == 'correct':  # TESTED
-                        print('Your opponent found !')
-                        break
-                    elif answer == 'wrong':  # TESTED
-                        print('Your opponent was wrong !')
-                        break
-                    time.sleep(0.1)
+                print('Your opponent is closer!')
+                answer = waitMessage(ivyServer, 'Jisoo says: answer = (.*)')
+
+                if answer == 'correct':  # TESTED
+                    print('Your opponent found !')
+                elif answer == 'wrong':  # TESTED
+                    print('Your opponent was wrong !')
+
+            # Both found
+            elif numberKept == -1:
+                print('Both found')
+                print('')
+                sendMessage('Lisa says: found Both')
+
+                if numberFound == suggestSolution([], numberFound, selectedPlates):
+                    sendMessage('Lisa says: answer = correct')
+                    answerCorrect = waitMessage(ivyServer, 'Jisoo says: answer = (.*)')
+
+                    if answerCorrect == 'correct':  # TESTED
+                        print('You both won !!!')
+                    if answerCorrect == 'wrong':  # TESTED
+                        print('Your opponent failed, you won !')
+                else:
+                    sendMessage('Lisa says: answer = wrong')
+                    answerCorrect = waitMessage(ivyServer, 'Jisoo says: answer = (.*)')
+
+                    if answerCorrect == 'correct':  # TESTED
+                        print('Your opponent won !')
+                    if answerCorrect == 'wrong':  # TESTED
+                        print('You both failed !!!')
 
         play = replayServer('Lisa', 'Jisoo', ivyServer)
 

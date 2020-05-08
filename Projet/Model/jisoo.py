@@ -58,79 +58,66 @@ def playerMode(ivyPlayer):
         # Wait for the beginning of the game
         endOfTheGame = False
         oneFound = True
+        x = threading.Thread(target=thread_function)
         while not endOfTheGame:
             message = getMessage(ivyPlayer, 'Lisa says: start(.*)')
             if message:
                 # Start the game
+                x.start()
                 oneFound = util.gameStart(ivyPlayer,
                                           goal,
                                           selectedPlates,
                                           'Jisoo',
-                                          'Lisa')
+                                          'Lisa',
+                                          0)
                 endOfTheGame = True
             time.sleep(0.1)
+        print('Enter anything to proceed : ')
+        x.join()
 
         if not oneFound:
-            print('No one found! Enter anything to continue')
+            print('No one found in time!')
             numberFound = int(input('What\'s the closest number you found?'))
             sendMessage('Jisoo says: found is ' + str(numberFound))
 
-            answer = 0
-            while answer == 0:
-                message = getMessage(ivyPlayer, 'Lisa says: found (.*)')
-                if message == 'You':
-                    print('I found')
-                    answer = suggestSolution([], goal, selectedPlates)
-                    print('ANSWER :', answer)
-                    if answer == numberFound:  # TESTED
-                        print('Correct !')
+            message = waitMessage(ivyPlayer, 'Lisa says: found (.*)')
+            if message == 'You':
+                print('I found')
+                if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                    print('Correct !')
+                    sendMessage('Jisoo says: answer = correct')
+                else:
+                    print('Wrong !')  # TESTED
+                    sendMessage('Jisoo says: answer = wrong')
+
+            elif message == 'I':
+                print('Your opponent is closer!')
+                answerCorrect = waitMessage(ivyPlayer, 'Lisa says: answer = (.*)')
+                if answerCorrect == 'correct':  # TESTED
+                    print('Your opponent won !')
+                elif answerCorrect == 'wrong':  # TESTED
+                    print('Your opponent was wrong !')
+
+            elif message == 'Both':
+                print('You both find the solution !')
+                print('The server is proposing a solution...')
+                answerCorrect = waitMessage(ivyPlayer, 'Lisa says: answer = (.*)')
+                if answerCorrect == 'correct':
+                    print('Your opponent found, your turn')
+                    if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                        print('You both won !!!')
                         sendMessage('Jisoo says: answer = correct')
-                    else:
-                        print('Wrong !')  # TESTED
+                    else:  # TESTED
+                        print('You failed, your opponent won !')
                         sendMessage('Jisoo says: answer = wrong')
 
-                elif message == 'I':
-                    while True:
-                        answerCorrect = getMessage(ivyPlayer, 'Lisa says: answer = (.*)')
-                        if answerCorrect == 'correct':  # TESTED
-                            print('Your opponent won !')
-                            answer = answerCorrect
-                            break
-                        elif answerCorrect == 'wrong':  # TESTED
-                            print('Your opponent was wrong !')
-                            answer = answerCorrect
-                            break
-                        time.sleep(0.1)
+                if answerCorrect == 'wrong':
+                    print('Your opponent failed, your turn')
+                    if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                        print('You won !!!')
+                        sendMessage('Jisoo says: answer = correct')
+                    else:  # TESTED
+                        print('You both failed !!!')
+                        sendMessage('Jisoo says: answer = wrong')
 
-                elif message == 'Both':
-                    print('You both find the solution !')
-                    print('The server is proposing a solution...')
-                    while True:
-                        answerCorrect = getMessage(ivyPlayer, 'Lisa says: answer = (.*)')
-                        if answerCorrect == 'correct':
-                            print('Your opponent found, your turn')
-                            answer = suggestSolution([], goal, selectedPlates)
-                            if answer == numberFound:  # TESTED
-                                print('You both won !!!')
-                                sendMessage('Jisoo says: answer = correct')
-                                break
-                            else:  # TESTED
-                                print('You failed, your opponent won !')
-                                sendMessage('Jisoo says: answer = wrong')
-                                break
-
-                        if answerCorrect == 'wrong':
-                            print('Your opponent failed, your turn')
-                            answer = suggestSolution([], goal, selectedPlates)
-                            if answer == numberFound:  # TESTED
-                                print('You won !!!')
-                                sendMessage('Jisoo says: answer = correct')
-                                break
-                            else:  # TESTED
-                                print('You bothe failed !!!')
-                                sendMessage('Jisoo says: answer = wrong')
-                                break
-                        time.sleep(0.1)
-                time.sleep(0.1)
         play = replayPlayer('Jisoo', 'Lisa', ivyPlayer)
-

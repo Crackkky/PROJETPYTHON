@@ -9,6 +9,7 @@ from Projet.Model.step import Step
 
 stop = False
 PLATE_NUMBER = 6
+DEFAULT_TIME = 45
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
 POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
@@ -112,16 +113,13 @@ def connexionIvy(opponentName):
 
 
 # Start an online game
-def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
+def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTime):
     global stop
     print('')
     print('The game will now start !')
     print('')
 
-    timeEnd = time.time() + 2
-
-    # x = threading.Thread(target=thread_function)
-    # x.start()
+    timeEnd = time.time() + gameTime if gameTime != 0 else DEFAULT_TIME
 
     stopFromOther = False
     stop = False
@@ -136,22 +134,16 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName):
         return False
     elif stop and not stopFromOther:
         sendMessage(playerName + ' says: stop!')
-    else:
-        print('Too late! Enter anything to continue : ')
 
-    # x.join()
-
-    print('OK')
     if stopFromOther:
-        print('Wait till the other player finish !')
+        print('Your opponent found before you!')
+        print('Wait till the other player finish!')
         while True:
             answer = getMessage(ivyObject, opponentName + ' says: answer = (.*)')
             if answer:
-                print('ANSWER :', answer)
                 break
     else:
-        answer = suggestSolution([], goal, selectedPlates)
-        print('ANSWER :', answer)
+        answer = suggestSolution([], goal, selectedPlates)  # TODO verify if answer is correct
         sendMessage(playerName + ' says: answer = ' + str(answer))
 
     return True
@@ -312,3 +304,11 @@ def getMessage(ivyObject, regex):
         message = ivyObject.messages.pop()[0]
         # print('MESSAGE : ', message)
     return parseMessages(message, regex)
+
+
+def waitMessage(ivyObject, regex):
+    while True:
+        message = getMessage(ivyObject, regex)
+        if message:
+            return message
+        time.sleep(0.1)
