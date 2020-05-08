@@ -51,7 +51,7 @@ class TrainingView(tk.Frame):
 
         frameGoal = tk.Frame(master)
         frameStyle(frameGoal)
-        frameGoal.place(x=0, y=0, height=48, width=68)
+        frameGoal.place(x=0, y=0, height=53, width=71)
 
         self.goalLabel = tk.Label(frameGoal)
         labelStyle(self.goalLabel)
@@ -70,7 +70,7 @@ class TrainingView(tk.Frame):
         self.historyLabel = tk.Label(frameHistory)
         labelStyle(self.historyLabel)
         self.historyLabel.pack(fill='both', expand=5)
-        frameHistory.place(x=self.width-65, y=0)
+        frameHistory.place(x=self.width-70, y=0, width = 70)
 
         #init des checks buttons des plaques
         for i in range(0,self.checkPlateNumber) :

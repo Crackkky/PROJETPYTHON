@@ -24,8 +24,8 @@ def labelStyle(label) :
     apply(types, values, label)
 
 def frameStyle(frame) :
-    types = ['borderwidth', 'bg']
-    values = ['10', 'pink']
+    types = ['borderwidth', 'bg', 'highlightbackground', 'highlightthickness']
+    values = ['10', 'pink', 'black', 2]
     apply(types, values, frame)
 
 def apply(lt, lv, object) :
