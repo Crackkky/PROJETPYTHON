@@ -69,7 +69,7 @@ def playerMode(ivyPlayer):
                                           selectedPlates,
                                           'Jisoo',
                                           'Lisa',
-                                          0)
+                                          4)
                 endOfTheGame = True
             time.sleep(0.1)
         print('Enter anything to proceed : ')
@@ -77,6 +77,7 @@ def playerMode(ivyPlayer):
 
         if not oneFound:
             print('No one found in time!')
+            print('')
             numberFound = int(input('What\'s the closest number you found?'))
             sendMessage('Jisoo says: found is ' + str(numberFound))
 
@@ -85,9 +86,11 @@ def playerMode(ivyPlayer):
                 print('I found')
                 if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
                     print('Correct !')
+                    scorePlusPlus(True)
                     sendMessage('Jisoo says: answer = correct')
                 else:
                     print('Wrong !')  # TESTED
+                    scorePlusPlus(False)
                     sendMessage('Jisoo says: answer = wrong')
 
             elif message == 'I':
@@ -95,8 +98,10 @@ def playerMode(ivyPlayer):
                 answerCorrect = waitMessage(ivyPlayer, 'Lisa says: answer = (.*)')
                 if answerCorrect == 'correct':  # TESTED
                     print('Your opponent won !')
+                    scorePlusPlus(False)
                 elif answerCorrect == 'wrong':  # TESTED
                     print('Your opponent was wrong !')
+                    scorePlusPlus(True)
 
             elif message == 'Both':
                 print('You both find the solution !')
@@ -106,9 +111,12 @@ def playerMode(ivyPlayer):
                     print('Your opponent found, your turn')
                     if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
                         print('You both won !!!')
+                        scorePlusPlus(True)
+                        scorePlusPlus(False)
                         sendMessage('Jisoo says: answer = correct')
                     else:  # TESTED
                         print('You failed, your opponent won !')
+                        scorePlusPlus(False)
                         sendMessage('Jisoo says: answer = wrong')
 
                 if answerCorrect == 'wrong':
@@ -116,8 +124,11 @@ def playerMode(ivyPlayer):
                     if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
                         print('You won !!!')
                         sendMessage('Jisoo says: answer = correct')
+                        scorePlusPlus(True)
                     else:  # TESTED
                         print('You both failed !!!')
                         sendMessage('Jisoo says: answer = wrong')
 
+        print('Your score was:', scoreToString(True))
+        print('Your Opponent\'s score was:', scoreToString(False))
         play = replayPlayer('Jisoo', 'Lisa', ivyPlayer)

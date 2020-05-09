@@ -8,11 +8,13 @@ from Projet.Model.plate import Plate
 from Projet.Model.step import Step
 
 stop = False
-PLATE_NUMBER = 6
+PLATE_NUMBER = 2
 DEFAULT_TIME = 45
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
 POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
+SCORE = 0
+OPPONENT_SCORE = 0
 
 
 def chooseMenu():
@@ -138,13 +140,21 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTim
     if stopFromOther:
         print('Your opponent found before you!')
         print('Wait till the other player finish!')
-        while True:
-            answer = getMessage(ivyObject, opponentName + ' says: answer = (.*)')
-            if answer:
-                break
+        answer = int(waitMessage(ivyObject, opponentName + ' says: answer = (.*)'))
+        if answer == 0:
+            print('Your opponent FAILED!')
+            scorePlusPlus(True)
+        else:
+            print('Your opponent WON!')
+            scorePlusPlus(False)
     else:
-        answer = suggestSolution([], goal, selectedPlates)  # TODO verify if answer is correct
-        sendMessage(playerName + ' says: answer = ' + str(answer))
+        answer = suggestSolution([], goal, selectedPlates)
+        if answer == goal:
+            sendMessage(playerName + ' says: answer = ' + str(answer))
+            scorePlusPlus(True)
+        else:
+            sendMessage(playerName + ' says: answer = 0')
+            scorePlusPlus(False)
 
     return True
 
@@ -257,6 +267,22 @@ def replayServer(name, nameOpponent, ivyObject):
         return False
 
 
+def scorePlusPlus(player):
+    global SCORE, OPPONENT_SCORE
+    if player:
+        SCORE += 1
+    else:
+        OPPONENT_SCORE += 1
+
+
+def scoreToString(player):
+    global SCORE, OPPONENT_SCORE
+    if player:
+        return str(SCORE)
+    else:
+        return str(OPPONENT_SCORE)
+
+
 # Suggest a solution
 def suggestSolution(history, goal, selectedPlates):
     lenSelectedPlate = len(selectedPlates)
@@ -293,7 +319,7 @@ def suggestSolution(history, goal, selectedPlates):
 # Ask in another thread for an input
 def thread_function():
     global stop
-    input('Stop? ==> ')
+    input('')
     stop = True
 
 

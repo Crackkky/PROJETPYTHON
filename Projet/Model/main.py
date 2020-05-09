@@ -48,6 +48,8 @@ while True:
         trainingMode()
     if menuSelection == 2:
         play()
+        print('Your score was:', scoreToString(True))
+        print('Your Opponent\'s score was:', scoreToString(False))
     elif menuSelection == 0:
         print('\nYou\'ve chosen to quit, bye-bye ! ')
         sys.exit()
