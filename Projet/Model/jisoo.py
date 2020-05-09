@@ -13,7 +13,7 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
             message = ivyPlayer.messages.pop()[0]
 
         goalTemp = parseMessages(message, 'Lisa says: Goal is (.*)')
-        if goalTemp and 1 <= int(goalTemp) <= 999:
+        if goalTemp and 100 <= int(goalTemp) <= 999:
             goal = int(goalTemp)
             # print('GOAL IS :', goal)
             message = ""

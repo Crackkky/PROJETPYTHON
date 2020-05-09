@@ -8,7 +8,7 @@ from Projet.Model.plate import Plate
 from Projet.Model.step import Step
 
 stop = False
-PLATE_NUMBER = 2
+PLATE_NUMBER = 6
 DEFAULT_TIME = 45
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)

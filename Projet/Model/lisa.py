@@ -25,9 +25,9 @@ def serverMode(ivyServer):
     play = True
     while play:
         # Send informations to Jisoo
-        # goal, selectedPlates = generateGoalPlates(100, 999, 27)
+        goal, selectedPlates = generateGoalPlates(100, 999, 27)
 
-        goal, selectedPlates = 2, [Plate(1), Plate(1)]
+        # goal, selectedPlates = 2, [Plate(1), Plate(1)]
 
         sendMessage('Lisa says: Goal is ' + str(goal))
 
