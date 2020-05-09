@@ -167,13 +167,15 @@ def getNumberOfPlayer():
 # Generate the usable plates and goal
 def generateGoalPlates(goalMin, goalMax, nbPlate):
     goal = randint(goalMin, goalMax)
-    possiblePlates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
+    possiblePlates = POSSIBLE_PLATES.copy()
     selectedPlates = []
 
     # Generate plates
     for i in range(1, 7):
         plateNumber = randint(0, nbPlate)
         selectedPlates.append(Plate(possiblePlates[plateNumber]))
+        possiblePlates.pop(plateNumber)
+        nbPlate-=1
 
     return goal, selectedPlates
 
