@@ -25,6 +25,8 @@ class PlateController:
         self.secondPlate = None
         self.operator = None
 
+        self.view.goalLabel["text"] = "Goal\n" + str(self.model.goal)
+
         # completion des checKButtons des plaques
         for i in range(0, self.model.lenSelectedPlate):
             checkButton = self.view.checkPlateList[i]
