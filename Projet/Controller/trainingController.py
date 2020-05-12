@@ -52,6 +52,7 @@ class TrainingController:
                                       + " from left to right")
 
     def newOne(self):
+        self.trainingView.displayInfo()
         self.trainingView.showAllPlateButtons()
         self.trainingModel = TrainingModel()
         self.update()
