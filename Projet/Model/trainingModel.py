@@ -1,12 +1,12 @@
 import itertools
+
+from Projet.Model.plateModel import PlateModel
 from Projet.Model.util import *
 
-class TrainingModel:
+
+class TrainingModel(PlateModel):
     def __init__(self):
-        self.goal, self.originalPlates = generateGoalPlates(100, 999, 27)
-        self.selectedPlates = self.originalPlates.copy()
-        self.history = []
-        self.lenSelectedPlate = len(self.selectedPlates)
+        super(TrainingModel, self).__init__()
 
     def doPlay(self, indice1, operator, indice2):
         operationFromArray(self.history, self.selectedPlates, indice1, operator, indice2)
@@ -20,14 +20,10 @@ class TrainingModel:
             self.lenSelectedPlate = len(self.selectedPlates)
 
     def historyToString(self):
-        str = ""
+        res = ""
         for i in self.history:
-            str += "\n" + i.operation.toString()
-        return str
-
-    def getDifference(self):
-        if(self.lenSelectedPlate == 1) :
-            return abs(self.goal - self.selectedPlates[0].getNumber())
+            res += "\n" + i.operation.toString()
+        return res
 
     def findSolution(self):
         plateArray = self.originalPlates
