@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Projet.Controller.plateView import PlateView
+from Projet.View.plateView import PlateView
 from Projet.View.StyleInterface import *
 
 
