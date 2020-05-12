@@ -1,16 +1,12 @@
 import itertools
 
-from Projet.Model.plateModel import PlateModel
+from Projet.Model.playableModel import PlayableModel
 from Projet.Model.util import *
 
 
-class TrainingModel(PlateModel):
+class TrainingModel(PlayableModel):
     def __init__(self):
         super(TrainingModel, self).__init__()
-
-    def doPlay(self, indice1, operator, indice2):
-        operationFromArray(self.history, self.selectedPlates, indice1, operator, indice2)
-        self.lenSelectedPlate = len(self.selectedPlates)
 
     def previousHistory(self):
         previousStepIndex = len(self.history)
@@ -18,12 +14,6 @@ class TrainingModel(PlateModel):
             self.selectedPlates = self.history[previousStepIndex - 1].plateArray
             self.history = self.removeHistory(self.history, previousStepIndex - 1)
             self.lenSelectedPlate = len(self.selectedPlates)
-
-    def historyToString(self):
-        res = ""
-        for i in self.history:
-            res += "\n" + i.operation.toString()
-        return res
 
     def findSolution(self):
         plateArray = self.originalPlates
