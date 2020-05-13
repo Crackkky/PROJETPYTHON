@@ -2,19 +2,18 @@ import tkinter as tk
 
 from Projet.Controller.playableController import PlayableController
 from Projet.Model.trainingModel import TrainingModel
-from Projet.Model.util import PLATE_NUMBER, OPERATORS, OPERATOR_NUMBER
 from Projet.View.trainingView import TrainingView
 
 
 class TrainingController(PlayableController):
-    def __init__(self, parent, root):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER):
 
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
         self.maxPlateNumber = PLATE_NUMBER
 
         super(TrainingController, self).__init__(parent, TrainingModel(),
-                                                 TrainingView(self.maxPlateNumber, OPERATOR_NUMBER, root))
+                                                 TrainingView(self.maxPlateNumber, self.operatorNumber, root))
 
         self.completeButton("Back Step", lambda: self.backStep(), self.view.backButton)
         self.completeButton("Back", lambda: self.backMenu(root), self.view.returnButton)
@@ -36,7 +35,7 @@ class TrainingController(PlayableController):
 
     def newOne(self):
         self.view.displayInfo()
-        self.view.showAllPlateButtons()
+        self.view.showHideAllPlateButtons(1)
         self.model = TrainingModel()
         self.updateView()
 
@@ -52,9 +51,5 @@ class TrainingController(PlayableController):
     def backMenu(self, root):
         root.destroy()
         root = tk.Tk()
-        self.parent.__init__(root)
+        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxPlateNumber)
         root.mainloop()
-
-    def completeButton(self, text, fct, button):
-        button["text"] = text
-        button["command"] = fct

@@ -18,15 +18,14 @@ class MainView(tk.Frame):
         self.buttonList = []
         self.label = None
         self.trainingButton = 0
-        self.serverButton = 1
-        self.clientButton = 2
-        self.quitButton = 3
+        self.onlineButton = 1
+        self.quitButton = 2
         self.createWidgets()
         self.grid()
 
     def createWidgets(self):
 
-        positions = [(1, 1, 1), (1, 2, 1), (1, 3, 1), (2, 1, 3)]
+        positions = [(1, 1, 1), (1, 2, 1), (1, 3, 1)]
         self.label = tk.Label(self, borderwidth=2, relief="sunken")
         self.label.grid(row=0, column=1, columnspan=3)
         labelStyle(self.label)

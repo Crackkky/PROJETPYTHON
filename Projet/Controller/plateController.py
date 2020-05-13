@@ -74,4 +74,8 @@ class PlateController:
             self.view.checkOperatorList[self.operator].deselect()
             self.operator = pos
 
+    def completeButton(self, text, fct, button):
+        button["text"] = text
+        button["command"] = fct
+
 

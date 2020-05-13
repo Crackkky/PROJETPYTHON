@@ -38,7 +38,6 @@ class PlateView(tk.Frame):
 
         self.frameButton = tk.Frame(master)
         frameStyle(self.frameButton)
-        self.frameButton.pack(side=tk.BOTTOM)
 
         self.validateButton = tk.Button(self.frameButton)
         buttonStyle(self.validateButton)
@@ -46,7 +45,6 @@ class PlateView(tk.Frame):
 
         self.frameGoal = tk.Frame(master)
         frameStyle(self.frameGoal)
-        self.frameGoal.place(x=0, y=0, height=53, width=71)
 
         self.goalLabel = tk.Label(self.frameGoal)
         labelStyle(self.goalLabel)
@@ -54,11 +52,12 @@ class PlateView(tk.Frame):
 
         self.framePlate = tk.Frame(master)
         frameStyle(self.framePlate)
-        self.framePlate.pack(side=tk.TOP)
 
         self.frameOperator = tk.Frame(master)
         frameStyle(self.frameOperator)
-        self.frameOperator.pack(side=tk.LEFT)
+
+        #afficher à l'écran les données
+        self.hideShowGame(1)
 
         # init des checks buttons des plaques
         for i in range(0, self.checkPlateNumber):
@@ -93,6 +92,18 @@ class PlateView(tk.Frame):
         else:
             self.checkPlateList[i].pack_forget()
 
-    def showAllPlateButtons(self):
+    def showHideAllPlateButtons(self, show):
         for i in range(self.checkPlateNumber):
-            self.showHidePlateButton(i, 1)
+            self.showHidePlateButton(i, show)
+
+    def hideShowGame(self, show):
+        if show:
+            self.frameGoal.place(x=0, y=0, height=53, width=71)
+            self.framePlate.pack(side=tk.TOP)
+            self.frameOperator.pack(side=tk.LEFT)
+            self.frameButton.pack(side=tk.BOTTOM)
+        else:
+            self.frameGoal.place_forget()
+            self.framePlate.pack_forget()
+            self.frameOperator.pack_forget()
+            self.frameButton.pack_forget()
