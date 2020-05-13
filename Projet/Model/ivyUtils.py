@@ -2,7 +2,7 @@
 import time
 
 from Projet.Model.IvyProject import IvyModel, sendMessage, IvyGetApplicationList
-from Projet.Model.util import suggestSolution, chooseYesNo
+from Projet.Model.util import suggestSolution, chooseYesNo, printArray
 
 stop = False
 PLATE_NUMBER = 6
@@ -25,7 +25,7 @@ def closestNumber(num1, num2, goal):
 # Create Ivy object and initialise a connexion
 def connexionIvy(opponentName):
     ivyObject = IvyModel('127.0.0.1:2010')
-    ivyObject.bindIvy(opponentName + ' says: (.*)')
+    ivyObject.bindIvy('(' + opponentName + ' says: .*)')
     time.sleep(0.1)
     return ivyObject
 
