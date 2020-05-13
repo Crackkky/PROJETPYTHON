@@ -8,14 +8,15 @@ from Projet.Model.lisa import serverMode
 from Projet.View.mainView import MainView
 
 
-class MainController :
+class MainController:
     def __init__(self, root):
         self.mainView = MainView(root)
         self.mainView.label['text'] = '블랙핑크 하우스 환영합니!'
         texts_button = ["Play in Training", "Play as Lisa (Server)", "Play as Jisoo (Client)", "Quit"]
-        buttonsPosition = [self.mainView.trainingButton, self.mainView.serverButton, self.mainView.clientButton, self.mainView.quitButton]
-        fcts = [lambda : self.training(root), lambda :serverMode(), lambda :playerMode(), lambda :sys.exit()]
-        for buttonPos, fct, text_button in zip(buttonsPosition, fcts, texts_button) :
+        buttonsPosition = [self.mainView.trainingButton, self.mainView.serverButton, self.mainView.clientButton,
+                           self.mainView.quitButton]
+        fcts = [lambda: self.training(root), lambda: serverMode(), lambda: playerMode(), lambda: sys.exit()]
+        for buttonPos, fct, text_button in zip(buttonsPosition, fcts, texts_button):
             self.mainView.buttonList[buttonPos]["command"] = fct
             self.mainView.buttonList[buttonPos]["text"] = text_button
 
@@ -30,4 +31,3 @@ class MainController :
 
     def client(self, root):
         print("TODO")
-

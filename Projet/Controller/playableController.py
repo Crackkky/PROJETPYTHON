@@ -1,9 +1,4 @@
-import tkinter as tk
-
 from Projet.Controller.plateController import PlateController
-from Projet.Model.trainingModel import TrainingModel
-from Projet.Model.util import PLATE_NUMBER, OPERATORS, OPERATOR_NUMBER
-from Projet.View.trainingView import TrainingView
 
 
 class PlayableController(PlateController):

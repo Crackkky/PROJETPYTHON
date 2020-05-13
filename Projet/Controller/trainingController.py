@@ -23,7 +23,6 @@ class TrainingController(PlayableController):
 
         self.updateView()
 
-
     def getSolution(self, root):
         self.view.displayInfo("Please wait, Daisy heard your request...\n"
                               "Just let her some time to think about it...")

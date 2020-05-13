@@ -47,8 +47,6 @@ class PlateController:
             checkButton.deselect()
             checkButton["onvalue"] = i
 
-
-
     # Controle qu'il n'y a que 2 plaques selectionnées, sinon retire la plus anciennce
     def checkMaxOfPlate(self, pos):
         if self.firstPlate == pos:
@@ -73,5 +71,3 @@ class PlateController:
         else:
             self.view.checkOperatorList[self.operator].deselect()
             self.operator = pos
-
-

@@ -1,4 +1,3 @@
-from Projet.Model.IvyProject import *
 from Projet.Model.training import *
 import Projet.Model.util as util
 
