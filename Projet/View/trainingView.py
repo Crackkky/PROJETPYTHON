@@ -9,7 +9,6 @@ class TrainingView(PlateView):
         super(TrainingView, self).__init__(checkPlateNumber, checkOperatorNumber, master)
 
         self.returnButton = None
-        self.backButton = None
         self.newButton = None
         self.solutionButton = None
         self.historyLabel = None
@@ -21,10 +20,6 @@ class TrainingView(PlateView):
         self.returnButton = tk.Button(master)
         buttonStyle(self.returnButton)
         self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())
-
-        self.backButton = tk.Button(self.frameButton)
-        buttonStyle(self.backButton)
-        self.backButton.pack(side='right')
 
         self.newButton = tk.Button(master)
         buttonStyle(self.newButton)
