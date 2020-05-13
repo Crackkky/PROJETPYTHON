@@ -9,7 +9,7 @@ class OnlineModel(PlayableModel):
         self.SERVER = 0
         self.CLIENT = 1
         self.type = None
-        super(PlayableModel, self).__init__()
+        super(OnlineModel, self).__init__()
         self.opponentName = "nbPlayer"
         self.connectionRegex = self.opponentName + " says: (.*)"
         self.clientTalk = "Jisoo says:"

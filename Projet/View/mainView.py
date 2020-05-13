@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import *
 
 from Projet.Model.lisa import *
-from Projet.View.StyleInterface import buttonStyle, labelStyle
+from Projet.View.styleInterface import buttonStyle, labelStyle
 
 
 class MainView(tk.Frame):

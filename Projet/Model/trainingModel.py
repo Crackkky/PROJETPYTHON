@@ -7,6 +7,7 @@ from Projet.Model.util import *
 class TrainingModel(PlayableModel):
     def __init__(self):
         super(TrainingModel, self).__init__()
+        self.initGame()
 
     def previousHistory(self):
         previousStepIndex = len(self.history)

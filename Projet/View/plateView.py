@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Projet.View.StyleInterface import *
+from Projet.View.styleInterface import *
 
 
 class PlateView(tk.Frame):

@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from Projet.View.plateView import PlateView
-from Projet.View.StyleInterface import *
+from Projet.View.styleInterface import *
 
 
 class TrainingView(PlateView):

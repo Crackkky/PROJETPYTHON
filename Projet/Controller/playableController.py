@@ -2,8 +2,8 @@ from Projet.Controller.plateController import PlateController
 
 
 class PlayableController(PlateController):
-    def __init__(self, parent, model, view):
-        super(PlayableController, self).__init__(parent, model, view)
+    def __init__(self, parent, model, view, OPERATORS):
+        super(PlayableController, self).__init__(parent, model, view, OPERATORS)
 
         self.completeButton("Validate", lambda: self.validate(), self.view.validateButton)
 
