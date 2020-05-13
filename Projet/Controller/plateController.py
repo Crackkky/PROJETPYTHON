@@ -1,6 +1,7 @@
 class PlateController:
-    def __init__(self, parent, model, view):
+    def __init__(self, parent, model, view, OPERATORS):
 
+        self.operators = OPERATORS
         self.firstPlate = None
         self.secondPlate = None
         self.operator = None
@@ -32,7 +33,7 @@ class PlateController:
             checkButton["onvalue"] = i
 
         # completion des checKButtons des plaques
-        for i in range(0, self.operatorNumber):
+        for i in range(0, len(self.view.checkOperatorList)):
             checkButton = self.view.checkOperatorList[i]
             # x=i car si i utilisé directement, il est mis en attente jusqu'à l'appel, et i fini = au dernier
             self.completeButton(self.operators[i], lambda x=i: self.checkMaxOfOperator(x), checkButton)
