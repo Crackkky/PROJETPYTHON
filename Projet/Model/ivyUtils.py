@@ -24,8 +24,8 @@ def closestNumber(num1, num2, goal):
 
 # Create Ivy object and initialise a connexion
 def connexionIvy(opponentName):
-    ivyObject = IvyModel('127.0.0.1:2010')
-    ivyObject.bindIvy(opponentName + ' says: (.*)')
+    ivyObject = IvyModel('127.0.0.1:2487')
+    ivyObject.bindIvy('(' + opponentName + ' says: .*)')
     time.sleep(0.1)
     return ivyObject
 

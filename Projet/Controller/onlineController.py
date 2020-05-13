@@ -18,8 +18,8 @@ class OnlineController(PlateController):
 
         #Connection part
         self.opponentName = "nbPlayer"
-        self.serverBind = "Jisoo says: (.*)"
-        self.clientBind = "Lisa says: (.*)"
+        self.serverTalk = "Lisa says:"
+        self.clientTalk = "Jisoo says:"
         self.connectionRegex = self.opponentName + " says: (.*)"
 
         self.view.hideShowGame(0)
@@ -28,22 +28,28 @@ class OnlineController(PlateController):
 
         self.ivyObject = connexionIvy(self.opponentName)
         time.sleep(1)
-        message = getMessage(self.ivyObject, '^nbPlayer says: (.*)')
+        message = getMessage(self.ivyObject, self.connectionRegex)
 
-        # self.ivyObject.clearMessages()
+        self.ivyObject.clearMessages()
 
         if not message:
-            sendMessage('nbPlayer says: 1')
-            self.ivyObject.bindIvy(self.serverBind)
-            self.view.displayInfo("Looks like we are the server !")
             self.server()
         else:
-            self.ivyObject.bindIvy(self.clientBind)
-            self.view.displayInfo("Looks like we are the client !")
             self.client()
 
     def server(self):
-        print("yo")
+        ready = ""
+        self.ivyObject.bindIvy('(' + self.clientTalk + ' .*)')
+        while not ready:
+            sendMessage('nbPlayer says: 1')
+            ready = getMessage(self.ivyObject, self.clientTalk + ' ready(.*)')
+            time.sleep(0.1)
+
+        self.ivyObject.bindIvy(self.clientTalk)
+        self.view.displayInfo("Looks like we are the server !")
 
     def client(self):
-        print("yo")
+        self.ivyObject.bindIvy('(' + self.serverTalk + ' .*)')
+        sendMessage(self.clientTalk + ' ready!')
+        self.ivyObject.bindIvy(self.serverTalk)
+        self.view.displayInfo("Looks like we are the client !")
