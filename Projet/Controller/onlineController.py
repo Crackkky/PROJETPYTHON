@@ -16,14 +16,14 @@ class OnlineController(PlateController):
         super(OnlineController, self).__init__(parent, PlateModel(),
                                                PlateView(self.maxPlateNumber, self.operatorNumber, root))
 
-        #Connection part
+        # Connection part
         self.opponentName = "nbPlayer"
         self.serverTalk = "Lisa says:"
         self.clientTalk = "Jisoo says:"
         self.connectionRegex = self.opponentName + " says: (.*)"
 
         self.view.hideShowGame(0)
-        self.view.displayInfo("Looking for an oppenent...")
+        self.view.displayInfo("Looking for an opponent...")
         root.update()
 
         self.ivyObject = connexionIvy(self.opponentName)

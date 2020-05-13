@@ -1,8 +1,8 @@
-'''
+"""
 Created on 1 Feb 2020
 
 @author: crack
-'''
+"""
 
 import tkinter as tk
 from tkinter import *

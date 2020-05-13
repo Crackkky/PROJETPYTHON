@@ -1,10 +1,3 @@
-import tkinter as tk
-
-from Projet.Model.trainingModel import TrainingModel
-from Projet.Model.util import PLATE_NUMBER, OPERATORS, OPERATOR_NUMBER
-from Projet.View.trainingView import TrainingView
-
-
 class PlateController:
     def __init__(self, parent, model, view):
 

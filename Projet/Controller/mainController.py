@@ -1,11 +1,8 @@
 import tkinter as tk
-
 from tkinter import *
 
 from Projet.Controller.onlineController import OnlineController
 from Projet.Controller.trainingController import TrainingController
-from Projet.Model.jisoo import playerMode
-from Projet.Model.lisa import serverMode
 from Projet.View.mainView import MainView
 
 

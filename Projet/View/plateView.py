@@ -60,7 +60,7 @@ class PlateView(tk.Frame):
         self.backButton = tk.Button(self.frameButton)
         buttonStyle(self.backButton)
 
-        #afficher à l'écran les données
+        # afficher à l'écran les données
         self.hideShowGame(1)
 
         # init des checks buttons des plaques

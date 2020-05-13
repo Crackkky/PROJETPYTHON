@@ -13,6 +13,7 @@ POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10,
 SCORE = 0
 OPPONENT_SCORE = 0
 
+
 def closestNumber(num1, num2, goal):
     if abs(num1 - goal) == abs(num2 - goal):
         return -1
@@ -83,6 +84,7 @@ def parseMessages(msg, regex):
         res = regex_search.group(1)
 
     return res
+
 
 def receivePlayAgain(name, ivyObject):
     while True:

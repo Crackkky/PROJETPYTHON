@@ -175,7 +175,7 @@ def generateGoalPlates(goalMin, goalMax, nbPlate):
         plateNumber = randint(0, nbPlate)
         selectedPlates.append(Plate(possiblePlates[plateNumber]))
         possiblePlates.pop(plateNumber)
-        nbPlate-=1
+        nbPlate -= 1
 
     return goal, selectedPlates
 
