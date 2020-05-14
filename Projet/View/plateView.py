@@ -15,7 +15,8 @@ class PlateView(tk.Frame):
         self.framePlate = None
         self.frameOperator = None
         self.frameGoal = None
-        self.backButton = None
+        self.returnButton = None
+
 
         tk.Frame.__init__(self, master)
         rootStyle(master)
@@ -57,8 +58,8 @@ class PlateView(tk.Frame):
         self.frameOperator = tk.Frame(master)
         frameStyle(self.frameOperator)
 
-        self.backButton = tk.Button(self.frameButton)
-        buttonStyle(self.backButton)
+        self.returnButton = tk.Button(master)
+        buttonStyle(self.returnButton)
 
         # afficher à l'écran les données
         self.hideShowGame(1)
@@ -106,10 +107,11 @@ class PlateView(tk.Frame):
             self.frameGoal.place(x=0, y=0, height=53, width=71)
             self.framePlate.pack(side=tk.TOP)
             self.frameOperator.pack(side=tk.LEFT)
-            self.backButton.pack(side='right')
+            self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())
+
         else:
             self.frameGoal.place_forget()
             self.framePlate.pack_forget()
             self.frameOperator.pack_forget()
             self.frameButton.pack_forget()
-            self.backButton.pack_forget()
+            self.returnButton.place_forget()
