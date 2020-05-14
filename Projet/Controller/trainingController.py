@@ -46,9 +46,3 @@ class TrainingController(PlayableController):
             self.view.displayInfo()
         else:
             self.view.displayInfo("History empty, please play before")
-
-    def backMenu(self, root):
-        root.destroy()
-        root = tk.Tk()
-        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxPlateNumber)
-        root.mainloop()

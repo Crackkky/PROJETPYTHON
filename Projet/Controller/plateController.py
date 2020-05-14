@@ -1,3 +1,6 @@
+import tkinter as tk
+
+
 class PlateController:
     def __init__(self, parent, model, view, OPERATORS):
 
@@ -70,4 +73,9 @@ class PlateController:
         button["text"] = text
         button["command"] = fct
 
+    def backMenu(self, root):
+        root.destroy()
+        root = tk.Tk()
+        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxPlateNumber)
+        root.mainloop()
 
