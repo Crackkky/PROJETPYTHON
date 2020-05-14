@@ -9,19 +9,19 @@ class OnlineClientModel(OnlineModel):
     def __init__(self, maxPlateNumber, ivyPlayer):
         super(OnlineClientModel, self).__init__()
         self.plateNumber = maxPlateNumber
-        self.possibiblePlates = POSSIBLE_PLATES
+        self.possiblePlates = POSSIBLE_PLATES
         self.ivyObject = ivyPlayer
         self.min_goal = MIN_GOAL
         self.max_goal = MAX_GOAL
 
     def receiveInfos(self):
-        while self.goal == 0 or len(self.selectedPlates) < self.plateNumber:
+        while self.goal is None or len(self.selectedPlates) < self.plateNumber:
             if self.ivyObject.messages:
                 message = self.ivyObject.messages.pop()[0]
                 goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
 
                 if goalTemp and self.min_goal <= int(goalTemp) <= self.max_goal:
-                    goal = int(goalTemp)
+                    self.goal = int(goalTemp)
                     message = ""
 
                 plate = self.parseMessages(message, self.plateRegex + ' (.*)')
@@ -34,5 +34,5 @@ class OnlineClientModel(OnlineModel):
                     message = ""
 
             time.sleep(0.01)
-
+        self.lenSelectedPlate = len(self.selectedPlates)
         return self.goal, self.selectedPlates

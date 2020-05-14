@@ -10,13 +10,13 @@ class OnlineModel(PlayableModel):
         self.CLIENT = 1
         self.type = None
         super(OnlineModel, self).__init__()
-        self.opponentName = "nbPlayer"
-        self.connectionRegex = self.opponentName + " says: (.*)"
-        self.clientTalk = "Jisoo says:"
-        self.serverTalk = "Lisa says:"
-        self.goalRegex = self.serverTalk + " Goal is"
-        self.plateRegex = self.serverTalk + " Plate is"
-        self.start = self.serverTalk + " start!"
+        self.opponentName = 'nbPlayer'
+        self.connectionRegex = self.opponentName + ' says: (.*)'
+        self.clientTalk = 'Jisoo says:'
+        self.serverTalk = 'Lisa says:'
+        self.goalRegex = self.serverTalk + ' Goal is'
+        self.plateRegex = self.serverTalk + ' Plate is'
+        self.start = self.serverTalk + ' start!'
         self.ivyObject = None
 
     def connect(self):
