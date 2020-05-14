@@ -3,9 +3,13 @@ class Operation:
         if op == '-' and (G - D < 0):
             self.D = G
             self.G = D
-        elif op == '/' and (G % D != 0):
-            # print('Reste = ' + str(plate2.getNumber() % self.getNumber()))
-            raise Exception('Erreur le reste de le division n\'est pas nul!')
+        elif op == '/':
+            if G % D != 0:
+                if D % G != 0:
+                    raise Exception('Erreur le reste de le division n\'est pas nul!')
+                else:
+                    self.D = G
+                    self.G = D
         else:
             self.G = G
             self.D = D
