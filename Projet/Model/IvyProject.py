@@ -38,7 +38,8 @@ class IvyModel:
         self.messages = []
 
     def on_msg(self, agent, *arg):
-        self.messages.append(arg)
+        if len(arg) is not 0:
+            self.messages.append(arg)
 
     def bindIvy(self, bind):
         IvyBindMsg(self.on_msg, bind)
