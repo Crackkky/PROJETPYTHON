@@ -38,10 +38,6 @@ class IvyModel:
         self.messages = []
 
     def on_msg(self, agent, *arg):
-        # print('Received from %r: %s', agent, arg and str(arg) or '<no args>')
-        # print('')
-        # print(str(arg) or '<no args>')
-        # print('')
         self.messages.append(arg)
 
     def bindIvy(self, bind):

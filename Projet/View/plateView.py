@@ -102,10 +102,10 @@ class PlateView(tk.Frame):
 
     def hideShowGame(self, show):
         if show:
+            self.frameButton.pack(side=tk.BOTTOM)
             self.frameGoal.place(x=0, y=0, height=53, width=71)
             self.framePlate.pack(side=tk.TOP)
             self.frameOperator.pack(side=tk.LEFT)
-            self.frameButton.pack(side=tk.BOTTOM)
             self.backButton.pack(side='right')
         else:
             self.frameGoal.place_forget()

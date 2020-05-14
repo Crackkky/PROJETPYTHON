@@ -5,8 +5,8 @@ from Projet.Model.util import *
 class PlateModel:
     def __init__(self):
         self.goal = None
-        self.originalPlates = None
-        self.selectedPlates = None
+        self.originalPlates = []
+        self.selectedPlates = []
         self.lenSelectedPlate = None
 
     def initGame(self):

@@ -11,8 +11,6 @@ class PlateController:
 
         self.parent = parent
 
-        self.updateView()
-
     def updateView(self):
 
         self.firstPlate = None

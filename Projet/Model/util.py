@@ -10,6 +10,8 @@ from Projet.Model.step import Step
 stop = False
 PLATE_NUMBER = 6
 DEFAULT_TIME = 45
+MIN_GOAL = 100
+MAX_GOAL = 999
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
 POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]

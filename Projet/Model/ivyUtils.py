@@ -23,14 +23,6 @@ def closestNumber(num1, num2, goal):
         return num2
 
 
-# Create Ivy object and initialise a connexion
-def connexionIvy(opponentName):
-    ivyObject = IvyModel('127.0.0.1:2487')
-    ivyObject.bindIvy('(' + opponentName + ' says: .*)')
-    time.sleep(0.1)
-    return ivyObject
-
-
 # Start an online game
 def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTime):
     global stop
@@ -72,19 +64,6 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTim
 def getNumberOfPlayer():
     listPlayer = IvyGetApplicationList()
     return len(listPlayer)
-
-
-# Return the message or "" else
-def parseMessages(msg, regex):
-    import re
-    res = ""
-
-    regex_search = re.search(regex, msg)
-    if regex_search:
-        res = regex_search.group(1)
-
-    return res
-
 
 def receivePlayAgain(name, ivyObject):
     while True:
@@ -141,14 +120,6 @@ def thread_function():
     global stop
     input('')
     stop = True
-
-
-# Parse a message if there is one, else return ""
-def getMessage(ivyObject, regex):
-    message = ""
-    if ivyObject.messages:
-        message = ivyObject.messages.pop()[0]
-    return parseMessages(message, regex)
 
 
 def waitMessage(ivyObject, regex):

@@ -1,5 +1,5 @@
 from Projet.Controller.plateController import PlateController
-from Projet.Model.plateModel import PlateModel
+from Projet.Model.onlineClientModel import OnlineClientModel
 from Projet.View.plateView import PlateView
 
 
@@ -9,9 +9,7 @@ class OnlineClientController(PlateController):
         self.operatorNumber = OPERATOR_NUMBER
         self.maxPlateNumber = PLATE_NUMBER
         self.ivyObject = ivyObject
-        super(OnlineClientController, self).__init__(parent, PlateModel(),
+        super(OnlineClientController, self).__init__(parent, OnlineClientModel(self.maxPlateNumber, self.ivyObject),
                                                PlateView(self.maxPlateNumber, self.operatorNumber, root), OPERATORS)
-
-        self.view.hideShowGame(0)
-        self.view.displayInfo("Hi, we are the client")
-        root.update()
+        self.model.receiveInfos()
+        self.updateView()

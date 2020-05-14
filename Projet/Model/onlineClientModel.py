@@ -1,31 +1,38 @@
+import time
+
 from Projet.Model.onlineModel import OnlineModel
+from Projet.Model.plate import Plate
+from Projet.Model.util import POSSIBLE_PLATES, MIN_GOAL, MAX_GOAL
 
 
 class OnlineClientModel(OnlineModel):
-    def __init__(self):
+    def __init__(self, maxPlateNumber, ivyPlayer):
         super(OnlineClientModel, self).__init__()
+        self.plateNumber = maxPlateNumber
+        self.possibiblePlates = POSSIBLE_PLATES
+        self.ivyObject = ivyPlayer
+        self.min_goal = MIN_GOAL
+        self.max_goal = MAX_GOAL
 
-    def receiveInfos(ivyPlayer):
-        while goal == 0 or len(self.selectedPlates) < PLATE_NUMBER:
-            if ivyPlayer.messages:
-                message = ivyPlayer.messages.pop()[0]
+    def receiveInfos(self):
+        while self.goal == 0 or len(self.selectedPlates) < self.plateNumber:
+            if self.ivyObject.messages:
+                message = self.ivyObject.messages.pop()[0]
+                goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
 
-            goalTemp = parseMessages(message, 'Lisa says: Goal is (.*)')
-            if goalTemp and 100 <= int(goalTemp) <= 999:
-                goal = int(goalTemp)
-                # print('GOAL IS :', goal)
-                message = ""
+                if goalTemp and self.min_goal <= int(goalTemp) <= self.max_goal:
+                    goal = int(goalTemp)
+                    message = ""
 
-            plate = parseMessages(message, 'Lisa says: Plate is (.*)')
-            if plate and int(plate) in possiblePlates:
-                selectedPlates.append(Plate(int(plate)))
-                # print('PLATE IS :', plate)
-                message = ""
+                plate = self.parseMessages(message, self.plateRegex + ' (.*)')
+                if plate and int(plate) in self.possiblePlates:
+                    self.selectedPlates.append(Plate(int(plate)))
+                    message = ""
 
-            m = parseMessages(message, 'Lisa says: (.*)')
-            if m:
-                message = ""
+                m = self.parseMessages(message, self.serverTalk + ' (.*)')
+                if m:
+                    message = ""
 
             time.sleep(0.01)
 
-        return goal, selectedPlates
+        return self.goal, self.selectedPlates
