@@ -1,6 +1,9 @@
+import time
+
 from Projet.Controller.plateController import PlateController
 from Projet.Controller.playableController import PlayableController
 from Projet.Model.onlineModel import OnlineModel
+from Projet.Model.util import DEFAULT_TIME
 from Projet.View.plateView import PlateView
 
 
@@ -15,8 +18,13 @@ class OnlineController(PlayableController):
         self.root = root
         self.plateNumber = PLATE_NUMBER
         self.ivyObject = ivyObject
+        self.maxTimer = DEFAULT_TIME
+        self.beginTime = None
+        self.gotTime = None
+        self.stillTrying = None
 
     def found(self):
+        self.stillTrying = False
         self.model.found()
         self.view.displayInfo("Please, play without any mistake")
         self.completeButton("Validate", lambda :self.validate(), self.view.validateButton)
@@ -34,11 +42,26 @@ class OnlineController(PlayableController):
 
     def checkOpponent(self):
         if self.model.isFound():
+            self.stillTrying = False
             self.checkPoint()
         else:
             self.root.after(100, lambda: self.checkOpponent())
 
+    def checkUpdateTimer(self):
+        if self.stillTrying :
+            self.gotTime = self.beginTime + self.maxTimer - time.time()
+            if self.gotTime < 0:
+                self.stillTrying = False
+                self.view.displayInfo("FINI")
+            else:
+                self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
+                self.root.after(100, lambda: self.checkUpdateTimer())
+
+
     def playerInit(self, OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject, root):
+        self.stillTrying = True
+        self.beginTime = time.time()
+        self.checkUpdateTimer()
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
         self.maxPlateNumber = PLATE_NUMBER

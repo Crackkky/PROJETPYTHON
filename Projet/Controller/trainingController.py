@@ -7,7 +7,6 @@ from Projet.View.trainingView import TrainingView
 
 class TrainingController(PlayableController):
     def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER):
-
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
         self.maxPlateNumber = PLATE_NUMBER
