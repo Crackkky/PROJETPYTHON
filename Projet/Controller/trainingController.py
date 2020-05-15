@@ -46,3 +46,7 @@ class TrainingController(PlayableController):
             self.view.displayInfo()
         else:
             self.view.displayInfo("History empty, please play before")
+
+    def updateView(self):
+        super(TrainingController, self).updateView()
+        self.view.historyLabel["text"] = "History" + self.model.historyToString()

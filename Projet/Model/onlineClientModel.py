@@ -21,7 +21,7 @@ class OnlineClientModel(OnlineModel):
             message = self.getMsgWithoutParse()
             goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
 
-            if goalTemp and self.min_goal <= int(goalTemp) <= self.max_goal:
+            if goalTemp:
                 self.goal = int(goalTemp)
 
             plate = self.parseMessages(message, self.plateRegex + ' (.*)')

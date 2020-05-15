@@ -25,7 +25,3 @@ class PlayableController(PlateController):
         self.view.displayInfo("You got a difference of "
                               + str(self.model.getDifference())
                               + ", not Badr")
-
-    def updateView(self):
-        super(PlayableController, self).updateView()
-        self.view.historyLabel["text"] = "History" + self.model.historyToString()

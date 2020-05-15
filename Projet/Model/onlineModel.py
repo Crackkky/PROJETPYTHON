@@ -9,6 +9,8 @@ class OnlineModel(PlayableModel):
         self.SERVER = 0
         self.CLIENT = 1
         self.type = None
+        self.ourScore = 0
+        self.opponentScore = 0
         super(OnlineModel, self).__init__()
         self.opponentName = 'nbPlayer'
         self.clientTalk = 'Jisoo says:'
@@ -89,3 +91,12 @@ class OnlineModel(PlayableModel):
         if msg :
             return int(msg)
         return msg
+
+    #True if point for oppenent
+    def pointSetter(self, loose):
+        self.sendMsg(self.point + ' '+ str(loose))
+
+    #True if point for opponent
+    def countScore(self, loose):
+        self.ourScore+=1-loose
+        self.opponentScore+=loose
