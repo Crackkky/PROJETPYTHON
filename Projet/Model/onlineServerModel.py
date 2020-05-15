@@ -10,7 +10,6 @@ class OnlineServerModel(OnlineModel):
 
     def sendInfos(self):
         self.initGame()
-        self.ivyObject.clearMessages()
         self.sendMsg(self.goalRegex + ' ' + str(self.goal))
 
         for i in range(0, len(self.selectedPlates)):

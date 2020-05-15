@@ -29,8 +29,8 @@ class OnlineModel(PlayableModel):
         self.ivyObject = self.connexionIvy(self.opponentName)
         time.sleep(1)
         message = self.getMsg(' says: (.*)', self.opponentName)
-        self.ivyObject.clearMessages()
         if not message:
+            self.type = self.SERVER
             ready = ""
             self.ivyObject.bindIvy('(' + self.clientTalk + ' .*)')
             while not ready:
@@ -38,12 +38,12 @@ class OnlineModel(PlayableModel):
                 ready = self.getMsg(' ready(.*)', self.clientTalk)
                 time.sleep(0.1)
             self.ivyObject.bindIvy(self.clientTalk)
-            self.type = self.SERVER
+            # self.view.clearMessages()
         else:
+            self.type = self.CLIENT
             self.ivyObject.bindIvy('(' + self.serverTalk + ' .*)')
             self.sendMsg(' ready!', self.clientTalk)
             self.ivyObject.bindIvy(self.serverTalk)
-            self.type = self.CLIENT
         return self.type
 
     # Return the message or "" else
@@ -111,3 +111,10 @@ class OnlineModel(PlayableModel):
 
     def ready(self):
         self.sendMsg(self.play + ' OK')
+
+    def waitForOpponent(self):
+        ready = False
+        while not ready:
+            self.sendMsg(' ready!')
+            ready = self.getMsg(' ready(.*)')
+            time.sleep(0.1)

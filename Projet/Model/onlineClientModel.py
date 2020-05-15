@@ -17,6 +17,7 @@ class OnlineClientModel(OnlineModel):
         self.read = self.serverTalk
 
     def receiveInfos(self):
+        self.empty()
         while self.goal is None or len(self.selectedPlates) < self.plateNumber:
             message = self.getMsgWithoutParse()
             goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')

@@ -12,7 +12,7 @@ class OnlineServerController(OnlineController):
         self.play()
 
     def play(self):
-        self.model.initGame()
+        self.model.waitForOpponent()
         self.model.sendInfos()
         self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
         self.view.displayInfo("Server")

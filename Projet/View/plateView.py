@@ -61,9 +61,6 @@ class PlateView(tk.Frame):
         self.returnButton = tk.Button(master)
         buttonStyle(self.returnButton)
 
-        # afficher à l'écran les données
-        self.hideShowGame(1)
-
         # init des checks buttons des plaques
         for i in range(0, self.checkPlateNumber):
             checkButton = tk.Checkbutton(self.framePlate, indicatoron=0, width=5)
@@ -83,6 +80,9 @@ class PlateView(tk.Frame):
             self.checkOperatorVar.append(var)
             checkButton["variable"] = var
             checkButtonStyle(checkButton)
+
+        # afficher à l'écran les données
+        self.hideShowGame(1)
 
     def displayInfo(self, text=None):
         if text is None:
@@ -115,3 +115,4 @@ class PlateView(tk.Frame):
             self.frameOperator.pack_forget()
             self.frameButton.pack_forget()
             self.returnButton.place_forget()
+        self.showHideAllPlateButtons(show)
