@@ -58,13 +58,13 @@ class OnlineController(PlayableController):
         self.view.displayInfo("Got the point " + str(point))
         self.view.hideShowGame(1)
         self.completeButton("Play Again", lambda:self.playAgain(), self.view.validateButton)
-        self.root.update()
 
     def playAgain(self):
         self.model.ready()
         self.view.hideShowGame(0)
         self.view.displayInfo("Waiting for opponent's choice")
         again = self.model.doWePlayAgain()
+        self.root.update()
         while not again:
             again = self.model.doWePlayAgain()
         self.play()

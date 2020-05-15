@@ -1,4 +1,3 @@
-from Projet.Model.IvyProject import sendMessage
 from Projet.Model.onlineModel import OnlineModel
 
 

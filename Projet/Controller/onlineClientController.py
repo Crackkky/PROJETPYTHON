@@ -16,4 +16,5 @@ class OnlineClientController(OnlineController):
         self.model.receiveInfos()
         self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
         self.view.displayInfo("Client")
+        self.view.hideShowGame(1)
         self.checkOpponent()
