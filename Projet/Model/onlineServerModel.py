@@ -7,6 +7,7 @@ class OnlineServerModel(OnlineModel):
         super(OnlineServerModel, self).__init__()
         self.ivyObject = ivyPlayer
         self.write = self.serverTalk
+        self.read = self.clientTalk
 
     def sendInfos(self):
         self.initGame()

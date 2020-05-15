@@ -16,4 +16,25 @@ class OnlineController(PlateController):
 
     def found(self):
         self.model.found()
-        self.view.displayInfo("Bravo")
+
+    def checkOpponent(self):
+        if self.model.isFound():
+            self.checkPoint()
+        else:
+            self.root.after(100, lambda: self.checkOpponent())
+
+    def playerInit(self, OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject, root):
+        self.operators = OPERATORS
+        self.operatorNumber = OPERATOR_NUMBER
+        self.maxPlateNumber = PLATE_NUMBER
+        self.ivyObject = ivyObject
+        self.completeButton("back", lambda: self.backMenu(root), self.view.returnButton)
+        self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
+        self.updateView()
+
+    def checkPoint(self):
+        point = self.model.pointGetter()
+        while not point :
+            self.model.pointGetter()
+        self.view.displayInfo("Got the point " + str(point))
+        self.root.update()

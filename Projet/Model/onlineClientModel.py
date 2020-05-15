@@ -9,11 +9,12 @@ class OnlineClientModel(OnlineModel):
     def __init__(self, maxPlateNumber, ivyPlayer):
         super(OnlineClientModel, self).__init__()
         self.plateNumber = maxPlateNumber
-        self.write = self.clientTalk
         self.possiblePlates = POSSIBLE_PLATES
         self.ivyObject = ivyPlayer
         self.min_goal = MIN_GOAL
         self.max_goal = MAX_GOAL
+        self.write = self.clientTalk
+        self.read = self.serverTalk
 
     def receiveInfos(self):
         while self.goal is None or len(self.selectedPlates) < self.plateNumber:

@@ -5,13 +5,13 @@ from Projet.View.plateView import PlateView
 
 class OnlineClientController(OnlineController):
     def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject):
-        self.operators = OPERATORS
-        self.operatorNumber = OPERATOR_NUMBER
-        self.maxPlateNumber = PLATE_NUMBER
-        self.ivyObject = ivyObject
-        super(OnlineClientController, self).__init__(parent, root, self.operators, self.operatorNumber, self.maxPlateNumber ,OnlineClientModel(self.maxPlateNumber, self.ivyObject),
-                                               PlateView(self.maxPlateNumber, self.operatorNumber, root))
+
+        super(OnlineClientController, self)\
+            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER ,
+                                                     OnlineClientModel(PLATE_NUMBER, ivyObject),
+                                                     PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root))
         self.model.receiveInfos()
-        self.completeButton("back", lambda :self.backMenu(root), self.view.returnButton)
-        self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
-        self.updateView()
+        self.playerInit(OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject,root)
+        self.view.displayInfo("Client")
+        self.checkOpponent()
+

@@ -32,5 +32,5 @@ class MainController :
     def onlineMode(self, root):
         root.destroy()
         root = tk.Tk()
-        ConnectionMaker(self, root, self.operators, self.operator_number, self.plate_number).defineConnection()
+        ConnectionMaker(self, root, self.operators, self.operator_number, self.plate_number)
         root.mainloop()

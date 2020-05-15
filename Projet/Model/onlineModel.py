@@ -16,6 +16,7 @@ class OnlineModel(PlayableModel):
         self.goalRegex = ' Goal is'
         self.plateRegex = ' Plate is'
         self.foundIt = ' found it'
+        self.point = ' point '
         self.start = ' start!'
         self.ivyObject = None
         self.write = None
@@ -81,4 +82,10 @@ class OnlineModel(PlayableModel):
         self.sendMsg(self.foundIt)
 
     def isFound(self):
-        return True if (self.getMsg("") is self.foundIt) else False
+        return True if (self.getMsg('(.*)') == self.foundIt) else False
+
+    def pointGetter(self):
+        msg = self.getMsg(self.point + ' (.*)')
+        if msg :
+            return int(msg)
+        return msg
