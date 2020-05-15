@@ -11,31 +11,33 @@ class OnlineModel(PlayableModel):
         self.type = None
         super(OnlineModel, self).__init__()
         self.opponentName = 'nbPlayer'
-        self.connectionRegex = self.opponentName + ' says: (.*)'
         self.clientTalk = 'Jisoo says:'
         self.serverTalk = 'Lisa says:'
-        self.goalRegex = self.serverTalk + ' Goal is'
-        self.plateRegex = self.serverTalk + ' Plate is'
-        self.start = self.serverTalk + ' start!'
+        self.goalRegex = ' Goal is'
+        self.plateRegex = ' Plate is'
+        self.foundIt = ' found it'
+        self.start = ' start!'
         self.ivyObject = None
+        self.write = None
+        self.read = None
 
     def connect(self):
         self.ivyObject = self.connexionIvy(self.opponentName)
         time.sleep(1)
-        message = self.getMessage(self.ivyObject, self.connectionRegex)
+        message = self.getMsg(' says: (.*)', self.opponentName)
         self.ivyObject.clearMessages()
         if not message:
             ready = ""
             self.ivyObject.bindIvy('(' + self.clientTalk + ' .*)')
             while not ready:
-                sendMessage('nbPlayer says: 1')
-                ready = self.getMessage(self.ivyObject, self.clientTalk + ' ready(.*)')
+                self.sendMsg(' 1', 'nbPlayer says:')
+                ready = self.getMsg(' ready(.*)', self.clientTalk)
                 time.sleep(0.1)
             self.ivyObject.bindIvy(self.clientTalk)
             self.type = self.SERVER
         else:
             self.ivyObject.bindIvy('(' + self.serverTalk + ' .*)')
-            sendMessage(self.clientTalk + ' ready!')
+            self.sendMsg(' ready!', self.clientTalk)
             self.ivyObject.bindIvy(self.serverTalk)
             self.type = self.CLIENT
         return self.type
@@ -51,12 +53,17 @@ class OnlineModel(PlayableModel):
 
         return res
 
+    def getMsgWithoutParse(self):
+        if self.ivyObject.messages:
+            return self.ivyObject.messages.pop()[0]
+        return ""
+
     # Parse a message if there is one, else return ""
-    def getMessage(self, ivyObject, regex):
-        message = ""
-        if ivyObject.messages:
-            message = ivyObject.messages.pop()[0]
-        return self.parseMessages(message, regex)
+    def getMsg(self, regex, opponentBind=None):
+        if opponentBind is None:
+            opponentBind = self.read
+        message = self.getMsgWithoutParse()
+        return self.parseMessages(message, opponentBind + regex)
 
     # Create Ivy object and initialise a connexion
     def connexionIvy(self, opponentName):
@@ -64,3 +71,14 @@ class OnlineModel(PlayableModel):
         ivyObject.bindIvy('(' + opponentName + ' says: .*)')
         time.sleep(0.1)
         return ivyObject
+
+    def sendMsg(self, msg, mybind=None):
+        if mybind is None:
+            mybind = self.write
+        sendMessage(mybind + msg)
+
+    def found(self):
+        self.sendMsg(self.foundIt)
+
+    def isFound(self):
+        return True if (self.getMsg("") is self.foundIt) else False

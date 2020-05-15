@@ -9,6 +9,7 @@ class OnlineClientModel(OnlineModel):
     def __init__(self, maxPlateNumber, ivyPlayer):
         super(OnlineClientModel, self).__init__()
         self.plateNumber = maxPlateNumber
+        self.write = self.clientTalk
         self.possiblePlates = POSSIBLE_PLATES
         self.ivyObject = ivyPlayer
         self.min_goal = MIN_GOAL
@@ -16,22 +17,15 @@ class OnlineClientModel(OnlineModel):
 
     def receiveInfos(self):
         while self.goal is None or len(self.selectedPlates) < self.plateNumber:
-            if self.ivyObject.messages:
-                message = self.ivyObject.messages.pop()[0]
-                goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
+            message = self.getMsgWithoutParse()
+            goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
 
-                if goalTemp and self.min_goal <= int(goalTemp) <= self.max_goal:
-                    self.goal = int(goalTemp)
-                    message = ""
+            if goalTemp and self.min_goal <= int(goalTemp) <= self.max_goal:
+                self.goal = int(goalTemp)
 
-                plate = self.parseMessages(message, self.plateRegex + ' (.*)')
-                if plate and int(plate) in self.possiblePlates:
-                    self.selectedPlates.append(Plate(int(plate)))
-                    message = ""
-
-                m = self.parseMessages(message, self.serverTalk + ' (.*)')
-                if m:
-                    message = ""
+            plate = self.parseMessages(message, self.plateRegex + ' (.*)')
+            if plate and int(plate) in self.possiblePlates:
+                self.selectedPlates.append(Plate(int(plate)))
 
             time.sleep(0.01)
         self.lenSelectedPlate = len(self.selectedPlates)

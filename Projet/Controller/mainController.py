@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 
+from Projet.Controller.connectionMaker import ConnectionMaker
 from Projet.Controller.onlineController import OnlineController
 from Projet.Controller.trainingController import TrainingController
 from Projet.View.mainView import MainView
@@ -31,5 +32,5 @@ class MainController :
     def onlineMode(self, root):
         root.destroy()
         root = tk.Tk()
-        OnlineController(self, root, self.operators, self.operator_number, self.plate_number)
+        ConnectionMaker(self, root, self.operators, self.operator_number, self.plate_number).defineConnection()
         root.mainloop()

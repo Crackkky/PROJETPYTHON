@@ -5,6 +5,7 @@ class PlateController:
     def __init__(self, parent, model, view, OPERATORS):
 
         self.operators = OPERATORS
+        self.operatorNumber = len(OPERATORS)
         self.firstPlate = None
         self.secondPlate = None
         self.operator = None
