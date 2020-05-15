@@ -9,9 +9,11 @@ class OnlineClientController(OnlineController):
         super(OnlineClientController, self)\
             .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER ,
                                                      OnlineClientModel(PLATE_NUMBER, ivyObject),
-                                                     PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root))
+                                                     PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+        self.play()
+
+    def play(self):
         self.model.receiveInfos()
-        self.playerInit(OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject,root)
+        self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
         self.view.displayInfo("Client")
         self.checkOpponent()
-

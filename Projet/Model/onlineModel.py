@@ -19,7 +19,8 @@ class OnlineModel(PlayableModel):
         self.plateRegex = ' Plate is'
         self.foundIt = ' found it'
         self.point = ' point '
-        self.start = ' start!'
+        self.play = ' play'
+        self.stop = ' make stop'
         self.ivyObject = None
         self.write = None
         self.read = None
@@ -100,3 +101,13 @@ class OnlineModel(PlayableModel):
     def countScore(self, loose):
         self.ourScore+=1-loose
         self.opponentScore+=loose
+
+    def doWePlayAgain(self):
+        msg = self.getMsg(self.play + '(.*)')
+        if not msg :
+            return False
+        else:
+            return True
+
+    def ready(self):
+        self.sendMsg(self.play + ' OK')

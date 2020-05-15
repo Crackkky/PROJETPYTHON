@@ -5,7 +5,7 @@ from Projet.View.plateView import PlateView
 
 
 class OnlineController(PlayableController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, model = None, view = None):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, model = None, view = None, ivyObject = None):
         if view is None:
             view = PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root)
         if model is None:
@@ -14,11 +14,12 @@ class OnlineController(PlayableController):
         self.parent = parent
         self.root = root
         self.plateNumber = PLATE_NUMBER
+        self.ivyObject = ivyObject
 
     def found(self):
         self.model.found()
-        self.view.displayInfo("Veuillez saisir votre solution sans erreur")
-        self.completeButton("Valider", lambda :self.validate(), self.view.validateButton)
+        self.view.displayInfo("Please, play without any mistake")
+        self.completeButton("Validate", lambda :self.validate(), self.view.validateButton)
 
     def done(self):
         difference = self.model.getDifference()
@@ -28,7 +29,8 @@ class OnlineController(PlayableController):
             point = 0 #point for me
         self.model.pointSetter(point)
         self.model.countScore(point)
-        self.view.displayInfo("Point envoyé, différence de " + str(difference))
+        self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point is 0 else "opponent, mensongeur !"))
+        self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
 
     def checkOpponent(self):
         if self.model.isFound():
@@ -54,3 +56,15 @@ class OnlineController(PlayableController):
             point = self.model.pointGetter()
         self.model.countScore(1-point)
         self.view.displayInfo("Got the point " + str(point))
+        self.view.hideShowGame(1)
+        self.completeButton("Play Again", lambda:self.playAgain(), self.view.validateButton)
+        self.root.update()
+
+    def playAgain(self):
+        self.model.ready()
+        self.view.hideShowGame(0)
+        self.view.displayInfo("Waiting for opponent's choice")
+        again = self.model.doWePlayAgain()
+        while not again:
+            again = self.model.doWePlayAgain()
+        self.play()

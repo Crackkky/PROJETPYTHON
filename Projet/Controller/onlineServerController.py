@@ -8,9 +8,12 @@ class OnlineServerController(OnlineController):
         super(OnlineServerController, self) \
             .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER,
                       OnlineServerModel(ivyObject),
-                      PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root))
+                      PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+        self.play()
+
+    def play(self):
         self.model.initGame()
         self.model.sendInfos()
-        self.playerInit(OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject, root)
+        self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
         self.view.displayInfo("Server")
         self.checkOpponent()
