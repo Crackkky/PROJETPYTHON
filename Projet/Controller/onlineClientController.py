@@ -1,6 +1,6 @@
 from Projet.Controller.onlineController import OnlineController
 from Projet.Model.onlineClientModel import OnlineClientModel
-from Projet.View.plateView import PlateView
+from Projet.View.onlineView import OnlineView
 
 
 class OnlineClientController(OnlineController):
@@ -9,7 +9,7 @@ class OnlineClientController(OnlineController):
         super(OnlineClientController, self)\
             .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER ,
                                                      OnlineClientModel(PLATE_NUMBER, ivyObject),
-                                                     PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+                                                     OnlineView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
         self.play()
 
     def play(self):
@@ -17,5 +17,6 @@ class OnlineClientController(OnlineController):
         self.model.receiveInfos()
         self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
         self.view.displayInfo("Client")
+        self.view.scoreLabel["text"] = self.model.getScoreString()
         self.view.hideShowGame(1)
         self.checkOpponent()

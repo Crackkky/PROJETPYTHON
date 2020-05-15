@@ -81,9 +81,6 @@ class PlateView(tk.Frame):
             checkButton["variable"] = var
             checkButtonStyle(checkButton)
 
-        # afficher à l'écran les données
-        self.hideShowGame(1)
-
     def displayInfo(self, text=None):
         if text is None:
             self.frameInformation.place_forget()

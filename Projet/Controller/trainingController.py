@@ -21,6 +21,7 @@ class TrainingController(PlayableController):
         self.completeButton("Solution ?", lambda: self.getSolution(root), self.view.solutionButton)
 
         self.updateView()
+        self.view.hideShowGame(1)
 
     def getSolution(self, root):
         self.view.displayInfo("Please wait, Daisy heard your request...\n"

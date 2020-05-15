@@ -118,3 +118,6 @@ class OnlineModel(PlayableModel):
             self.sendMsg(' ready!')
             ready = self.getMsg(' ready(.*)')
             time.sleep(0.1)
+
+    def getScoreString(self):
+        return "Score :\n"+ "You : " + str(self.ourScore) +"\n" + "Other :" + str(self.opponentScore)
