@@ -8,7 +8,7 @@ from Projet.View.plateView import PlateView
 
 
 class OnlineController(PlayableController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, model = None, view = None, ivyObject = None):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, model=None, view=None, ivyObject=None):
         if view is None:
             view = PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root)
         if model is None:
@@ -27,17 +27,17 @@ class OnlineController(PlayableController):
         self.stillTrying = False
         self.model.found()
         self.view.displayInfo("Please, play without any mistake")
-        self.completeButton("Validate", lambda :self.validate(), self.view.validateButton)
+        self.completeButton("Validate", lambda: self.validate(), self.view.validateButton)
 
     def done(self):
         difference = self.model.getDifference()
-        if difference is not 0:
-            point = 1 #point for opponent
+        if difference != 0:
+            point = 1  # point for opponent
         else:
-            point = 0 #point for me
+            point = 0  # point for me
         self.model.pointSetter(point)
         self.model.countScore(point)
-        self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point is 0 else "opponent, mensongeur !"))
+        self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point == 0 else "opponent, mensongeur !"))
         self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
 
     def checkOpponent(self):
@@ -48,7 +48,7 @@ class OnlineController(PlayableController):
             self.root.after(100, lambda: self.checkOpponent())
 
     def checkUpdateTimer(self):
-        if self.stillTrying :
+        if self.stillTrying:
             self.gotTime = self.beginTime + self.maxTimer - time.time()
             if self.gotTime < 0:
                 self.stillTrying = False
@@ -57,8 +57,7 @@ class OnlineController(PlayableController):
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
                 self.root.after(100, lambda: self.checkUpdateTimer())
 
-
-    def playerInit(self, OPERATORS,OPERATOR_NUMBER,PLATE_NUMBER,ivyObject, root):
+    def playerInit(self, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject, root):
         self.stillTrying = True
         self.beginTime = time.time()
         self.checkUpdateTimer()
@@ -77,10 +76,10 @@ class OnlineController(PlayableController):
         point = self.model.pointGetter()
         while not point:
             point = self.model.pointGetter()
-        self.model.countScore(1-point)
+        self.model.countScore(1 - point)
         self.view.displayInfo("Got the point " + str(point))
         self.view.hideShowGame(1)
-        self.completeButton("Play Again", lambda:self.playAgain(), self.view.validateButton)
+        self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
 
     def playAgain(self):
         self.view.hideShowGame(0)

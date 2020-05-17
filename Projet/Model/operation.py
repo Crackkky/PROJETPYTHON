@@ -10,9 +10,14 @@ class Operation:
                 else:
                     self.D = G
                     self.G = D
+            else:
+                self.G = G
+                self.D = D
         else:
             self.G = G
             self.D = D
+        print('G / D = ')
+        print(self.G, '/', self.D)
         self.op = op
 
     def getG(self):
