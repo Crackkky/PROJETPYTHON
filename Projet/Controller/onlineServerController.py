@@ -16,6 +16,3 @@ class OnlineServerController(OnlineController):
         self.model.sendInfos()
         self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
         self.view.displayInfo("Server")
-        self.view.scoreLabel["text"] = self.model.getScoreString()
-        self.view.hideShowGame(1)
-        self.checkOpponent()

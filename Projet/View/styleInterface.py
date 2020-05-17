@@ -33,6 +33,11 @@ def frameStyle(frame):
     values = ['10', 'pink', 'black', 2]
     apply(types, values, frame)
 
+def entryStyle(entry):
+    types = ['bg', 'bd', 'fg']
+    values = ['pink', 3, 'black']
+    apply(types, values, entry)
+
 
 def apply(lt, lv, object):
     for t, v in zip(lt, lv):

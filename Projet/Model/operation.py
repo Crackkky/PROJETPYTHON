@@ -16,8 +16,6 @@ class Operation:
         else:
             self.G = G
             self.D = D
-        print('G / D = ')
-        print(self.G, '/', self.D)
         self.op = op
 
     def getG(self):

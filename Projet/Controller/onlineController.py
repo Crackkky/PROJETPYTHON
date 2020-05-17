@@ -1,6 +1,6 @@
 import time
+from tkinter import StringVar
 
-from Projet.Controller.plateController import PlateController
 from Projet.Controller.playableController import PlayableController
 from Projet.Model.onlineModel import OnlineModel
 from Projet.Model.util import DEFAULT_TIME
@@ -18,10 +18,15 @@ class OnlineController(PlayableController):
         self.root = root
         self.plateNumber = PLATE_NUMBER
         self.ivyObject = ivyObject
-        self.maxTimer = DEFAULT_TIME
+        self.maxTimer = 3
         self.beginTime = None
         self.gotTime = None
         self.stillTrying = None
+        self.differenceSaid = StringVar()
+        self.view.differenceEntry["textvariable"] = self.differenceSaid
+        self.view.scoreLabel["text"] = self.model.getScoreString()
+        self.view.hideShowGame(1)
+        self.checkOpponent()
 
     def found(self):
         self.stillTrying = False
@@ -52,10 +57,22 @@ class OnlineController(PlayableController):
             self.gotTime = self.beginTime + self.maxTimer - time.time()
             if self.gotTime < 0:
                 self.stillTrying = False
-                self.view.displayInfo("FINI")
+                self.view.hideShowGame(0)
+                self.view.displayInfo("Please, what is your closest result ?")
+                self.differenceSaid.set("")
+                self.view.hideShowEntry(1)
+                self.view.validateButton["text"] = "Done"
+                self.view.validateButton["command"] = lambda :self.wroteDifference()
+                self.view.hideShowValidate(1)
             else:
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
                 self.root.after(100, lambda: self.checkUpdateTimer())
+
+    def wroteDifference(self):
+        if self.isInteger(self.differenceSaid.get()):
+            self.view.displayInfo("OK")
+        else:
+            self.view.displayInfo("Enter the closest Integer you found.")
 
     def playerInit(self, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject, root):
         self.stillTrying = True
@@ -67,6 +84,7 @@ class OnlineController(PlayableController):
         self.ivyObject = ivyObject
         self.completeButton("back", lambda: self.backMenu(root), self.view.returnButton)
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
+        self.view.hideShowGame(1)
         self.updateView()
 
     def checkPoint(self):
@@ -91,3 +109,10 @@ class OnlineController(PlayableController):
             again = self.model.doWePlayAgain()
         self.model.ready()
         self.play()
+
+    def isInteger(self, value):
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False

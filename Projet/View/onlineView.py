@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from Projet.View.plateView import PlateView
-from Projet.View.styleInterface import frameStyle, labelStyle
+from Projet.View.styleInterface import frameStyle, labelStyle, entryStyle
 
 
 class OnlineView(PlateView):
@@ -20,6 +20,9 @@ class OnlineView(PlateView):
         labelStyle(self.timeLabel)
         self.timeLabel.pack(fill='both', expand=5)
 
+        self.differenceEntry = tk.Entry(self.frameInformation)
+        entryStyle(self.differenceEntry)
+
     def hideShowGame(self, show):
         super(OnlineView, self).hideShowGame(show)
         if show:
@@ -28,5 +31,11 @@ class OnlineView(PlateView):
         else:
             self.frameScore.place_forget()
             self.frameTime.place_forget()
+            self.hideShowEntry(0)
 
+    def hideShowEntry(self, show):
+        if show:
+            self.differenceEntry.pack()
+        else:
+            self.differenceEntry.pack_forget()
 

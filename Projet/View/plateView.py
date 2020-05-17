@@ -99,8 +99,8 @@ class PlateView(tk.Frame):
             self.showHidePlateButton(i, show)
 
     def hideShowGame(self, show):
+        self.hideShowValidate(show)
         if show:
-            self.frameButton.pack(side=tk.BOTTOM)
             self.frameGoal.place(x=0, y=0, height=53, width=71)
             self.framePlate.pack(side=tk.TOP)
             self.frameOperator.pack(side=tk.LEFT)
@@ -110,6 +110,11 @@ class PlateView(tk.Frame):
             self.frameGoal.place_forget()
             self.framePlate.pack_forget()
             self.frameOperator.pack_forget()
-            self.frameButton.pack_forget()
             self.returnButton.place_forget()
         self.showHideAllPlateButtons(show)
+
+    def hideShowValidate(self, show):
+        if show:
+            self.frameButton.pack(side=tk.BOTTOM)
+        else:
+            self.frameButton.pack_forget()
