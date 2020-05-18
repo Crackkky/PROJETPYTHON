@@ -18,7 +18,7 @@ class OnlineController(PlayableController):
         self.root = root
         self.tileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
-        self.maxTimer = 2
+        self.maxTimer = 5
         self.bothPlay = False
         self.pointSeparate = False
         self.wonPoint = False
@@ -139,7 +139,8 @@ class OnlineController(PlayableController):
         self.view.hideShowGame(0)
         self.view.displayInfo("Waiting for opponent's choice")
         self.root.update()
-        self.waitPlayAgainOpponent()
+        # self.waitPlayAgainOpponent()
+        self.play()
 
     def waitPlayAgainOpponent(self):
         again = self.model.doWePlayAgain()
