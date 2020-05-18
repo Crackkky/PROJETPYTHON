@@ -19,6 +19,9 @@ class OnlineController(PlayableController):
         self.tileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
         self.maxTimer = 2
+        self.bothPlay = False
+        self.pointSeparate = False
+        self.wonPoint = False
         self.beginTime = None
         self.gotTime = None
         self.stillTrying = None
@@ -34,6 +37,8 @@ class OnlineController(PlayableController):
         self.view.displayInfo("Please, play without any mistake")
         self.completeButton("Validate", lambda: self.validate(), self.view.validateButton)
         self.updateView()
+        self.root.update()
+
 
     def done(self):
         difference = self.model.getDifference()
@@ -43,10 +48,15 @@ class OnlineController(PlayableController):
             point = 0  # point for me
         time.sleep(0.01)
         self.model.pointSetter(point)
-        self.model.countScore(point)
-        self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point == 0 else "opponent, mensongeur !"))
-        self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
-        self.ivyObject.clearMessages()
+        if (self.pointSeparate and point is 0) or self.pointSeparate is False:
+            self.wonPoint = self.model.countScore(point, self.wonPoint)
+        if self.bothPlay:
+            self.bothPlay = False
+            self.checkPoint()
+        else:
+            self.view.displayInfo("Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so unfortunate, maybe next time ? ")
+            self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+            self.ivyObject.clearMessages()
 
     def checkOpponent(self):
         if self.model.isFound():
@@ -87,6 +97,9 @@ class OnlineController(PlayableController):
     def playerInit(self, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject, root):
         self.view.scoreLabel["text"] = self.model.getScoreString()
         self.stillTrying = True
+        self.bothPlay = False
+        self.pointSeparate = False
+        self.wonPoint = False
         self.beginTime = time.time()
         self.checkUpdateTimer()
         self.operators = OPERATORS
@@ -107,15 +120,20 @@ class OnlineController(PlayableController):
     def getPointFromOpponent(self):
         point = self.model.pointGetter()
         if point is "":
-            self.root.after(10, lambda: self.getPointFromOpponent())
+            self.root.after(1, lambda: self.getPointFromOpponent())
         else:
-            self.model.countScore(1 - point)
-            if not point:
+            if (self.pointSeparate and point is 0) or self.pointSeparate is False:
+                self.wonPoint = self.model.countScore(1-point, self.wonPoint)
+            if not self.wonPoint:
                 self.view.displayInfo("Arg so bad, maybe next time ?")
             else:
-                self.view.displayInfo("You got the point this time !")
+                self.view.displayInfo("You got a point, yay ! Good job bro !")
             self.view.hideShowGame(1)
             self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+            self.updateView()
+            if self.bothPlay:
+                self.bothPlay = False
+                self.found()
 
     def playAgain(self):
         self.view.hideShowGame(0)
@@ -127,6 +145,6 @@ class OnlineController(PlayableController):
         again = self.model.doWePlayAgain()
         self.model.ready()
         if not again:
-            self.root.after(10, lambda: self.waitPlayAgainOpponent())
+            self.root.after(100, lambda: self.waitPlayAgainOpponent())
         else:
             self.play()

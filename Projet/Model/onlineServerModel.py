@@ -22,5 +22,8 @@ class OnlineServerModel(OnlineModel):
     def serverTurn(self):
         self.sendMsg(self.play+str(self.SERVER))
 
+    def bothTurn(self):
+        self.sendMsg(self.play+str(self.BOTH))
+
     def getDiff(self):
         return self.getMsg(self.diff+'(.*)')

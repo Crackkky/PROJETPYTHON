@@ -104,10 +104,13 @@ class OnlineModel(PlayableModel):
         self.sendMsg(self.point+str(loose))
 
     #True if point for opponent
-    def countScore(self, loose):
+    def countScore(self, loose, wonAPoint):
         if loose is not None:
             self.ourScore+=1-loose
             self.opponentScore+=loose
+        if not wonAPoint and loose is 1:
+            return False
+        return True
 
     def doWePlayAgain(self):
         msg = self.getMsg(self.stop + '(.*)')

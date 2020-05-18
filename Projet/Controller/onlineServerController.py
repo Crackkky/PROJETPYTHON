@@ -15,7 +15,7 @@ class OnlineServerController(OnlineController):
     def play(self):
         if not self.model.waitForOpponent():
             self.model.ready()
-            self.root.after(10, lambda :self.play())
+            self.root.after(20, lambda :self.play())
         else:
             time.sleep(0.01)
             self.ivyObject.clearMessages()
@@ -38,3 +38,9 @@ class OnlineServerController(OnlineController):
                 self.model.serverTurn()
                 self.model.goal = int(self.differenceSaid.get())
                 self.found()
+            else:
+                self.bothPlay = True
+                self.pointSeparate = True
+                self.model.bothTurn()
+                self.model.goal = int(self.differenceSaid.get())
+                self.checkPoint()
