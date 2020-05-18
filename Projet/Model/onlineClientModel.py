@@ -11,8 +11,6 @@ class OnlineClientModel(OnlineModel):
         self.tileNumber = maxTileNumber
         self.possibleTiles = POSSIBLE_TILES
         self.ivyObject = ivyPlayer
-        self.min_goal = MIN_GOAL
-        self.max_goal = MAX_GOAL
         self.write = self.clientTalk
         self.read = self.serverTalk
 

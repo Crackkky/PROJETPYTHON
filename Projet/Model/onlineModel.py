@@ -2,6 +2,7 @@ import time
 
 from Projet.Model.IvyModel import IvyModel
 from Projet.Model.playableModel import PlayableModel, sendMessage
+from Projet.Model.util import MIN_GOAL, MAX_GOAL
 
 
 class OnlineModel(PlayableModel):
@@ -9,6 +10,8 @@ class OnlineModel(PlayableModel):
         self.SERVER = 0
         self.CLIENT = 1
         self.BOTH = 2
+        self.min_goal = MIN_GOAL
+        self.max_goal = MAX_GOAL
         self.type = None
         self.ourScore = 0
         self.opponentScore = 0
@@ -126,7 +129,7 @@ class OnlineModel(PlayableModel):
 
     def isInteger(self, value):
         try:
-            return True if int(value) >= 0 else False
+            return True if self.min_goal <= int(value) <= self.max_goal else False
         except ValueError:
             return False
 

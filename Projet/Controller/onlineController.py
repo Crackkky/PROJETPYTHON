@@ -81,7 +81,7 @@ class OnlineController(PlayableController):
             else:
                 self.sendDifference()
         else:
-            self.view.displayInfo("Enter the closest Integer you found.")
+            self.view.displayInfo("Enter an Integer inf to" + str(self.model.min_goal) + " and sup to "+ str(self.model.max_goal))
 
 
     def playerInit(self, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject, root):
