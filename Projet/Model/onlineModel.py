@@ -21,6 +21,7 @@ class OnlineModel(PlayableModel):
         self.foundIt = ' found it '
         self.point = ' point '
         self.play = ' play'
+        self.playAgain = " play again"
         self.diff = ' diff '
         self.stop = ' stop '
         self.ivyObject = None
@@ -38,7 +39,7 @@ class OnlineModel(PlayableModel):
             while not ready:
                 self.sendMsg(' 1', 'nbPlayer says:')
                 ready = self.getMsg(' ready(.*)', self.clientTalk)
-                time.sleep(0.1)
+                time.sleep(0.01)
             self.ivyObject.bindIvy(self.clientTalk)
         else:
             self.type = self.CLIENT
@@ -74,7 +75,7 @@ class OnlineModel(PlayableModel):
     def connexionIvy(self, opponentName):
         ivyObject = IvyModel('127.0.0.1:2487')
         ivyObject.bindIvy('(' + opponentName + ' says: .*)')
-        time.sleep(0.1)
+        time.sleep(0.01)
         return ivyObject
 
     def sendMsg(self, msg, mybind=None):

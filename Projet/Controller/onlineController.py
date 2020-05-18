@@ -33,6 +33,7 @@ class OnlineController(PlayableController):
         self.model.found()
         self.view.displayInfo("Please, play without any mistake")
         self.completeButton("Validate", lambda: self.validate(), self.view.validateButton)
+        self.updateView()
 
     def done(self):
         difference = self.model.getDifference()
@@ -105,11 +106,11 @@ class OnlineController(PlayableController):
 
     def getPointFromOpponent(self):
         point = self.model.pointGetter()
-        if not point:
+        if point is "":
             self.root.after(10, lambda:self.getPointFromOpponent())
         else:
             self.model.countScore(1 - point)
-            if point:
+            if not point:
                 self.view.displayInfo("Arg so bad, maybe next time ?")
             else:
                 self.view.displayInfo("You got the point this time !")

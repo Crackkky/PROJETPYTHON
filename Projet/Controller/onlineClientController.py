@@ -16,7 +16,7 @@ class OnlineClientController(OnlineController):
     def play(self):
         if not self.model.waitForOpponent():
             self.model.ready()
-            self.root.after(10, lambda :self.play())
+            self.root.after(20, lambda :self.play())
         else:
             self.model.receiveInfos()
             self.checkOpponent()
@@ -31,6 +31,7 @@ class OnlineClientController(OnlineController):
         else:
             value = int(msg)
             if value is self.model.type:
+                self.model.goal = int(self.differenceSaid.get())
                 self.found()
             else:
                 self.checkPoint()
