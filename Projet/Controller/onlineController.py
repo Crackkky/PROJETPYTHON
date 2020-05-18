@@ -40,6 +40,7 @@ class OnlineController(PlayableController):
             point = 1  # point for opponent
         else:
             point = 0  # point for me
+        time.sleep(0.01)
         self.model.pointSetter(point)
         self.model.countScore(point)
         self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point == 0 else "opponent, mensongeur !"))
@@ -66,7 +67,7 @@ class OnlineController(PlayableController):
                 self.view.hideShowValidate(1)
             else:
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
-                self.root.after(100, lambda: self.checkUpdateTimer())
+                self.root.after(10, lambda: self.checkUpdateTimer())
 
     def wroteDifference(self):
         if self.model.isInteger(self.differenceSaid.get()):
@@ -100,9 +101,12 @@ class OnlineController(PlayableController):
         self.view.hideShowGame(0)
         self.view.displayInfo("Waiting for opponent's solution")
         self.root.update()
+        self.getPointFromOpponent()
+
+    def getPointFromOpponent(self):
         point = self.model.pointGetter()
         if not point:
-            self.root.after(10, lambda:self.checkPoint())
+            self.root.after(10, lambda:self.getPointFromOpponent())
         else:
             self.model.countScore(1 - point)
             if point:
@@ -115,10 +119,14 @@ class OnlineController(PlayableController):
     def playAgain(self):
         self.view.hideShowGame(0)
         self.view.displayInfo("Waiting for opponent's choice")
-        again = self.model.doWePlayAgain()
         self.root.update()
+        self.waitPlayAgainOpponent()
+
+
+    def waitPlayAgainOpponent(self):
+        again = self.model.doWePlayAgain()
         self.model.ready()
-        while not again:
-            again = self.model.doWePlayAgain()
-        self.model.ready()
-        self.play()
+        if not again:
+            self.root.after(10, lambda :self.waitPlayAgainOpponent())
+        else:
+            self.play()

@@ -15,6 +15,7 @@ class OnlineClientController(OnlineController):
 
     def play(self):
         if not self.model.waitForOpponent():
+            self.model.ready()
             self.root.after(10, lambda :self.play())
         else:
             self.model.receiveInfos()
@@ -26,7 +27,7 @@ class OnlineClientController(OnlineController):
         msg = self.model.getTurn()
         if not self.model.isInteger(msg):
             self.model.sendDiff(self.differenceSaid.get())
-            self.root.after(10, lambda :self.sendDifference())
+            self.root.after(1, lambda :self.sendDifference())
         else:
             value = int(msg)
             if value is self.model.type:

@@ -14,9 +14,11 @@ class OnlineServerController(OnlineController):
 
     def play(self):
         if not self.model.waitForOpponent():
+            self.model.ready()
             self.root.after(10, lambda :self.play())
         else:
             time.sleep(0.01)
+            self.ivyObject.clearMessages()
             self.model.sendInfos()
             self.checkOpponent()
             self.playerInit(self.operators, self.operatorNumber, self.tileNumber, self.ivyObject, self.root)
