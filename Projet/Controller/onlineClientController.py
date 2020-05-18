@@ -1,3 +1,5 @@
+import time
+
 from Projet.Controller.onlineController import OnlineController
 from Projet.Model.onlineClientModel import OnlineClientModel
 from Projet.View.onlineView import OnlineView
@@ -22,11 +24,14 @@ class OnlineClientController(OnlineController):
     def sendDifference(self):
         self.model.sendDiff(self.differenceSaid.get())
         msg = self.model.getTurn()
-        if self.model.isInteger(msg):
+        if not self.model.isInteger(msg):
+            time.sleep(0.01)
+            self.sendDifference()
+
+        else:
+            print("Le client est passé")
             value = int(msg)
             if value is self.model.type:
                 self.found()
             else:
                 self.checkPoint()
-        else:
-            self.root.after(100, lambda:self.sendDifference())

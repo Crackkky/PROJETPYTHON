@@ -61,8 +61,7 @@ class OnlineController(PlayableController):
                 self.view.displayInfo("Please, what is your closest result ?")
                 self.differenceSaid.set("")
                 self.view.hideShowEntry(1)
-                self.view.validateButton["text"] = "Done"
-                self.view.validateButton["command"] = lambda :self.wroteDifference()
+                self.completeButton("Done", lambda :self.wroteDifference(), self.view.validateButton)
                 self.view.hideShowValidate(1)
                 self.ivyObject.clearMessages()
             else:
@@ -73,6 +72,8 @@ class OnlineController(PlayableController):
         if self.model.isInteger(self.differenceSaid.get()):
             self.view.displayInfo("Waiting for opponent...")
             self.view.hideShowEntry(0)
+            self.view.hideShowGame(0)
+            self.root.update()
             if self.model.isServer():
                 self.launchSecondRound()
             else:
