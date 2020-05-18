@@ -23,8 +23,7 @@ class OnlineServerController(OnlineController):
     def launchSecondRound(self):
         value = self.model.getDiff()
         if not self.model.isInteger(value):
-            time.sleep(0.01)
-            self.launchSecondRound()
+            self.root.after(10, lambda :self.launchSecondRound())
         else:
             clientValue = self.model.getDifference(int(value))
             serverValue = self.model.getDifference(int(self.differenceSaid.get()))

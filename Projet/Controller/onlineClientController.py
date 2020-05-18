@@ -25,9 +25,7 @@ class OnlineClientController(OnlineController):
         self.model.sendDiff(self.differenceSaid.get())
         msg = self.model.getTurn()
         if not self.model.isInteger(msg):
-            time.sleep(0.01)
-            self.sendDifference()
-
+            self.root.after(10, lambda :self.sendDifference())
         else:
             print("Le client est passé")
             value = int(msg)
