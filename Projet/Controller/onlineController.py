@@ -54,7 +54,7 @@ class OnlineController(PlayableController):
             self.bothPlay = False
             self.checkPoint()
         else:
-            self.view.displayInfo("Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so unfortunate, maybe next time ? ")
+            self.view.displayInfo("Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so bad, maybe next time ? ")
             self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
             self.ivyObject.clearMessages()
 
