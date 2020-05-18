@@ -2,7 +2,7 @@ import threading
 import time
 from random import randint
 
-from Projet.Model.IvyProject import *
+from Projet.Model.IvyModel import *
 from Projet.Model.operation import Operation
 from Projet.Model.tile import Tile
 from Projet.Model.step import Step

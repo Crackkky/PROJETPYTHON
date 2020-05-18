@@ -1,7 +1,7 @@
 # Create Ivy object and initialise a connexion
 import time
 
-from Projet.Model.IvyProject import IvyModel, sendMessage, IvyGetApplicationList
+from Projet.Model.IvyModel import IvyModel, sendMessage, IvyGetApplicationList
 from Projet.Model.util import suggestSolution, chooseYesNo
 
 stop = False

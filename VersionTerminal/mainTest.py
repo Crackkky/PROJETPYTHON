@@ -1,5 +1,5 @@
 from ivy.std_api import *
-from Projet.Model.IvyProject import *
+from Projet.Model.IvyModel import *
 
 ivyObject = IvyModel('127.0.0.1:2010')
 

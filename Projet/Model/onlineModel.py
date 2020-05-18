@@ -1,6 +1,6 @@
 import time
 
-from Projet.Model.IvyProject import IvyModel
+from Projet.Model.IvyModel import IvyModel
 from Projet.Model.playableModel import PlayableModel, sendMessage
 
 
