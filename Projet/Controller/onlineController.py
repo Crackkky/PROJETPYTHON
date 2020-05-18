@@ -18,14 +18,13 @@ class OnlineController(PlayableController):
         self.root = root
         self.plateNumber = PLATE_NUMBER
         self.ivyObject = ivyObject
-        self.maxTimer = 3
+        self.maxTimer = 2
         self.beginTime = None
         self.gotTime = None
         self.stillTrying = None
         self.differenceSaid = StringVar()
         self.view.differenceEntry["textvariable"] = self.differenceSaid
         self.view.hideShowGame(1)
-        self.checkOpponent()
         self.play()
 
     def found(self):

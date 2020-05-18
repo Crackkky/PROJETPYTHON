@@ -13,6 +13,7 @@ class OnlineClientController(OnlineController):
 
     def play(self):
         self.ivyObject.clearMessages()
+        self.checkOpponent()
         self.model.waitForOpponent()
         self.model.receiveInfos()
         self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)

@@ -40,7 +40,6 @@ class OnlineModel(PlayableModel):
                 ready = self.getMsg(' ready(.*)', self.clientTalk)
                 time.sleep(0.1)
             self.ivyObject.bindIvy(self.clientTalk)
-            # self.view.clearMessages()
         else:
             self.type = self.CLIENT
             self.ivyObject.bindIvy('(' + self.serverTalk + ' .*)')
@@ -84,10 +83,11 @@ class OnlineModel(PlayableModel):
         sendMessage(mybind + msg)
 
     def found(self):
-        self.sendMsg(self.foundIt)
+        self.sendMsg(self.foundIt+"!")
 
     def isFound(self):
-        return True if (self.getMsg('(.*)') == self.foundIt) else False
+        msg = self.getMsg(self.foundIt+'(.*)')
+        return True if msg else False
 
     def pointGetter(self):
         msg = self.getMsg(self.point+"(.*)")
