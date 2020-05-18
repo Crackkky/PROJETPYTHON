@@ -17,6 +17,8 @@ class PlateModel:
         self.selectedPlates = []
         self.lenSelectedPlate = None
 
-    def getDifference(self):
+    def getDifference(self, value = -1):
         if self.lenSelectedPlate == 1:
             return abs(self.goal - self.selectedPlates[0].getNumber())
+        if value is not -1:
+            return abs(self.goal-value)

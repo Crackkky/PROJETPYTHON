@@ -8,6 +8,7 @@ class OnlineModel(PlayableModel):
     def __init__(self):
         self.SERVER = 0
         self.CLIENT = 1
+        self.BOTH = 2
         self.type = None
         self.ourScore = 0
         self.opponentScore = 0
@@ -17,9 +18,10 @@ class OnlineModel(PlayableModel):
         self.serverTalk = 'Lisa says:'
         self.goalRegex = ' Goal is'
         self.plateRegex = ' Plate is'
-        self.foundIt = ' found it'
+        self.foundIt = ' found it '
         self.point = ' point '
         self.play = ' play'
+        self.diff = ' diff '
         self.stop = ' make stop'
         self.ivyObject = None
         self.write = None
@@ -88,19 +90,20 @@ class OnlineModel(PlayableModel):
         return True if (self.getMsg('(.*)') == self.foundIt) else False
 
     def pointGetter(self):
-        msg = self.getMsg(self.point + ' (.*)')
+        msg = self.getMsg(self.point+"(.*)")
         if msg :
             return int(msg)
         return msg
 
     #True if point for oppenent
     def pointSetter(self, loose):
-        self.sendMsg(self.point + ' '+ str(loose))
+        self.sendMsg(self.point+str(loose))
 
     #True if point for opponent
     def countScore(self, loose):
-        self.ourScore+=1-loose
-        self.opponentScore+=loose
+        if loose is not None:
+            self.ourScore+=1-loose
+            self.opponentScore+=loose
 
     def doWePlayAgain(self):
         msg = self.getMsg(self.play + '(.*)')
@@ -121,3 +124,12 @@ class OnlineModel(PlayableModel):
 
     def getScoreString(self):
         return "Score :\n"+ "You : " + str(self.ourScore) +"\n" + "Other :" + str(self.opponentScore)
+
+    def isInteger(self, value):
+        try:
+            return True if int(value) >= 0 else False
+        except ValueError:
+            return False
+
+    def isServer(self):
+        return self.type is self.SERVER

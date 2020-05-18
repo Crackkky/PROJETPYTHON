@@ -24,11 +24,12 @@ class OnlineController(PlayableController):
         self.stillTrying = None
         self.differenceSaid = StringVar()
         self.view.differenceEntry["textvariable"] = self.differenceSaid
-        self.view.scoreLabel["text"] = self.model.getScoreString()
         self.view.hideShowGame(1)
         self.checkOpponent()
+        self.play()
 
     def found(self):
+        self.view.hideShowGame(1)
         self.stillTrying = False
         self.model.found()
         self.view.displayInfo("Please, play without any mistake")
@@ -64,17 +65,25 @@ class OnlineController(PlayableController):
                 self.view.validateButton["text"] = "Done"
                 self.view.validateButton["command"] = lambda :self.wroteDifference()
                 self.view.hideShowValidate(1)
+                self.ivyObject.clearMessages()
             else:
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
                 self.root.after(100, lambda: self.checkUpdateTimer())
 
     def wroteDifference(self):
-        if self.isInteger(self.differenceSaid.get()):
-            self.view.displayInfo("OK")
+        if self.model.isInteger(self.differenceSaid.get()):
+            self.view.displayInfo("Waiting for opponent...")
+            self.view.hideShowEntry(0)
+            if self.model.isServer():
+                self.launchSecondRound()
+            else:
+                self.sendDifference()
         else:
             self.view.displayInfo("Enter the closest Integer you found.")
 
+
     def playerInit(self, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject, root):
+        self.view.scoreLabel["text"] = self.model.getScoreString()
         self.stillTrying = True
         self.beginTime = time.time()
         self.checkUpdateTimer()
@@ -109,10 +118,3 @@ class OnlineController(PlayableController):
             again = self.model.doWePlayAgain()
         self.model.ready()
         self.play()
-
-    def isInteger(self, value):
-        try:
-            int(value)
-            return True
-        except ValueError:
-            return False

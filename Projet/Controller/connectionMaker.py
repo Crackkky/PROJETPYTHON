@@ -17,10 +17,10 @@ class ConnectionMaker(PlateController):
         self.view.hideShowGame(0)
         self.view.displayInfo("Looking for an opponent...")
         self.root.update()
-        type = self.model.connect()
+        self.model.connect()
         self.root.destroy()
         self.root = tk.Tk()
-        if type is self.model.SERVER:
+        if self.model.isServer():
             OnlineServerController(self.parent, self.root, self.operators, self.operatorNumber, self.plateNumber,
                                    self.model.ivyObject)
         else:
