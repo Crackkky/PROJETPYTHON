@@ -64,7 +64,7 @@ class OnlineController(PlayableController):
                 self.view.displayInfo("Please, what is your closest result ?")
                 self.differenceSaid.set("")
                 self.view.hideShowEntry(1)
-                self.completeButton("Done", lambda :self.wroteDifference(), self.view.validateButton)
+                self.completeButton("Done", lambda: self.wroteDifference(), self.view.validateButton)
                 self.view.hideShowValidate(1)
             else:
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
@@ -81,8 +81,8 @@ class OnlineController(PlayableController):
             else:
                 self.sendDifference()
         else:
-            self.view.displayInfo("Enter an Integer inf to" + str(self.model.min_goal) + " and sup to "+ str(self.model.max_goal))
-
+            self.view.displayInfo(
+                "Enter an Integer inf to" + str(self.model.min_goal) + " and sup to " + str(self.model.max_goal))
 
     def playerInit(self, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject, root):
         self.view.scoreLabel["text"] = self.model.getScoreString()
@@ -107,7 +107,7 @@ class OnlineController(PlayableController):
     def getPointFromOpponent(self):
         point = self.model.pointGetter()
         if point is "":
-            self.root.after(10, lambda:self.getPointFromOpponent())
+            self.root.after(10, lambda: self.getPointFromOpponent())
         else:
             self.model.countScore(1 - point)
             if not point:
@@ -123,11 +123,10 @@ class OnlineController(PlayableController):
         self.root.update()
         self.waitPlayAgainOpponent()
 
-
     def waitPlayAgainOpponent(self):
         again = self.model.doWePlayAgain()
         self.model.ready()
         if not again:
-            self.root.after(10, lambda :self.waitPlayAgainOpponent())
+            self.root.after(10, lambda: self.waitPlayAgainOpponent())
         else:
             self.play()
