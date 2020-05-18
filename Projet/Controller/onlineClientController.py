@@ -14,20 +14,20 @@ class OnlineClientController(OnlineController):
                                                      OnlineView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
 
     def play(self):
-        self.ivyObject.clearMessages()
-        self.checkOpponent()
-        self.model.waitForOpponent()
-        self.model.receiveInfos()
-        self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
-        self.view.displayInfo("Client")
+        if not self.model.waitForOpponent():
+            self.root.after(10, lambda :self.play())
+        else:
+            self.model.receiveInfos()
+            self.checkOpponent()
+            self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
+            self.view.displayInfo("Client")
 
     def sendDifference(self):
-        self.model.sendDiff(self.differenceSaid.get())
         msg = self.model.getTurn()
         if not self.model.isInteger(msg):
+            self.model.sendDiff(self.differenceSaid.get())
             self.root.after(10, lambda :self.sendDifference())
         else:
-            print("Le client est passé")
             value = int(msg)
             if value is self.model.type:
                 self.found()

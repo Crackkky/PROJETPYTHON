@@ -22,7 +22,7 @@ class OnlineModel(PlayableModel):
         self.point = ' point '
         self.play = ' play'
         self.diff = ' diff '
-        self.stop = ' make stop'
+        self.stop = ' stop '
         self.ivyObject = None
         self.write = None
         self.read = None
@@ -106,21 +106,19 @@ class OnlineModel(PlayableModel):
             self.opponentScore+=loose
 
     def doWePlayAgain(self):
-        msg = self.getMsg(self.play + '(.*)')
+        msg = self.getMsg(self.stop + '(.*)')
         if not msg :
             return False
         else:
             return True
 
     def ready(self):
-        self.sendMsg(self.play + ' OK')
+        self.sendMsg(self.stop + ' No')
 
     def waitForOpponent(self):
-        ready = False
-        while not ready:
-            self.sendMsg(' ready!')
-            ready = self.getMsg(' ready(.*)')
-            time.sleep(0.1)
+        self.sendMsg(' ready!')
+        ready = self.getMsg(' ready(.*)')
+        return ready
 
     def getScoreString(self):
         return "Score :\n"+ "You : " + str(self.ourScore) +"\n" + "Other :" + str(self.opponentScore)

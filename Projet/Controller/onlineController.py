@@ -44,6 +44,7 @@ class OnlineController(PlayableController):
         self.model.countScore(point)
         self.view.displayInfo("Point for " + ("you, Lisa would be proud !" if point == 0 else "opponent, mensongeur !"))
         self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+        self.ivyObject.clearMessages()
 
     def checkOpponent(self):
         if self.model.isFound():
@@ -63,7 +64,6 @@ class OnlineController(PlayableController):
                 self.view.hideShowEntry(1)
                 self.completeButton("Done", lambda :self.wroteDifference(), self.view.validateButton)
                 self.view.hideShowValidate(1)
-                self.ivyObject.clearMessages()
             else:
                 self.view.timeLabel["text"] = "Time : " + str(int(self.gotTime))
                 self.root.after(100, lambda: self.checkUpdateTimer())
@@ -101,12 +101,16 @@ class OnlineController(PlayableController):
         self.view.displayInfo("Waiting for opponent's solution")
         self.root.update()
         point = self.model.pointGetter()
-        while not point:
-            point = self.model.pointGetter()
-        self.model.countScore(1 - point)
-        self.view.displayInfo("Got the point " + str(point))
-        self.view.hideShowGame(1)
-        self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+        if not point:
+            self.root.after(10, lambda:self.checkPoint())
+        else:
+            self.model.countScore(1 - point)
+            if point:
+                self.view.displayInfo("Arg so bad, maybe next time ?")
+            else:
+                self.view.displayInfo("You got the point this time !")
+            self.view.hideShowGame(1)
+            self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
 
     def playAgain(self):
         self.view.hideShowGame(0)

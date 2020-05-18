@@ -13,12 +13,14 @@ class OnlineServerController(OnlineController):
                       OnlineView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
 
     def play(self):
-        self.ivyObject.clearMessages()
-        self.checkOpponent()
-        self.model.waitForOpponent()
-        self.model.sendInfos()
-        self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
-        self.view.displayInfo("Server")
+        if not self.model.waitForOpponent():
+            self.root.after(10, lambda :self.play())
+        else:
+            time.sleep(0.01)
+            self.model.sendInfos()
+            self.checkOpponent()
+            self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
+            self.view.displayInfo("Server")
 
     def launchSecondRound(self):
         value = self.model.getDiff()
@@ -27,11 +29,9 @@ class OnlineServerController(OnlineController):
         else:
             clientValue = self.model.getDifference(int(value))
             serverValue = self.model.getDifference(int(self.differenceSaid.get()))
-            print("Le server est passé")
             if clientValue < serverValue:
                 self.model.clientTurn()
                 self.checkPoint()
             elif clientValue > serverValue:
                 self.model.serverTurn()
                 self.found()
-
