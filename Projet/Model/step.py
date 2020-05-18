@@ -13,18 +13,18 @@ def arrayToString(array):
 
 # One step AFTER an operation
 class Step:
-    def __init__(self, operation, plateArray):
+    def __init__(self, operation, tileArray):
         self.operation = operation
-        self.plateArray = plateArray.copy()
+        self.tileArray = tileArray.copy()
 
     def toString(self):
-        return self.operation.toString() + ', Plate Array : ' + arrayToString(self.plateArray)
+        return self.operation.toString() + ', Tile Array : ' + arrayToString(self.tileArray)
 
     def getOperation(self):
         return self.operation
 
-    def getPlateArray(self):
-        return self.plateArray
+    def getTileArray(self):
+        return self.tileArray
 
     def setOperation(self, operation):
         if operation is not None:

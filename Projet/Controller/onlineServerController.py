@@ -6,11 +6,11 @@ from Projet.View.onlineView import OnlineView
 
 
 class OnlineServerController(OnlineController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject):
         super(OnlineServerController, self) \
-            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER,
+            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER,
                       OnlineServerModel(ivyObject),
-                      OnlineView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+                      OnlineView(TILE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
 
     def play(self):
         if not self.model.waitForOpponent():
@@ -19,7 +19,7 @@ class OnlineServerController(OnlineController):
             time.sleep(0.01)
             self.model.sendInfos()
             self.checkOpponent()
-            self.playerInit(self.operators, self.operatorNumber, self.plateNumber, self.ivyObject, self.root)
+            self.playerInit(self.operators, self.operatorNumber, self.tileNumber, self.ivyObject, self.root)
             self.view.displayInfo("Server")
 
     def launchSecondRound(self):

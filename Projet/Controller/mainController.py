@@ -8,11 +8,11 @@ from Projet.View.mainView import MainView
 
 
 class MainController :
-    def __init__(self, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER):
+    def __init__(self, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER):
 
         self.operators = OPERATORS
         self.operator_number = OPERATOR_NUMBER
-        self.plate_number = PLATE_NUMBER
+        self.tile_number = TILE_NUMBER
 
         self.mainView = MainView(root)
         self.mainView.label['text'] = '블랙핑크 하우스 환영합니!'
@@ -26,11 +26,11 @@ class MainController :
     def trainingMode(self, root):
         root.destroy()
         root = tk.Tk()
-        TrainingController(self, root, self.operators, self.operator_number, self.plate_number)
+        TrainingController(self, root, self.operators, self.operator_number, self.tile_number)
         root.mainloop()
 
     def onlineMode(self, root):
         root.destroy()
         root = tk.Tk()
-        ConnectionMaker(self, root, self.operators, self.operator_number, self.plate_number)
+        ConnectionMaker(self, root, self.operators, self.operator_number, self.tile_number)
         root.mainloop()

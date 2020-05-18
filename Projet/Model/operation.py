@@ -30,7 +30,7 @@ class Operation:
     def toString(self):
         return str(str(self.getG()) + self.getOp() + str(self.getD()))
 
-    # Do : "first plate <operator> second plate."
+    # Do : "first tile <operator> second tile."
     def do(self):
         # print(int(eval(str(self.getG()) + str(self.getOp()) + str(self.getD()))))
         return int(eval(str(self.getG()) + self.getOp() + str(self.getD())))

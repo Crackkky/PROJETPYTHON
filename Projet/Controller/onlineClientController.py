@@ -6,12 +6,12 @@ from Projet.View.onlineView import OnlineView
 
 
 class OnlineClientController(OnlineController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject):
 
         super(OnlineClientController, self)\
-            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER ,
-                                                     OnlineClientModel(PLATE_NUMBER, ivyObject),
-                                                     OnlineView(PLATE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER ,
+                                                     OnlineClientModel(TILE_NUMBER, ivyObject),
+                                                     OnlineView(TILE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
 
     def play(self):
         if not self.model.waitForOpponent():
@@ -19,7 +19,7 @@ class OnlineClientController(OnlineController):
         else:
             self.model.receiveInfos()
             self.checkOpponent()
-            self.playerInit(self.operators,self.operatorNumber,self.plateNumber,self.ivyObject,self.root)
+            self.playerInit(self.operators,self.operatorNumber,self.tileNumber,self.ivyObject,self.root)
             self.view.displayInfo("Client")
 
     def sendDifference(self):

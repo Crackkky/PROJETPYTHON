@@ -12,29 +12,29 @@ class TrainingModel(PlayableModel):
     def previousHistory(self):
         previousStepIndex = len(self.history)
         if previousStepIndex > 0:
-            self.selectedPlates = self.history[previousStepIndex - 1].plateArray
+            self.selectedTiles = self.history[previousStepIndex - 1].tileArray
             self.history = self.removeHistory(self.history, previousStepIndex - 1)
-            self.lenSelectedPlate = len(self.selectedPlates)
+            self.lenSelectedTile = len(self.selectedTiles)
 
     def findSolution(self):
-        plateArray = self.originalPlates
+        tileArray = self.originalTiles
         objective = self.goal
         operatorsStr = OPERATORS
         operators = operatorsStr
-        operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(plateArray) - 1))
-        platePermutation = list(itertools.permutations(range(0, len(plateArray))))
+        operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(tileArray) - 1))
+        tilePermutation = list(itertools.permutations(range(0, len(tileArray))))
         best = None
         # Pour chaque plaque
-        for i in platePermutation:
+        for i in tilePermutation:
             # Pour chaque operateur
             for j in operatorsCartesian:
                 stringOperation = ""
-                for k in range(0, len(plateArray) - 1):
+                for k in range(0, len(tileArray) - 1):
                     stringOperation += '('
-                stringOperation += plateArray[i[0]].toString()
+                stringOperation += tileArray[i[0]].toString()
                 # Nous generons l'operation en string
-                for k in range(1, len(plateArray)):
-                    stringOperation += operators[j[k - 1]] + plateArray[i[k]].toString() + ')'
+                for k in range(1, len(tileArray)):
+                    stringOperation += operators[j[k - 1]] + tileArray[i[k]].toString() + ')'
                 value = eval(stringOperation)
                 actualDifference = abs(objective - value)
                 if best is None or actualDifference < difference:

@@ -1,15 +1,15 @@
 import time
 
 from Projet.Model.onlineModel import OnlineModel
-from Projet.Model.plate import Plate
-from Projet.Model.util import POSSIBLE_PLATES, MIN_GOAL, MAX_GOAL
+from Projet.Model.tile import Tile
+from Projet.Model.util import POSSIBLE_TILES, MIN_GOAL, MAX_GOAL
 
 
 class OnlineClientModel(OnlineModel):
-    def __init__(self, maxPlateNumber, ivyPlayer):
+    def __init__(self, maxTileNumber, ivyPlayer):
         super(OnlineClientModel, self).__init__()
-        self.plateNumber = maxPlateNumber
-        self.possiblePlates = POSSIBLE_PLATES
+        self.tileNumber = maxTileNumber
+        self.possibleTiles = POSSIBLE_TILES
         self.ivyObject = ivyPlayer
         self.min_goal = MIN_GOAL
         self.max_goal = MAX_GOAL
@@ -19,20 +19,20 @@ class OnlineClientModel(OnlineModel):
     def receiveInfos(self):
         self.empty()
         self.type = self.CLIENT
-        while self.goal is None or len(self.selectedPlates) < self.plateNumber:
+        while self.goal is None or len(self.selectedTiles) < self.tileNumber:
             message = self.getMsgWithoutParse()
             goalTemp = self.parseMessages(message, self.goalRegex + ' (.*)')
 
             if goalTemp:
                 self.goal = int(goalTemp)
 
-            plate = self.parseMessages(message, self.plateRegex + ' (.*)')
-            if plate and int(plate) in self.possiblePlates:
-                self.selectedPlates.append(Plate(int(plate)))
+            tile = self.parseMessages(message, self.tileRegex + ' (.*)')
+            if tile and int(tile) in self.possibleTiles:
+                self.selectedTiles.append(Tile(int(tile)))
 
             time.sleep(0.01)
-        self.lenSelectedPlate = len(self.selectedPlates)
-        return self.goal, self.selectedPlates
+        self.lenSelectedTile = len(self.selectedTiles)
+        return self.goal, self.selectedTiles
 
     def sendDiff(self, diff):
         self.sendMsg(self.diff + diff)

@@ -1,13 +1,13 @@
 import tkinter as tk
 
 
-class PlateController:
+class TileController:
     def __init__(self, parent, model, view, OPERATORS):
 
         self.operators = OPERATORS
         self.operatorNumber = len(OPERATORS)
-        self.firstPlate = None
-        self.secondPlate = None
+        self.firstTile = None
+        self.secondTile = None
         self.operator = None
 
         self.model = model
@@ -17,18 +17,18 @@ class PlateController:
 
     def updateView(self):
 
-        self.firstPlate = None
-        self.secondPlate = None
+        self.firstTile = None
+        self.secondTile = None
         self.operator = None
 
         self.view.goalLabel["text"] = "Goal\n" + str(self.model.goal)
 
         # completion des checKButtons des plaques
-        for i in range(0, self.model.lenSelectedPlate):
-            checkButton = self.view.checkPlateList[i]
+        for i in range(0, self.model.lenSelectedTile):
+            checkButton = self.view.checkTileList[i]
             # x=i car si i utilisé directement, il est mis en attente jusqu'à l'appel, et i fini = au dernier
-            self.completeButton(self.model.selectedPlates[i].toString(),
-                                lambda x=i: self.checkMaxOfPlate(x),
+            self.completeButton(self.model.selectedTiles[i].toString(),
+                                lambda x=i: self.checkMaxOfTile(x),
                                 checkButton)
             checkButton["offvalue"] = -1
             checkButton.deselect()
@@ -46,19 +46,19 @@ class PlateController:
 
 
     # Controle qu'il n'y a que 2 plaques selectionnées, sinon retire la plus anciennce
-    def checkMaxOfPlate(self, pos):
-        if self.firstPlate == pos:
-            self.firstPlate = None
-        elif self.secondPlate == pos:
-            self.secondPlate = None
-        elif self.firstPlate is None:
-            self.firstPlate = pos
-        elif self.secondPlate is None:
-            self.secondPlate = pos
+    def checkMaxOfTile(self, pos):
+        if self.firstTile == pos:
+            self.firstTile = None
+        elif self.secondTile == pos:
+            self.secondTile = None
+        elif self.firstTile is None:
+            self.firstTile = pos
+        elif self.secondTile is None:
+            self.secondTile = pos
         else:
-            self.view.checkPlateList[self.secondPlate].deselect()
-            self.secondPlate = self.firstPlate
-            self.firstPlate = pos
+            self.view.checkTileList[self.secondTile].deselect()
+            self.secondTile = self.firstTile
+            self.firstTile = pos
 
     # Controle qu'il n'y a qu'une plaque de selectionnée, sinon la remplace
     def checkMaxOfOperator(self, pos):
@@ -77,6 +77,6 @@ class PlateController:
     def backMenu(self, root):
         root.destroy()
         root = tk.Tk()
-        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxPlateNumber)
+        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxTileNumber)
         root.mainloop()
 

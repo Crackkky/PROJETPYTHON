@@ -3,16 +3,16 @@ import tkinter as tk
 from Projet.View.styleInterface import *
 
 
-class PlateView(tk.Frame):
-    def __init__(self, checkPlateNumber, checkOperatorNumber, master=None):
+class TileView(tk.Frame):
+    def __init__(self, checkTileNumber, checkOperatorNumber, master=None):
 
         self.frameInformation = None
-        self.checkPlateNumber = None
+        self.checkTileNumber = None
         self.infoLabel = None
         self.validateButton = None
         self.goalLabel = None
         self.frameButton = None
-        self.framePlate = None
+        self.frameTile = None
         self.frameOperator = None
         self.frameGoal = None
         self.returnButton = None
@@ -22,16 +22,16 @@ class PlateView(tk.Frame):
         rootStyle(master)
         self.width = WIDTH
         self.height = HEIGHT
-        self.checkPlateList = []
-        self.checkPlateVar = []
+        self.checkTileList = []
+        self.checkTileVar = []
         self.checkOperatorList = []
         self.checkOperatorVar = []
-        self.createPlateView(checkPlateNumber, checkOperatorNumber, master)
+        self.createTileView(checkTileNumber, checkOperatorNumber, master)
 
-    def createPlateView(self, checkPlateNumber, checkOperatorNumber, master):
+    def createTileView(self, checkTileNumber, checkOperatorNumber, master):
 
         self.frameInformation = tk.Frame(master)
-        self.checkPlateNumber = checkPlateNumber
+        self.checkTileNumber = checkTileNumber
         frameStyle(self.frameInformation)
 
         self.infoLabel = tk.Label(self.frameInformation)
@@ -52,8 +52,8 @@ class PlateView(tk.Frame):
         labelStyle(self.goalLabel)
         self.goalLabel.pack(fill='both', expand=5)
 
-        self.framePlate = tk.Frame(master)
-        frameStyle(self.framePlate)
+        self.frameTile = tk.Frame(master)
+        frameStyle(self.frameTile)
 
         self.frameOperator = tk.Frame(master)
         frameStyle(self.frameOperator)
@@ -62,12 +62,12 @@ class PlateView(tk.Frame):
         buttonStyle(self.returnButton)
 
         # init des checks buttons des plaques
-        for i in range(0, self.checkPlateNumber):
-            checkButton = tk.Checkbutton(self.framePlate, indicatoron=0, width=5)
+        for i in range(0, self.checkTileNumber):
+            checkButton = tk.Checkbutton(self.frameTile, indicatoron=0, width=5)
             checkButton.pack(side='left')
-            self.checkPlateList.append(checkButton)
+            self.checkTileList.append(checkButton)
             var = tk.IntVar()
-            self.checkPlateVar.append(var)
+            self.checkTileVar.append(var)
             checkButton["variable"] = var
             checkButtonStyle(checkButton)
 
@@ -88,30 +88,30 @@ class PlateView(tk.Frame):
             self.infoLabel["text"] = text
             self.frameInformation.place(x=150, y=100)
 
-    def showHidePlateButton(self, i, show):
+    def showHideTileButton(self, i, show):
         if show:
-            self.checkPlateList[i].pack(side='left')
+            self.checkTileList[i].pack(side='left')
         else:
-            self.checkPlateList[i].pack_forget()
+            self.checkTileList[i].pack_forget()
 
-    def showHideAllPlateButtons(self, show):
-        for i in range(self.checkPlateNumber):
-            self.showHidePlateButton(i, show)
+    def showHideAllTileButtons(self, show):
+        for i in range(self.checkTileNumber):
+            self.showHideTileButton(i, show)
 
     def hideShowGame(self, show):
         self.hideShowValidate(show)
         if show:
             self.frameGoal.place(x=0, y=0, height=53, width=71)
-            self.framePlate.pack(side=tk.TOP)
+            self.frameTile.pack(side=tk.TOP)
             self.frameOperator.pack(side=tk.LEFT)
             self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())
 
         else:
             self.frameGoal.place_forget()
-            self.framePlate.pack_forget()
+            self.frameTile.pack_forget()
             self.frameOperator.pack_forget()
             self.returnButton.place_forget()
-        self.showHideAllPlateButtons(show)
+        self.showHideAllTileButtons(show)
 
     def hideShowValidate(self, show):
         if show:

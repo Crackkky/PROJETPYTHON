@@ -1,12 +1,12 @@
 import tkinter as tk
 
-from Projet.View.plateView import PlateView
+from Projet.View.tileView import TileView
 from Projet.View.styleInterface import *
 
 
-class TrainingView(PlateView):
-    def __init__(self, checkPlateNumber, checkOperatorNumber, master=None):
-        super(TrainingView, self).__init__(checkPlateNumber, checkOperatorNumber, master)
+class TrainingView(TileView):
+    def __init__(self, checkTileNumber, checkOperatorNumber, master=None):
+        super(TrainingView, self).__init__(checkTileNumber, checkOperatorNumber, master)
 
         self.backButton = None
         self.newButton = None

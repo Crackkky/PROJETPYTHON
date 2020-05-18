@@ -5,10 +5,10 @@ import time
 
 def receiveInfos(ivyPlayer):  # TODO Improvable
     goal = 0
-    selectedPlates = []
-    possiblePlates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100]
+    selectedTiles = []
+    possibleTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100]
     message = ""
-    while goal == 0 or len(selectedPlates) < PLATE_NUMBER:
+    while goal == 0 or len(selectedTiles) < TILE_NUMBER:
         if ivyPlayer.messages:
             message = ivyPlayer.messages.pop()[0]
 
@@ -18,10 +18,10 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
             # print('GOAL IS :', goal)
             message = ""
 
-        plate = parseMessages(message, 'Lisa says: Plate is (.*)')
-        if plate and int(plate) in possiblePlates:
-            selectedPlates.append(Plate(int(plate)))
-            # print('PLATE IS :', plate)
+        tile = parseMessages(message, 'Lisa says: Tile is (.*)')
+        if tile and int(tile) in possibleTiles:
+            selectedTiles.append(Tile(int(tile)))
+            # print('TILE IS :', tile)
             message = ""
 
         m = parseMessages(message, 'Lisa says: (.*)')
@@ -30,7 +30,7 @@ def receiveInfos(ivyPlayer):  # TODO Improvable
 
         time.sleep(0.01)
 
-    return goal, selectedPlates
+    return goal, selectedTiles
 
 
 def playerMode(ivyPlayer):
@@ -49,11 +49,11 @@ def playerMode(ivyPlayer):
     while play:
         # Wait for new game information
         print('Now waiting for game information...')
-        goal, selectedPlates = receiveInfos(ivyPlayer)
+        goal, selectedTiles = receiveInfos(ivyPlayer)
         print('GOAL :')
         print(goal)
-        print('PLATES :')
-        printArray(selectedPlates)
+        print('TILES :')
+        printArray(selectedTiles)
 
         # Wait for the beginning of the game
         endOfTheGame = False
@@ -66,7 +66,7 @@ def playerMode(ivyPlayer):
                 x.start()
                 oneFound = util.gameStart(ivyPlayer,
                                           goal,
-                                          selectedPlates,
+                                          selectedTiles,
                                           'Jisoo',
                                           'Lisa',
                                           4)
@@ -84,7 +84,7 @@ def playerMode(ivyPlayer):
             message = waitMessage(ivyPlayer, 'Lisa says: found (.*)')
             if message == 'You':
                 print('I found')
-                if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                if numberFound == suggestSolution([], numberFound, selectedTiles):  # TESTED
                     print('Correct !')
                     scorePlusPlus(True)
                     sendMessage('Jisoo says: answer = correct')
@@ -109,7 +109,7 @@ def playerMode(ivyPlayer):
                 answerCorrect = waitMessage(ivyPlayer, 'Lisa says: answer = (.*)')
                 if answerCorrect == 'correct':
                     print('Your opponent found, your turn')
-                    if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                    if numberFound == suggestSolution([], numberFound, selectedTiles):  # TESTED
                         print('You both won !!!')
                         scorePlusPlus(True)
                         scorePlusPlus(False)
@@ -121,7 +121,7 @@ def playerMode(ivyPlayer):
 
                 if answerCorrect == 'wrong':
                     print('Your opponent failed, your turn')
-                    if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                    if numberFound == suggestSolution([], numberFound, selectedTiles):  # TESTED
                         print('You won !!!')
                         sendMessage('Jisoo says: answer = correct')
                         scorePlusPlus(True)

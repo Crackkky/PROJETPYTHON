@@ -5,11 +5,11 @@ from Projet.Model.IvyProject import IvyModel, sendMessage, IvyGetApplicationList
 from Projet.Model.util import suggestSolution, chooseYesNo
 
 stop = False
-PLATE_NUMBER = 6
+TILE_NUMBER = 6
 DEFAULT_TIME = 45
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
-POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
+POSSIBLE_TILES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
 SCORE = 0
 OPPONENT_SCORE = 0
 
@@ -24,7 +24,7 @@ def closestNumber(num1, num2, goal):
 
 
 # Start an online game
-def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTime):
+def gameStart(ivyObject, goal, selectedTiles, playerName, opponentName, gameTime):
     global stop
 
     timeEnd = time.time() + gameTime if gameTime != 0 else DEFAULT_TIME
@@ -50,7 +50,7 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTim
         else:
             scorePlusPlus(False)
     else:
-        answer = suggestSolution([], goal, selectedPlates)
+        answer = suggestSolution([], goal, selectedTiles)
         if answer == goal:
             sendMessage(playerName + ' says: answer = ' + str(answer))
             scorePlusPlus(True)

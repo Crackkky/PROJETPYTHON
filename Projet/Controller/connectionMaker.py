@@ -2,18 +2,18 @@ import tkinter as tk
 
 from Projet.Controller.onlineClientController import OnlineClientController
 from Projet.Controller.onlineServerController import OnlineServerController
-from Projet.Controller.plateController import PlateController
+from Projet.Controller.tileController import TileController
 from Projet.Model.onlineModel import OnlineModel
-from Projet.View.plateView import PlateView
+from Projet.View.tileView import TileView
 
 
-class ConnectionMaker(PlateController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER):
+class ConnectionMaker(TileController):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER):
         super(ConnectionMaker, self).__init__(parent, OnlineModel(),
-                                               PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root), OPERATORS)
+                                               TileView(TILE_NUMBER, OPERATOR_NUMBER, root), OPERATORS)
         self.parent = parent
         self.root = root
-        self.plateNumber = PLATE_NUMBER
+        self.tileNumber = TILE_NUMBER
         self.view.hideShowGame(0)
         self.view.displayInfo("Looking for an opponent...")
         self.root.update()
@@ -21,9 +21,9 @@ class ConnectionMaker(PlateController):
         self.root.destroy()
         self.root = tk.Tk()
         if self.model.isServer():
-            OnlineServerController(self.parent, self.root, self.operators, self.operatorNumber, self.plateNumber,
+            OnlineServerController(self.parent, self.root, self.operators, self.operatorNumber, self.tileNumber,
                                    self.model.ivyObject)
         else:
-            OnlineClientController(self.parent, self.root, self.operators, self.operatorNumber, self.plateNumber,
+            OnlineClientController(self.parent, self.root, self.operators, self.operatorNumber, self.tileNumber,
                                    self.model.ivyObject)
         self.root.mainloop()

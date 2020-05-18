@@ -1,7 +1,7 @@
-from Projet.Controller.plateController import PlateController
+from Projet.Controller.tileController import TileController
 
 
-class PlayableController(PlateController):
+class PlayableController(TileController):
     def __init__(self, parent, model, view, OPERATORS):
         super(PlayableController, self).__init__(parent, model, view, OPERATORS)
 
@@ -9,17 +9,17 @@ class PlayableController(PlateController):
 
     def validate(self):
 
-        if self.firstPlate is not None and self.secondPlate is not None and self.operator is not None:
-            self.model.doPlay(self.firstPlate, self.operators[self.operator], self.secondPlate)
+        if self.firstTile is not None and self.secondTile is not None and self.operator is not None:
+            self.model.doPlay(self.firstTile, self.operators[self.operator], self.secondTile)
             # Suppresion de l'affichage de la dernière plaque
-            self.view.showHidePlateButton(self.model.lenSelectedPlate, 0)
-            if self.model.lenSelectedPlate == 1:
+            self.view.showHideTileButton(self.model.lenSelectedTile, 0)
+            if self.model.lenSelectedTile == 1:
                 self.done()
             else:
                 self.view.displayInfo()
             self.updateView()
         else:
-            self.view.displayInfo("Please, select 2 plates and 1 operator")
+            self.view.displayInfo("Please, select 2 tiles and 1 operator")
 
     def done(self):
         self.view.displayInfo("You got a difference of "

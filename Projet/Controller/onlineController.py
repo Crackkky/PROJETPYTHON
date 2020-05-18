@@ -4,19 +4,19 @@ from tkinter import StringVar
 from Projet.Controller.playableController import PlayableController
 from Projet.Model.onlineModel import OnlineModel
 from Projet.Model.util import DEFAULT_TIME
-from Projet.View.plateView import PlateView
+from Projet.View.tileView import TileView
 
 
 class OnlineController(PlayableController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, model=None, view=None, ivyObject=None):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, model=None, view=None, ivyObject=None):
         if view is None:
-            view = PlateView(PLATE_NUMBER, OPERATOR_NUMBER, root)
+            view = TileView(TILE_NUMBER, OPERATOR_NUMBER, root)
         if model is None:
             model = OnlineModel()
         super(OnlineController, self).__init__(parent, model, view, OPERATORS)
         self.parent = parent
         self.root = root
-        self.plateNumber = PLATE_NUMBER
+        self.tileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
         self.maxTimer = 2
         self.beginTime = None
@@ -82,14 +82,14 @@ class OnlineController(PlayableController):
             self.view.displayInfo("Enter the closest Integer you found.")
 
 
-    def playerInit(self, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER, ivyObject, root):
+    def playerInit(self, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject, root):
         self.view.scoreLabel["text"] = self.model.getScoreString()
         self.stillTrying = True
         self.beginTime = time.time()
         self.checkUpdateTimer()
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
-        self.maxPlateNumber = PLATE_NUMBER
+        self.maxTileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
         self.completeButton("back", lambda: self.backMenu(root), self.view.returnButton)
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)

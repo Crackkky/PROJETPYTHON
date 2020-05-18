@@ -17,7 +17,7 @@ class OnlineModel(PlayableModel):
         self.clientTalk = 'Jisoo says:'
         self.serverTalk = 'Lisa says:'
         self.goalRegex = ' Goal is'
-        self.plateRegex = ' Plate is'
+        self.tileRegex = ' Tile is'
         self.foundIt = ' found it '
         self.point = ' point '
         self.play = ' play'

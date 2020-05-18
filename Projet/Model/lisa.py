@@ -24,20 +24,20 @@ def serverMode(ivyServer):
     play = True
     while play:
         # Send informations to Jisoo
-        goal, selectedPlates = generateGoalPlates(100, 999, 27)
+        goal, selectedTiles = generateGoalTiles(100, 999, 27)
 
         sendMessage('Lisa says: Goal is ' + str(goal))
 
-        if len(selectedPlates) > 0:
-            for i in range(0, len(selectedPlates)):
-                sendMessage('Lisa says: Plate is ' + str(selectedPlates[i].getNumber()))
+        if len(selectedTiles) > 0:
+            for i in range(0, len(selectedTiles)):
+                sendMessage('Lisa says: Tile is ' + str(selectedTiles[i].getNumber()))
         else:
             print('Empty array!')
 
         print('GOAL :')
         print(goal)
-        print('PLATES :')
-        printArray(selectedPlates)
+        print('TILES :')
+        printArray(selectedTiles)
         x = threading.Thread(target=thread_function)
 
         # Start the game
@@ -45,7 +45,7 @@ def serverMode(ivyServer):
         sendMessage('Lisa says: start!')
 
         x.start()
-        oneFound = util.gameStart(ivyServer, goal, selectedPlates, 'Lisa', 'Jisoo', 4)
+        oneFound = util.gameStart(ivyServer, goal, selectedTiles, 'Lisa', 'Jisoo', 4)
         print('Enter anything to proceed : ')
         x.join()
 
@@ -60,7 +60,7 @@ def serverMode(ivyServer):
                 print('I found!')
                 sendMessage('Lisa says: found I')
 
-                if numberFound == suggestSolution([], numberFound, selectedPlates):  # TESTED
+                if numberFound == suggestSolution([], numberFound, selectedTiles):  # TESTED
                     print('Correct !')  # TESTED
                     scorePlusPlus(True)
                     sendMessage('Lisa says: answer = correct')
@@ -89,7 +89,7 @@ def serverMode(ivyServer):
                 sendMessage('Lisa says: found Both')
 
                 # Lisa is correct
-                if numberFound == suggestSolution([], numberFound, selectedPlates):
+                if numberFound == suggestSolution([], numberFound, selectedTiles):
                     sendMessage('Lisa says: answer = correct')
                     answerCorrect = waitMessage(ivyServer, 'Jisoo says: answer = (.*)')
 

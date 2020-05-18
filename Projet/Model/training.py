@@ -3,7 +3,7 @@ import sys
 from random import *
 
 from Projet.Model.operation import *
-from Projet.Model.plate import *
+from Projet.Model.tile import *
 from Projet.Model.step import *
 from Projet.Model.util import *
 
@@ -19,23 +19,23 @@ def removeHistory(array, index):
     return array
 
 
-def findSolution(plateArray, objective):
+def findSolution(tileArray, objective):
     print("\nPlease wait, Daisy OBVIOUSLY heard your request...\nJust let her some time to think about it...")
     operators = '*+/-'
-    operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(plateArray) - 1))
-    platePermutation = list(itertools.permutations(range(0, len(plateArray))))
+    operatorsCartesian = list(itertools.product(range(0, len(operators)), repeat=len(tileArray) - 1))
+    tilePermutation = list(itertools.permutations(range(0, len(tileArray))))
     best = None
     # Pour chaque plaque
-    for i in platePermutation:
+    for i in tilePermutation:
         # Pour chaque operateur
         for j in operatorsCartesian:
             stringOperation = ""
-            for k in range(0, len(plateArray) - 1):
+            for k in range(0, len(tileArray) - 1):
                 stringOperation += '('
-            stringOperation += plateArray[i[0]].toString()
+            stringOperation += tileArray[i[0]].toString()
             # Nous generons l'operation en string
-            for k in range(1, len(plateArray)):
-                stringOperation += operators[j[k - 1]] + plateArray[i[k]].toString() + ')'
+            for k in range(1, len(tileArray)):
+                stringOperation += operators[j[k - 1]] + tileArray[i[k]].toString() + ')'
             value = eval(stringOperation)
             actualDifference = abs(objective - value)
             if best is None or actualDifference < difference:
@@ -55,35 +55,35 @@ def trainingMode():
 
     while yes:
 
-        goal, originalPlates = generateGoalPlates(100, 999, 27)
-        selectedPlates = originalPlates.copy()
+        goal, originalTiles = generateGoalTiles(100, 999, 27)
+        selectedTiles = originalTiles.copy()
 
-        # selectedPlates = [Plate(2), Plate(4), Plate(25), Plate(1), Plate(75), Plate(8)]
+        # selectedTiles = [Tile(2), Tile(4), Tile(25), Tile(1), Tile(75), Tile(8)]
         history = []
-        lenSelectedPlate = len(selectedPlates)
+        lenSelectedTile = len(selectedTiles)
 
         # Start training mode
-        while lenSelectedPlate != 1:
+        while lenSelectedTile != 1:
             while True:
-                # Choose a plate
+                # Choose a tile
                 print('You have : ')
-                printArray(selectedPlates)
+                printArray(selectedTiles)
                 print('You must find : ' + str(goal) + '\n')
 
                 #  Menu time!
                 menuSelection = chooseMenu()
                 if menuSelection == 1:  # TODO dur?
-                    userSelections = chooseOperation(selectedPlates)
+                    userSelections = chooseOperation(selectedTiles)
 
-                    # Do stuff with your plates
+                    # Do stuff with your tiles
                     try:
-                        operationFromArray(history, selectedPlates, userSelections[0], userSelections[1],
+                        operationFromArray(history, selectedTiles, userSelections[0], userSelections[1],
                                            userSelections[2])
-                        lenSelectedPlate = len(selectedPlates)
+                        lenSelectedTile = len(selectedTiles)
                         break
                     except Exception as e:
                         print(e)
-                        printArray(selectedPlates)
+                        printArray(selectedTiles)
                     print('')
                 elif menuSelection == 2:  # TODO Durdur
                     print('\nYou\'ve previously done : ')
@@ -93,17 +93,17 @@ def trainingMode():
                     print('\nYou\'ve previously done : ')
                     printArray(history)
                     previousStepIndex = choosePreviousStep(len(history))
-                    selectedPlates = history[previousStepIndex].plateArray
+                    selectedTiles = history[previousStepIndex].tileArray
                     history = removeHistory(history, previousStepIndex)
-                    printArray(selectedPlates)
+                    printArray(selectedTiles)
                     print('')
                 elif menuSelection == 4:  # TODO Durdur
                     try:
-                        best = findSolution(originalPlates, goal)
-                        selectedPlates = [Plate(int(eval(best[0])))]
-                        lenSelectedPlate = len(selectedPlates)
+                        best = findSolution(originalTiles, goal)
+                        selectedTiles = [Tile(int(eval(best[0])))]
+                        lenSelectedTile = len(selectedTiles)
                         bestLisible = best[0].replace('(', '').replace(')', '')
-                        print("Best solution :", bestLisible, " = ", selectedPlates[0].getNumber(), ', that\'s ',
+                        print("Best solution :", bestLisible, " = ", selectedTiles[0].getNumber(), ', that\'s ',
                               best[1],
                               " different from the solution (operations executed from left to right).\nThanks Daisy <3")
                         break
@@ -115,8 +115,8 @@ def trainingMode():
             print('______________________________________________________')
             print('')
 
-        print('Your last plate is : ')
-        printArray(selectedPlates)
+        print('Your last tile is : ')
+        printArray(selectedTiles)
         print('The goal was : ')
         print(goal)
 

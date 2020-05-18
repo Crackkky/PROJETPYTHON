@@ -4,17 +4,17 @@ from random import randint
 
 from Projet.Model.IvyProject import *
 from Projet.Model.operation import Operation
-from Projet.Model.plate import Plate
+from Projet.Model.tile import Tile
 from Projet.Model.step import Step
 
 stop = False
-PLATE_NUMBER = 6
+TILE_NUMBER = 6
 DEFAULT_TIME = 45
 MIN_GOAL = 100
 MAX_GOAL = 999
 OPERATORS = '*+/-'
 OPERATOR_NUMBER = len(OPERATORS)
-POSSIBLE_PLATES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
+POSSIBLE_TILES = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 25, 25, 50, 50, 75, 75, 100, 100]
 SCORE = 0
 OPPONENT_SCORE = 0
 
@@ -55,37 +55,37 @@ def chooseYesNo():
             print('Erreur operator !')
 
 
-def chooseOperation(selectedPlates):
-    lenSelectedPlate = len(selectedPlates)
+def chooseOperation(selectedTiles):
+    lenSelectedTile = len(selectedTiles)
     print('')
-    printArray(selectedPlates)
-    userSelection1 = chooseIndex(selectedPlates, lenSelectedPlate)
+    printArray(selectedTiles)
+    userSelection1 = chooseIndex(selectedTiles, lenSelectedTile)
 
     print('')
     userSelectionOp = chooseOperator()
 
     print('')
-    printArray(selectedPlates)
-    userSelection2 = chooseIndex(selectedPlates, lenSelectedPlate)
+    printArray(selectedTiles)
+    userSelection2 = chooseIndex(selectedTiles, lenSelectedTile)
     while userSelection1 == userSelection2:
-        print('Please don\'t choose the same plate twice!')
-        userSelection2 = chooseIndex(selectedPlates, lenSelectedPlate)
+        print('Please don\'t choose the same tile twice!')
+        userSelection2 = chooseIndex(selectedTiles, lenSelectedTile)
 
     return [userSelection1, userSelectionOp, userSelection2]
 
 
-def chooseIndex(selectedPlates, lenArray):
+def chooseIndex(selectedTiles, lenArray):
     while True:
         while True:
             try:
-                index = int(input('Choose a plate number : '))
+                index = int(input('Choose a tile number : '))
                 break
             except Exception as e:
                 print(e)
         if index > lenArray or index <= 0:
             print('Erreur index !')
         else:
-            print('You\'ve chosen : ' + str(selectedPlates[index - 1].getNumber()))
+            print('You\'ve chosen : ' + str(selectedTiles[index - 1].getNumber()))
             return index - 1
 
 
@@ -117,7 +117,7 @@ def connexionIvy(opponentName):
 
 
 # Start an online game
-def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTime):
+def gameStart(ivyObject, goal, selectedTiles, playerName, opponentName, gameTime):
     global stop
     print('')
     print('The game will now start !')
@@ -150,7 +150,7 @@ def gameStart(ivyObject, goal, selectedPlates, playerName, opponentName, gameTim
             print('Your opponent WON!')
             scorePlusPlus(False)
     else:
-        answer = suggestSolution([], goal, selectedPlates)
+        answer = suggestSolution([], goal, selectedTiles)
         if answer == goal:
             sendMessage(playerName + ' says: answer = ' + str(answer))
             scorePlusPlus(True)
@@ -166,20 +166,20 @@ def getNumberOfPlayer():
     return len(listPlayer)
 
 
-# Generate the usable plates and goal
-def generateGoalPlates(goalMin, goalMax, nbPlate):
+# Generate the usable tiles and goal
+def generateGoalTiles(goalMin, goalMax, nbTile):
     goal = randint(goalMin, goalMax)
-    possiblePlates = POSSIBLE_PLATES.copy()
-    selectedPlates = []
+    possibleTiles = POSSIBLE_TILES.copy()
+    selectedTiles = []
 
-    # Generate plates
+    # Generate tiles
     for i in range(1, 7):
-        plateNumber = randint(0, nbPlate)
-        selectedPlates.append(Plate(possiblePlates[plateNumber]))
-        possiblePlates.pop(plateNumber)
-        nbPlate -= 1
+        tileNumber = randint(0, nbTile)
+        selectedTiles.append(Tile(possibleTiles[tileNumber]))
+        possibleTiles.pop(tileNumber)
+        nbTile -= 1
 
-    return goal, selectedPlates
+    return goal, selectedTiles
 
 
 # Return the message or "" else
@@ -198,25 +198,25 @@ def parseMessages(msg, regex):
 
 
 # Do the operation from the array between index1 and index2
-# Append the result and remove the used plates
-def operationFromArray(history, plateArray, index1, operator, index2):
-    # print('Vous essayez de faire : ' + str(plateArray[index1].getNumber()) + operator
-    # + str(plateArray[index2].getNumber()))
+# Append the result and remove the used tiles
+def operationFromArray(history, tileArray, index1, operator, index2):
+    # print('Vous essayez de faire : ' + str(tileArray[index1].getNumber()) + operator
+    # + str(tileArray[index2].getNumber()))
 
     try:
-        operation = Operation(plateArray[index1].getNumber(), operator, plateArray[index2].getNumber())
-        history.append(Step(operation, plateArray))
-        plateArray.append(Plate(operation.do()))
+        operation = Operation(tileArray[index1].getNumber(), operator, tileArray[index2].getNumber())
+        history.append(Step(operation, tileArray))
+        tileArray.append(Tile(operation.do()))
 
     except Exception as e:
         raise e
 
     if index1 < index2:
-        plateArray.remove(plateArray[index2])
-        plateArray.remove(plateArray[index1])
+        tileArray.remove(tileArray[index2])
+        tileArray.remove(tileArray[index1])
     else:
-        plateArray.remove(plateArray[index1])
-        plateArray.remove(plateArray[index2])
+        tileArray.remove(tileArray[index1])
+        tileArray.remove(tileArray[index2])
 
 
 def printArray(array):
@@ -288,36 +288,36 @@ def scoreToString(player):
 
 
 # Suggest a solution
-def suggestSolution(history, goal, selectedPlates):
-    lenSelectedPlate = len(selectedPlates)
-    while lenSelectedPlate != 1:
+def suggestSolution(history, goal, selectedTiles):
+    lenSelectedTile = len(selectedTiles)
+    while lenSelectedTile != 1:
         while True:
-            # Choose a plate
+            # Choose a tile
             print('You have : ')
-            printArray(selectedPlates)
+            printArray(selectedTiles)
             print('You must find : ' + str(goal) + '\n')
-            userSelections = chooseOperation(selectedPlates)
+            userSelections = chooseOperation(selectedTiles)
 
-            # Do stuff with your plates
+            # Do stuff with your tiles
             try:
-                operationFromArray(history, selectedPlates, userSelections[0], userSelections[1],
+                operationFromArray(history, selectedTiles, userSelections[0], userSelections[1],
                                    userSelections[2])
-                lenSelectedPlate = len(selectedPlates)
+                lenSelectedTile = len(selectedTiles)
                 break
             except Exception as e:
                 print(e)
-                printArray(selectedPlates)
+                printArray(selectedTiles)
             print('')
 
         print('______________________________________________________')
         print('')
 
-    print('Your last plate is : ')
-    printArray(selectedPlates)
+    print('Your last tile is : ')
+    printArray(selectedTiles)
     print('The goal was : ')
     print(goal)
 
-    return selectedPlates[0].getNumber()
+    return selectedTiles[0].getNumber()
 
 
 # Ask in another thread for an input

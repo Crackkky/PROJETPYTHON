@@ -1,17 +1,17 @@
 import itertools
 
-from Projet.Model.plateModel import PlateModel
+from Projet.Model.tileModel import TileModel
 from Projet.Model.util import *
 
 
-class PlayableModel(PlateModel):
+class PlayableModel(TileModel):
     def __init__(self):
         super(PlayableModel, self).__init__()
         self.history = []
 
     def doPlay(self, indice1, operator, indice2):
-        operationFromArray(self.history, self.selectedPlates, indice1, operator, indice2)
-        self.lenSelectedPlate = len(self.selectedPlates)
+        operationFromArray(self.history, self.selectedTiles, indice1, operator, indice2)
+        self.lenSelectedTile = len(self.selectedTiles)
 
     def historyToString(self):
         res = ""

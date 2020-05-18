@@ -6,13 +6,13 @@ from Projet.View.trainingView import TrainingView
 
 
 class TrainingController(PlayableController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, PLATE_NUMBER):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER):
         self.operators = OPERATORS
         self.operatorNumber = OPERATOR_NUMBER
-        self.maxPlateNumber = PLATE_NUMBER
+        self.maxTileNumber = TILE_NUMBER
 
         super(TrainingController, self).__init__(parent, TrainingModel(),
-                                                 TrainingView(self.maxPlateNumber, self.operatorNumber, root), self.operators)
+                                                 TrainingView(self.maxTileNumber, self.operatorNumber, root), self.operators)
 
         self.completeButton("Back Step", lambda: self.backStep(), self.view.backButton)
         self.completeButton("Back", lambda: self.backMenu(root), self.view.returnButton)
@@ -34,13 +34,13 @@ class TrainingController(PlayableController):
 
     def newOne(self):
         self.view.displayInfo()
-        self.view.showHideAllPlateButtons(1)
+        self.view.showHideAllTileButtons(1)
         self.model = TrainingModel()
         self.updateView()
 
     def backStep(self):
         if len(self.model.history) > 0:
-            self.view.showHidePlateButton(self.model.lenSelectedPlate, 1)
+            self.view.showHideTileButton(self.model.lenSelectedTile, 1)
             self.model.previousHistory()
             self.updateView()
             self.view.displayInfo()
