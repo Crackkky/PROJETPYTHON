@@ -113,6 +113,7 @@ class OnlineController(PlayableController):
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
         self.view.hideShowGame(1)
         self.view.hideShowReturnButton(0)
+        self.view.displayInfo()
         self.updateView()
 
     def checkPoint(self):
