@@ -12,16 +12,15 @@ class OnlineClientController(OnlineController):
             .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER ,
                                                      OnlineClientModel(TILE_NUMBER, ivyObject),
                                                      OnlineView(TILE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
-
+        self.root.title("Client")
     def play(self):
         if not self.model.waitForOpponent():
             self.model.ready()
             self.root.after(1, lambda :self.play())
         else:
             self.model.receiveInfos()
-            self.checkOpponent()
             self.playerInit(self.operators,self.operatorNumber,self.tileNumber,self.ivyObject,self.root)
-            self.view.displayInfo("Client")
+            self.checkOpponent()
 
     def sendDifference(self):
         msg = self.model.getTurn()

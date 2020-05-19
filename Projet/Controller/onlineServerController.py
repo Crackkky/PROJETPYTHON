@@ -11,6 +11,7 @@ class OnlineServerController(OnlineController):
             .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER,
                       OnlineServerModel(ivyObject),
                       OnlineView(TILE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
+        self.root.title("Server")
 
     def play(self):
         if not self.model.waitForOpponent():
@@ -20,9 +21,8 @@ class OnlineServerController(OnlineController):
             time.sleep(0.01)
             self.ivyObject.clearMessages()
             self.model.sendInfos()
-            self.checkOpponent()
             self.playerInit(self.operators, self.operatorNumber, self.tileNumber, self.ivyObject, self.root)
-            self.view.displayInfo("Server")
+            self.checkOpponent()
 
     def launchSecondRound(self):
         value = self.model.getDiff()

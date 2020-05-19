@@ -62,7 +62,7 @@ class OnlineController(PlayableController):
         if self.model.isFound():
             self.stillTrying = False
             self.checkPoint()
-        else:
+        elif self.stillTrying:
             self.root.after(100, lambda: self.checkOpponent())
 
     def checkUpdateTimer(self):
@@ -106,7 +106,7 @@ class OnlineController(PlayableController):
         self.operatorNumber = OPERATOR_NUMBER
         self.maxTileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
-        self.completeButton("back", lambda: self.backMenu(root), self.view.returnButton)
+        self.completeButton("Back", lambda: self.backMenu(root), self.view.returnButton)
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
         self.view.hideShowGame(1)
         self.updateView()
