@@ -37,6 +37,7 @@ class OnlineController(PlayableController):
         self.model.found()
         self.view.displayInfo("Please, play without any mistake")
         self.completeButton("Validate", lambda: self.validate(), self.view.validateButton)
+        self.view.hideShowReturnButton(0)
         self.updateView()
         self.root.update()
 
@@ -57,6 +58,7 @@ class OnlineController(PlayableController):
         else:
             self.view.displayInfo("Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so bad, maybe next time ? ")
             self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+            self.view.hideShowReturnButton(1)
             self.ivyObject.clearMessages()
 
     def checkOpponent(self):
@@ -110,6 +112,7 @@ class OnlineController(PlayableController):
         self.completeButton("Back", lambda x=self.root:self.backMenuFct(x), self.view.returnButton)
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
         self.view.hideShowGame(1)
+        self.view.hideShowReturnButton(0)
         self.updateView()
 
     def checkPoint(self):
@@ -131,6 +134,7 @@ class OnlineController(PlayableController):
                 self.view.displayInfo("You got a point, yay ! Good job bro !")
             self.view.hideShowGame(1)
             self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
+            self.view.hideShowReturnButton(1)
             self.updateView()
             if self.bothPlay:
                 self.bothPlay = False

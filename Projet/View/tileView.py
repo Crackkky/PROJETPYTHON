@@ -104,17 +104,22 @@ class TileView(tk.Frame):
             self.frameGoal.place(x=0, y=0, height=53, width=71)
             self.frameTile.pack(side=tk.TOP)
             self.frameOperator.pack(side=tk.LEFT)
-            self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())
 
         else:
             self.frameGoal.place_forget()
             self.frameTile.pack_forget()
             self.frameOperator.pack_forget()
-            self.returnButton.place_forget()
         self.showHideAllTileButtons(show)
+        self.hideShowReturnButton(show)
 
     def hideShowValidate(self, show):
         if show:
             self.frameButton.pack(side=tk.BOTTOM)
         else:
             self.frameButton.pack_forget()
+
+    def hideShowReturnButton(self, show):
+        if show:
+            self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())
+        else:
+            self.returnButton.place_forget()
