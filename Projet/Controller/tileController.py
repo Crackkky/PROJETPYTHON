@@ -43,8 +43,6 @@ class TileController:
             checkButton.deselect()
             checkButton["onvalue"] = i
 
-
-
     # Controle qu'il n'y a que 2 plaques selectionnées, sinon retire la plus anciennce
     def checkMaxOfTile(self, pos):
         if self.firstTile == pos:
@@ -75,8 +73,7 @@ class TileController:
         button["command"] = fct
 
     def backMenu(self, root):
-        root.after(100, lambda :root.destroy())
+        root.after(100, lambda: root.destroy())
         new = tk.Tk()
         self.parent.__init__(new, self.operators, self.operatorNumber, self.maxTileNumber)
         new.mainloop()
-

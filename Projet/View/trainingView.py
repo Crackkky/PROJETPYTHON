@@ -13,9 +13,9 @@ class TrainingView(TileView):
         self.solutionButton = None
         self.historyLabel = None
         self.frameHistory = None
-
         self.createTrainingView(master)
 
+    # Créer la vue d'entrainement
     def createTrainingView(self, master):
 
         self.backButton = tk.Button(self.frameButton)

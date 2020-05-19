@@ -10,7 +10,7 @@ from Projet.View.tileView import TileView
 class ConnectionMaker(PlayableController):
     def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER):
         super(ConnectionMaker, self).__init__(parent, OnlineModel(),
-                                               TileView(TILE_NUMBER, OPERATOR_NUMBER, root), OPERATORS)
+                                              TileView(TILE_NUMBER, OPERATOR_NUMBER, root), OPERATORS)
         self.parent = parent
         self.root = root
         self.maxTileNumber = TILE_NUMBER
@@ -21,13 +21,16 @@ class ConnectionMaker(PlayableController):
         self.root.destroy()
         self.root = tk.Tk()
         if self.model.isServer():
-            OnlineServerController(self.parent, self.root, self.operators, self.operatorNumber, self.maxTileNumber, self.backMenu,
+            OnlineServerController(self.parent, self.root, self.operators, self.operatorNumber, self.maxTileNumber,
+                                   self.backMenu,
                                    self.model.ivyObject)
         else:
-            OnlineClientController(self.parent, self.root, self.operators, self.operatorNumber, self.maxTileNumber, self.backMenu,
+            OnlineClientController(self.parent, self.root, self.operators, self.operatorNumber, self.maxTileNumber,
+                                   self.backMenu,
                                    self.model.ivyObject)
         self.root.mainloop()
 
+    # TODO
     def backMenu(self, root=None):
         self.model.stopPlay()
         if root is None:

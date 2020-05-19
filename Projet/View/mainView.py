@@ -1,13 +1,4 @@
-"""
-Created on 1 Feb 2020
-
-@author: crack
-"""
-
 import tkinter as tk
-from tkinter import *
-
-from Projet.Model.lisa import *
 from Projet.View.styleInterface import buttonStyle, labelStyle
 
 
@@ -24,7 +15,6 @@ class MainView(tk.Frame):
         self.grid()
 
     def createWidgets(self):
-
         positions = [(1, 1, 1), (1, 2, 1), (1, 3, 1)]
         self.label = tk.Label(self, borderwidth=2, relief="sunken")
         self.label.grid(row=0, column=1, columnspan=3)

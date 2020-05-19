@@ -7,8 +7,10 @@ from Projet.Model.util import *
 class TrainingModel(PlayableModel):
     def __init__(self):
         super(TrainingModel, self).__init__()
+        self.selectedTiles = [Tile(0)]
         self.initGame()
 
+    # Come back to the previous step in the history
     def previousHistory(self):
         previousStepIndex = len(self.history)
         if previousStepIndex > 0:
@@ -16,6 +18,7 @@ class TrainingModel(PlayableModel):
             self.history = self.removeHistory(self.history, previousStepIndex - 1)
             self.lenSelectedTile = len(self.selectedTiles)
 
+    # Daisy bot will get the solution for you
     def findSolution(self):
         tileArray = self.originalTiles
         objective = self.goal
@@ -44,6 +47,7 @@ class TrainingModel(PlayableModel):
                         break
         return best, int(difference)
 
+    # Delete the history
     def removeHistory(self, array, index):
         del array[index:len(array)]
         return array

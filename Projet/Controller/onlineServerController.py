@@ -16,7 +16,7 @@ class OnlineServerController(OnlineController):
     def play(self):
         if not self.model.waitForOpponent():
             self.model.ready()
-            self.root.after(20, lambda :self.play())
+            self.root.after(20, lambda: self.play())
         else:
             time.sleep(0.01)
             self.ivyObject.clearMessages()
@@ -27,7 +27,7 @@ class OnlineServerController(OnlineController):
     def launchSecondRound(self):
         value = self.model.getDiff()
         if not self.model.isInteger(value):
-            self.root.after(50, lambda :self.launchSecondRound())
+            self.root.after(50, lambda: self.launchSecondRound())
         else:
             clientValue = self.model.getDifference(int(value))
             serverValue = self.model.getDifference(int(self.differenceSaid.get()))

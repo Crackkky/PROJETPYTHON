@@ -8,6 +8,7 @@ class OnlineServerModel(OnlineModel):
         self.write = self.serverTalk
         self.read = self.clientTalk
 
+    # Send the informations (goal, tile array)
     def sendInfos(self):
         self.initGame()
         self.type = self.SERVER
@@ -16,14 +17,18 @@ class OnlineServerModel(OnlineModel):
         for i in range(0, len(self.selectedTiles)):
             self.sendMsg(self.tileRegex + ' ' + str(self.selectedTiles[i].getNumber()))
 
+    # Send a message to tell the player it's his turn to suggest a solution
     def clientTurn(self):
-        self.sendMsg(self.play+str(self.CLIENT))
+        self.sendMsg(self.play + str(self.CLIENT))
 
+    # Send a message to tell it's the server turn to suggest a solution
     def serverTurn(self):
-        self.sendMsg(self.play+str(self.SERVER))
+        self.sendMsg(self.play + str(self.SERVER))
 
+    # Send a message to tell that both player found a solution with the same difference
     def bothTurn(self):
-        self.sendMsg(self.play+str(self.BOTH))
+        self.sendMsg(self.play + str(self.BOTH))
 
+    # Get the opponent difference (when time is up)
     def getDiff(self):
-        return self.getMsg(self.diff+'(.*)')
+        return self.getMsg(self.diff + '(.*)')

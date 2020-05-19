@@ -23,6 +23,7 @@ class OnlineView(TileView):
         self.differenceEntry = tk.Entry(self.frameInformation)
         entryStyle(self.differenceEntry)
 
+    # Permet de montrer ou cacher le score et le chrono
     def hideShowGame(self, show):
         super(OnlineView, self).hideShowGame(show)
         if show:
@@ -33,9 +34,9 @@ class OnlineView(TileView):
             self.frameTime.place_forget()
             self.hideShowEntry(0)
 
+    # TODO
     def hideShowEntry(self, show):
         if show:
             self.differenceEntry.pack()
         else:
             self.differenceEntry.pack_forget()
-

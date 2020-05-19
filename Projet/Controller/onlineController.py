@@ -3,7 +3,6 @@ from tkinter import StringVar
 
 from Projet.Controller.playableController import PlayableController
 from Projet.Model.onlineModel import OnlineModel
-from Projet.Model.util import DEFAULT_TIME
 from Projet.View.tileView import TileView
 
 
@@ -23,6 +22,7 @@ class OnlineController(PlayableController):
         self.bothPlay = False
         self.pointSeparate = False
         self.wonPoint = False
+        self.maxTileNumber = 0
         self.beginTime = None
         self.gotTime = None
         self.stillTrying = None
@@ -41,7 +41,6 @@ class OnlineController(PlayableController):
         self.updateView()
         self.root.update()
 
-
     def done(self):
         difference = self.model.getDifference()
         if difference != 0:
@@ -56,7 +55,8 @@ class OnlineController(PlayableController):
             self.bothPlay = False
             self.checkPoint()
         else:
-            self.view.displayInfo("Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so bad, maybe next time ? ")
+            self.view.displayInfo(
+                "Point for you, Lisa would be proud !" if self.wonPoint else "Oh really ! Its so bad, maybe next time ? ")
             self.completeButton("Play Again", lambda: self.playAgain(), self.view.validateButton)
             self.view.hideShowReturnButton(1)
             self.ivyObject.clearMessages()
@@ -128,7 +128,7 @@ class OnlineController(PlayableController):
             self.root.after(1, lambda: self.getPointFromOpponent())
         else:
             if (self.pointSeparate and point is 0) or self.pointSeparate is False:
-                self.wonPoint = self.model.countScore(1-point, self.wonPoint)
+                self.wonPoint = self.model.countScore(1 - point, self.wonPoint)
             if not self.wonPoint:
                 self.view.displayInfo("Arg so bad, maybe next time ?")
             else:

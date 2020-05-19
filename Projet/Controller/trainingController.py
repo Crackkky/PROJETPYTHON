@@ -12,7 +12,8 @@ class TrainingController(PlayableController):
         self.maxTileNumber = TILE_NUMBER
 
         super(TrainingController, self).__init__(parent, TrainingModel(),
-                                                 TrainingView(self.maxTileNumber, self.operatorNumber, root), self.operators)
+                                                 TrainingView(self.maxTileNumber, self.operatorNumber, root),
+                                                 self.operators)
 
         self.completeButton("Back Step", lambda: self.backStep(), self.view.backButton)
         self.completeButton("Back", lambda: self.backMenu(root), self.view.returnButton)

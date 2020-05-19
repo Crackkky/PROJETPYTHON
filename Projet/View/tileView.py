@@ -17,7 +17,6 @@ class TileView(tk.Frame):
         self.frameGoal = None
         self.returnButton = None
 
-
         tk.Frame.__init__(self, master)
         rootStyle(master)
         self.width = WIDTH
@@ -28,8 +27,8 @@ class TileView(tk.Frame):
         self.checkOperatorVar = []
         self.createTileView(checkTileNumber, checkOperatorNumber, master)
 
+    # Créer la vue de proposition de solution
     def createTileView(self, checkTileNumber, checkOperatorNumber, master):
-
         self.frameInformation = tk.Frame(master)
         self.checkTileNumber = checkTileNumber
         frameStyle(self.frameInformation)
@@ -81,6 +80,7 @@ class TileView(tk.Frame):
             checkButton["variable"] = var
             checkButtonStyle(checkButton)
 
+    # Montre les widgets de proposition de solution
     def displayInfo(self, text=None):
         if text is None:
             self.frameInformation.place_forget()
@@ -98,6 +98,7 @@ class TileView(tk.Frame):
         for i in range(self.checkTileNumber):
             self.showHideTileButton(i, show)
 
+    # Cache les widgets de proposition de solution
     def hideShowGame(self, show):
         self.hideShowValidate(show)
         if show:
@@ -112,12 +113,14 @@ class TileView(tk.Frame):
         self.showHideAllTileButtons(show)
         self.hideShowReturnButton(show)
 
+    # Montre ou cache le bouton validée
     def hideShowValidate(self, show):
         if show:
             self.frameButton.pack(side=tk.BOTTOM)
         else:
             self.frameButton.pack_forget()
 
+    # Montre ou cache le bouton de retour
     def hideShowReturnButton(self, show):
         if show:
             self.returnButton.place(x=0, y=self.height - self.returnButton.winfo_reqheight())

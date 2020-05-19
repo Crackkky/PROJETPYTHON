@@ -33,6 +33,7 @@ class OnlineModel(PlayableModel):
         self.write = None
         self.read = None
 
+    # Connexion des joueurs, le premier aura le comportement su serveur et l'autre du joueur
     def connect(self, leaveFunction):
         self.ivyObject = self.connexionIvy(self.opponentName, leaveFunction)
         time.sleep(1)
@@ -64,6 +65,7 @@ class OnlineModel(PlayableModel):
 
         return res
 
+    # Return the message if there is one, else return ""
     def getMsgWithoutParse(self):
         if self.ivyObject.messages:
             return self.ivyObject.messages.pop()[0]
@@ -83,64 +85,75 @@ class OnlineModel(PlayableModel):
         time.sleep(0.01)
         return ivyObject
 
+    # Send a formated message
     def sendMsg(self, msg, mybind=None):
         if mybind is None:
             mybind = self.write
         sendMessage(mybind + msg)
 
+    # Send a "found" message (used when someone find the solution before the end of the time)
     def found(self):
-        self.sendMsg(self.foundIt+"!")
+        self.sendMsg(self.foundIt + "!")
 
+    # Test if the opponent found the solution
     def isFound(self):
-        msg = self.getMsg(self.foundIt+'(.*)')
+        msg = self.getMsg(self.foundIt + '(.*)')
         return True if msg else False
 
+    # Get the score
     def pointGetter(self):
-        msg = self.getMsg(self.point+"(.*)")
-        if msg :
+        msg = self.getMsg(self.point + "(.*)")
+        if msg:
             return int(msg)
         return msg
 
-    #True if point for oppenent
+    # True if point for oppenent
     def pointSetter(self, loose):
-        self.sendMsg(self.point+str(loose))
+        self.sendMsg(self.point + str(loose))
 
-    #True if point for opponent
+    # Add or substract the score
     def countScore(self, loose, wonAPoint):
         if loose is not None:
-            self.ourScore+=1-loose
-            self.opponentScore+=loose
+            self.ourScore += 1 - loose
+            self.opponentScore += loose
         if not wonAPoint and loose is 1:
             return False
         return True
 
+    # Function to test if both player want to play again
     def doWePlayAgain(self):
         msg = self.getMsg(self.stop + '(.*)')
-        if not msg :
+        if not msg:
             return False
         else:
             return True
 
+    # Send a "ready" message (used when the connexion is made)
     def ready(self):
         self.sendMsg(self.stop + ' No')
 
+    # Quit the game
     def stopPlay(self):
         self.ivyObject.clearMessages()
         IvyStop()
 
+    # Wait an opponent
     def waitForOpponent(self):
         self.sendMsg(' ready!')
         ready = self.getMsg(' ready(.*)')
         return ready
 
+    # Get the score in a string
     def getScoreString(self):
-        return "Score :\n"+ "You : " + str(self.ourScore) +"\n" + "Other :" + str(self.opponentScore)
+        return "Score :\n" + "You : " + str(self.ourScore) + "\n" + "Other :" + str(self.opponentScore)
 
+    # Test if value is an Integer
     def isInteger(self, value):
         try:
             return True if self.min_goal <= int(value) <= self.max_goal else False
         except ValueError:
             return False
 
+    # Test if self is a server or a player
     def isServer(self):
         return self.type is self.SERVER
