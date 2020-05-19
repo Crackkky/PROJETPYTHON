@@ -1,5 +1,7 @@
 import time
 
+from ivy.std_api import IvyStop
+
 from Projet.Model.IvyModel import IvyModel
 from Projet.Model.playableModel import PlayableModel, sendMessage
 from Projet.Model.util import MIN_GOAL, MAX_GOAL
@@ -31,8 +33,8 @@ class OnlineModel(PlayableModel):
         self.write = None
         self.read = None
 
-    def connect(self):
-        self.ivyObject = self.connexionIvy(self.opponentName)
+    def connect(self, leaveFunction):
+        self.ivyObject = self.connexionIvy(self.opponentName, leaveFunction)
         time.sleep(1)
         message = self.getMsg(' says: (.*)', self.opponentName)
         if not message:
@@ -75,8 +77,8 @@ class OnlineModel(PlayableModel):
         return self.parseMessages(message, opponentBind + regex)
 
     # Create Ivy object and initialise a connexion
-    def connexionIvy(self, opponentName):
-        ivyObject = IvyModel('127.0.0.1:2487')
+    def connexionIvy(self, opponentName, leaveFunction):
+        ivyObject = IvyModel('127.0.0.1:2487', leaveFunction)
         ivyObject.bindIvy('(' + opponentName + ' says: .*)')
         time.sleep(0.01)
         return ivyObject
@@ -121,6 +123,10 @@ class OnlineModel(PlayableModel):
 
     def ready(self):
         self.sendMsg(self.stop + ' No')
+
+    def stopPlay(self):
+        self.ivyObject.clearMessages()
+        IvyStop()
 
     def waitForOpponent(self):
         self.sendMsg(' ready!')

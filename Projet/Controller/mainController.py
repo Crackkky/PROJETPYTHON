@@ -15,7 +15,7 @@ class MainController :
         self.tile_number = TILE_NUMBER
 
         self.mainView = MainView(root)
-        self.mainView.label['text'] = '블랙핑크 하우스 환영합니!'
+        self.mainView.label['text'] = 'Welcome to BLACKPINK HOUSE !!'
         texts_button = ["Play in Training", "Play as Online", "Quit"]
         buttonsPosition = [self.mainView.trainingButton, self.mainView.onlineButton, self.mainView.quitButton]
         fcts = [lambda : self.trainingMode(root), lambda :self.onlineMode(root), lambda :sys.exit()]

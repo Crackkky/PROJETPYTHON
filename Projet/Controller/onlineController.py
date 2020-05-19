@@ -8,7 +8,7 @@ from Projet.View.tileView import TileView
 
 
 class OnlineController(PlayableController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, model=None, view=None, ivyObject=None):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, backMenuFct, model=None, view=None, ivyObject=None):
         if view is None:
             view = TileView(TILE_NUMBER, OPERATOR_NUMBER, root)
         if model is None:
@@ -18,6 +18,7 @@ class OnlineController(PlayableController):
         self.root = root
         self.tileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
+        self.backMenuFct = backMenuFct
         self.maxTimer = 5
         self.bothPlay = False
         self.pointSeparate = False
@@ -106,7 +107,7 @@ class OnlineController(PlayableController):
         self.operatorNumber = OPERATOR_NUMBER
         self.maxTileNumber = TILE_NUMBER
         self.ivyObject = ivyObject
-        self.completeButton("Back", lambda: self.backMenu(root), self.view.returnButton)
+        self.completeButton("Back", lambda x=self.root:self.backMenuFct(x), self.view.returnButton)
         self.completeButton("Got It !", lambda: self.found(), self.view.validateButton)
         self.view.hideShowGame(1)
         self.updateView()
@@ -139,7 +140,7 @@ class OnlineController(PlayableController):
         self.view.hideShowGame(0)
         self.view.displayInfo("Waiting for opponent's choice")
         self.root.update()
-        # self.waitPlayAgainOpponent()
+        # self.waitPlayAgainOpponent() #pas necessaire finalement
         self.play()
 
     def waitPlayAgainOpponent(self):

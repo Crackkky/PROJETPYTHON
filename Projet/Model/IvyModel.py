@@ -1,7 +1,7 @@
 from ivy.std_api import *
 
 IvyServer = None
-
+leaveFunction = None
 
 def on_die(agent, id):
     print('Received the order to die from %r with id = %d', agent, id)
@@ -9,8 +9,10 @@ def on_die(agent, id):
 
 
 def on_connection_change(agent, event):
+    global IvyServer
     if event == IvyApplicationDisconnected:
-        print('Someone\'s disconnected !')
+        # print('Someone\'s disconnected !')
+        leaveFunction()
         # print('Ivy application %r has disconnected', agent)
     else:
         print('New user connected !')
@@ -22,19 +24,19 @@ def sendMessage(msg):
     IvySendMsg(msg)
 
 
-def initIvy(ip):
+def initIvy(ip, anotherLeave):
     global IvyServer
+    global leaveFunction
     if IvyServer is None:
         IvyInit('IvyThread', 'Started!', 0, on_connection_change, on_die)
         IvyServer = True
-
+    leaveFunction = anotherLeave
     IvyStart(ip)
-    # '127.0.0.1:2010'
 
 
 class IvyModel:
-    def __init__(self, ip):
-        initIvy(ip)
+    def __init__(self, ip, anotherLeave):
+        initIvy(ip, anotherLeave)
         self.messages = []
 
     def on_msg(self, agent, *arg):

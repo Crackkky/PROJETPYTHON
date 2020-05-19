@@ -6,10 +6,10 @@ from Projet.View.onlineView import OnlineView
 
 
 class OnlineClientController(OnlineController):
-    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, ivyObject):
+    def __init__(self, parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, backMenuFct, ivyObject):
 
         super(OnlineClientController, self)\
-            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER ,
+            .__init__(parent, root, OPERATORS, OPERATOR_NUMBER, TILE_NUMBER, backMenuFct ,
                                                      OnlineClientModel(TILE_NUMBER, ivyObject),
                                                      OnlineView(TILE_NUMBER, OPERATOR_NUMBER, root), ivyObject)
         self.root.title("Client")

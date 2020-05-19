@@ -75,8 +75,8 @@ class TileController:
         button["command"] = fct
 
     def backMenu(self, root):
-        root.destroy()
-        root = tk.Tk()
-        self.parent.__init__(root, self.operators, self.operatorNumber, self.maxTileNumber)
-        root.mainloop()
+        root.after(100, lambda :root.destroy())
+        new = tk.Tk()
+        self.parent.__init__(new, self.operators, self.operatorNumber, self.maxTileNumber)
+        new.mainloop()
 
